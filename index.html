@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LE NATIONAL | Fast Food Premium</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@700;800;900&family=Noto+Serif+JP:wght@300;400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#ff2e2e",
+          "gold": "#FFD700",
+          "background-light": "#f8f5f5",
+          "background-dark": "#0A0A0A",
+        },
+        fontFamily: {
+          "display": ["Inter", "sans-serif"],
+          "heading": ["Bebas Neue", "cursive"]
+        },
+        borderRadius: {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  .title-text { font-weight:900; line-height:1; letter-spacing:-0.01em; font-family:'Montserrat',sans-serif; }
+  .font-lora   { font-family:'Lora',serif; }
+  .font-montserrat { font-family:'Montserrat',sans-serif; }
+
+  body {
+    padding-bottom: 100px;
+    background-color: #0A0A0A;
+    background-image:
+      /* overlay sombre pour lisibilité */
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.70) 40%,
+        rgba(0,0,0,0.80) 70%,
+        rgba(0,0,0,0.92) 100%
+      ),
+      url('https://static.wixstatic.com/media/45433e_8742748e0ff943fb813818e95b2f57fb~mv2_d_5587_3798_s_4_2.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .neon-border-red  { box-shadow: 0 0 5px #ff2e2e, 0 0 10px #ff2e2e; }
+  .neon-border-gold { box-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700; }
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    background-size: 200% 100%;
+  }
+
+  /* ── Cart panel ── */
+  #cart-panel {
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  #cart-panel.open { transform: translateX(0); }
+  #cart-overlay    { transition: opacity 0.35s ease; }
+
+  /* ── Add / qty buttons ── */
+  .add-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #ff2e2e; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s, background 0.15s; flex-shrink: 0;
+  }
+  .add-btn:hover  { background: #e02020; transform: scale(1.12); }
+  .add-btn:active { transform: scale(0.95); }
+  .add-btn.sm     { width: 28px; height: 28px; }
+
+  .qty-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.07);
+    color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: bold;
+    transition: background 0.15s;
+  }
+  .qty-btn:hover { background: rgba(255,255,255,0.15); }
+
+  /* ══ Floating Dock ══════════════════════════════════════════ */
+  #dock {
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow:
+      0 0 0 1px rgba(255,46,46,0.07),
+      0 8px 40px rgba(0,0,0,0.7),
+      0 2px 8px rgba(0,0,0,0.4);
+    padding: 10px 16px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    border-radius: 20px;
+  }
+
+  /* ── Dock item wrapper ── */
+  .dock-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: bottom center;
+    /* spring-like transition */
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+  }
+
+  /* ── Icon box ── */
+  .dock-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: visible;
+  }
+  .dock-icon:hover {
+    background: rgba(255,255,255,0.13);
+    border-color: rgba(255,255,255,0.20);
+  }
+  .dock-icon.cart-icon {
+    background: rgba(255,46,46,0.15);
+    border-color: rgba(255,46,46,0.30);
+  }
+  .dock-icon.cart-icon:hover {
+    background: rgba(255,46,46,0.28);
+    border-color: rgba(255,46,46,0.50);
+  }
+  .dock-icon.lang-active {
+    background: rgba(255,215,0,0.12);
+    border-color: rgba(255,215,0,0.30);
+  }
+
+  /* ── Tooltip ── */
+  .dock-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    white-space: nowrap;
+    background: rgba(18,18,18,0.95);
+    color: #fff;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  }
+  .dock-item:hover .dock-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Dot indicator (active lang) ── */
+  .dock-dot {
+    position: absolute;
+    bottom: -5px; left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: #FFD700;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .dock-dot.show { opacity: 1; }
+
+  /* ── Badge panier ── */
+  #dock-badge {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: #FFD700;
+    color: #000;
+    font-size: 11px; font-weight: 800;
+    display: none;
+    align-items: center; justify-content: center;
+    font-family: Inter, sans-serif;
+    border: 1.5px solid rgba(10,10,10,0.9);
+  }
+  #dock-badge.show { display: flex; }
+
+  /* ── Dock separator ── */
+  .dock-sep {
+    width: 1px; height: 32px; align-self: center;
+    background: rgba(255,255,255,0.12);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  @keyframes pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  .pop { animation: pop 0.25s ease; }
+
+  /* ══ Payment Modal ══════════════════════════════════════════ */
+  #payment-modal {
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #payment-modal.open {
+    opacity: 1; pointer-events: all;
+  }
+
+  /* ── Credit card 3D ── */
+  .cc-wrapper {
+    perspective: 1200px;
+    width: 320px; height: 188px;
+    margin: 0 auto;
+  }
+  .cc-card {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
+    border-radius: 18px;
+  }
+  .cc-card.flipped { transform: rotateY(180deg); }
+  .cc-face {
+    position: absolute; inset: 0;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden; padding: 22px 24px;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .cc-face::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
+    border-radius: 18px; pointer-events: none;
+  }
+  .cc-back-face { transform: rotateY(180deg); }
+
+  /* Gradients par type */
+  .cc-visa    .cc-face { background: linear-gradient(135deg,#1a1f71 0%,#2d5be3 55%,#5b8ff9 100%); }
+  .cc-master  .cc-face { background: linear-gradient(135deg,#1a0505 0%,#8b1a1a 45%,#c0392b 100%); }
+  .cc-amex    .cc-face { background: linear-gradient(135deg,#0a2a1a 0%,#145a32 55%,#1e8449 100%); }
+  .cc-default .cc-face { background: linear-gradient(135deg,#0d0d1a 0%,#1a1a3e 50%,#0f2050 100%); }
+
+  .cc-chip {
+    width: 40px; height: 30px;
+    background: linear-gradient(135deg,#c8a200,#ffd700,#a87800);
+    border-radius: 6px; margin-bottom: 14px; position: relative; overflow: hidden;
+  }
+  .cc-chip::after {
+    content: ''; position: absolute; inset: 4px;
+    border: 1px solid rgba(0,0,0,0.25); border-radius: 3px;
+  }
+  .cc-chip::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: rgba(0,0,0,0.2);
+  }
+  .cc-number {
+    font-family: 'Courier New', monospace;
+    font-size: 18px; letter-spacing: 3px;
+    color: rgba(255,255,255,0.93);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    margin-bottom: 14px; white-space: nowrap;
+  }
+  .cc-bottom  { display: flex; justify-content: space-between; align-items: flex-end; }
+  .cc-lbl     { font-size: 9px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing:1px; margin-bottom:3px; }
+  .cc-val     { font-size: 14px; color: rgba(255,255,255,0.9); font-weight:600; letter-spacing:1px; }
+  .cc-brand   { font-size: 22px; font-weight:900; font-style:italic; color:#fff; letter-spacing:1px; }
+  .cc-mc      { display: flex; align-items: center; }
+  .cc-mc span { width:26px;height:26px;border-radius:50%;display:block; }
+  .cc-mc span:first-child { background:#eb001b; }
+  .cc-mc span:last-child  { background:#f79e1b; margin-left:-10px; }
+
+  /* Back of card */
+  .cc-stripe {
+    position: absolute; top: 28px; left: 0; right: 0; height: 44px;
+    background: linear-gradient(180deg,#1a1a1a,#000,#1a1a1a);
+  }
+  .cc-sig-area { position: absolute; top: 90px; left: 24px; right: 24px; }
+  .cc-sig-strip {
+    background: linear-gradient(90deg,#f0f0f0,#e0e0e0,#f0f0f0);
+    border-radius: 4px; height: 38px;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 12px; overflow: hidden;
+  }
+  .cc-sig-lines {
+    flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding-left: 8px;
+  }
+  .cc-sig-lines span { height: 2px; background: repeating-linear-gradient(90deg,#ccc 0px,#ccc 8px,transparent 8px,transparent 12px); }
+  .cc-cvv-display {
+    font-family: 'Courier New', monospace; font-size:16px;
+    color:#333; letter-spacing:4px; font-weight:700;
+  }
+  .cc-back-label {
+    position: absolute; bottom: 14px; left: 24px;
+    font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing:1px;
+  }
+
+  /* Payment form */
+  .pay-group { display: flex; flex-direction: column; gap: 6px; }
+  .pay-label {
+    font-size: 11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1.5px; color: rgba(255,255,255,0.4);
+  }
+  .pay-input {
+    width:100%; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px; padding: 13px 16px;
+    color: white; font-size: 15px; font-family: Inter, sans-serif;
+    outline: none; transition: border-color 0.2s, background 0.2s;
+  }
+  .pay-input:focus {
+    border-color: rgba(255,46,46,0.55);
+    background: rgba(255,46,46,0.04);
+    box-shadow: 0 0 0 3px rgba(255,46,46,0.08);
+  }
+  .pay-input::placeholder { color: rgba(255,255,255,0.22); }
+
+  /* Order summary rows */
+  .pm-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+  .pm-row + .pm-row { border-top: 1px solid rgba(255,255,255,0.05); }
+  .pm-total { border-top: 1px solid rgba(255,255,255,0.15) !important; padding-top: 10px !important; margin-top: 4px; }
+
+  /* Pay button */
+  #pay-btn {
+    position: relative; overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  #pay-btn:hover  { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,46,46,0.4); }
+  #pay-btn:active { transform: translateY(1px); }
+  #pay-btn.loading { pointer-events: none; }
+  #pay-btn.loading .btn-text { opacity: 0; }
+  #pay-btn.loading .btn-loader { display: flex; }
+  .btn-loader {
+    position: absolute; inset: 0;
+    display: none; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-loader span {
+    width: 8px; height: 8px; border-radius: 50%; background: white;
+    animation: bounce-dot 0.8s infinite ease-in-out;
+  }
+  .btn-loader span:nth-child(2) { animation-delay: 0.15s; }
+  .btn-loader span:nth-child(3) { animation-delay: 0.30s; }
+  @keyframes bounce-dot {
+    0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+    40%          { transform: scale(1);   opacity: 1; }
+  }
+
+  /* Success overlay */
+  #pay-success {
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  #pay-success.show { opacity: 1; pointer-events: all; }
+  @keyframes checkmark {
+    0%   { stroke-dashoffset: 100; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .check-path { stroke-dasharray: 100; stroke-dashoffset: 100; animation: checkmark 0.6s 0.2s ease forwards; }
+
+  /* ══ Section Assiettes — Style Japonais / Carte Blanche ════ */
+  .jp-section {
+    background: #fefcf8;
+    border-radius: 4px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.45);
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* Header encre noire */
+  .jp-hd {
+    background: #111;
+    padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid #8b1a1a;
+    position: relative;
+  }
+  .jp-hd-center { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .jp-hd-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px; letter-spacing: 4px; color: #8b1a1a; font-weight: 300;
+  }
+  .jp-hd-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 30px; letter-spacing: 8px; color: #fff; font-weight: 600;
+    line-height: 1;
+  }
+  .jp-hd-line {
+    width: 40px; height: 1px; background: #8b1a1a; margin-top: 4px;
+  }
+  .jp-hd-badge {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 1.5px;
+    text-transform: uppercase; text-align: right; line-height: 1.6;
+  }
+  .jp-hd-badge span { color: rgba(255,255,255,0.7); }
+
+  /* Rows */
+  .jp-list { padding: 0; }
+  .jp-row {
+    display: flex; align-items: center; gap: 20px;
+    padding: 18px 32px;
+    border-bottom: 1px solid #ede8e0;
+    transition: background 0.15s;
+    background: #fefcf8;
+  }
+  .jp-row:last-child { border-bottom: none; }
+  .jp-row:hover { background: #fdf7ef; }
+
+  /* SVG plate illustration */
+  .jp-plate-wrap {
+    width: 72px; height: 72px; flex-shrink: 0;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  }
+  .jp-plate-wrap svg { width: 72px; height: 72px; }
+
+  /* Info text */
+  .jp-info { flex: 1; min-width: 0; }
+  .jp-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px; font-weight: 600; letter-spacing: 3px;
+    color: #1a1a1a; display: block; line-height: 1.3;
+    text-transform: uppercase;
+  }
+  .jp-name-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 10px; font-weight: 300; letter-spacing: 2px;
+    color: #8b1a1a; display: block; margin-top: 2px;
+  }
+  .jp-desc {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px; color: #8a8078; display: block;
+    margin-top: 5px; line-height: 1.6; font-weight: 300;
+    font-style: italic;
+  }
+
+  /* Price + button */
+  .jp-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+  .jp-price {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px; font-weight: 700; color: #1a1a1a;
+    letter-spacing: 1px; white-space: nowrap; min-width: 54px; text-align: right;
+    cursor: pointer; position: relative; user-select: none;
+    padding: 6px 12px; border-radius: 3px;
+    transition: background 0.18s, color 0.18s;
+  }
+  .jp-price:hover { background: rgba(139,26,26,0.08); color: #8b1a1a; }
+  .jp-price:active { background: rgba(139,26,26,0.18); }
+  .jp-price span { font-size: 13px; font-weight: 300; color: #8a8078; }
+
+  /* Decorative divider between rows */
+  .jp-divider {
+    margin: 0 32px;
+    height: 1px; background: #ede8e0;
+  }
+
+  /* Footer suppléments — texte pur, aucune boîte */
+  .jp-footer {
+    background: #f5f0e8;
+    border-top: 1px solid #ddd6c8;
+    padding: 14px 32px;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px;
+  }
+  .jp-foot-lbl {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2.5px; color: #9a9088; margin-right: 12px;
+  }
+  .jp-suppl-item {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px; color: #5a5048; font-weight: 300;
+  }
+  .jp-suppl-item .jp-sp { color: #8b1a1a; font-weight: 600; }
+  .jp-suppl-sep { color: #c8bfb0; font-size: 10px; margin: 0 6px; }
+
+  /* ══ Carte Restaurant Classique — Assiettes ════════════════ */
+  .carte-section {
+    overflow: hidden;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 6px;
+  }
+
+  /* Header rouge uni */
+  .carte-hd {
+    background: #9b1f1f;
+    padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .carte-hd-left { display: flex; align-items: center; gap: 14px; }
+  .carte-hd-ornament {
+    display: flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.45); font-size: 18px; letter-spacing: -2px;
+  }
+  .carte-hd-pre {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: rgba(255,255,255,0.55);
+  }
+  .carte-hd-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 38px; letter-spacing: 5px; color: #fff; line-height: 1;
+  }
+  .carte-hd-badge {
+    display: flex; align-items: center; gap: 6px;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 13px; border-radius: 2px;
+    color: rgba(255,255,255,0.75); font-size: 10px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+    white-space: nowrap;
+  }
+
+  /* Thin decorative line under header */
+  .carte-sub-line {
+    height: 2px;
+    background: linear-gradient(90deg, #9b1f1f, #5a0f0f, transparent);
+  }
+
+  /* Item list */
+  .carte-list { padding: 4px 0; }
+  .carte-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 13px 28px;
+    border-bottom: 1px solid #1e1e1e;
+    transition: background 0.15s;
+  }
+  .carte-row:last-child { border-bottom: none; }
+  .carte-row:hover { background: #1a1a1a; }
+
+  /* Thumbnail */
+  .carte-thumb {
+    width: 52px; height: 52px; border-radius: 4px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 25px; line-height: 1;
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+  }
+
+  .carte-info { flex: 1; min-width: 0; }
+  .carte-name {
+    font-family: 'Bebas Neue', cursive; font-size: 19px;
+    letter-spacing: 2.5px; color: #e8e8e8; display: block; line-height: 1.2;
+  }
+  .carte-desc {
+    font-size: 11px; color: #555; display: block;
+    margin-top: 3px; line-height: 1.5;
+  }
+
+  .carte-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .carte-price {
+    font-family: 'Bebas Neue', cursive; font-size: 22px;
+    color: #e8e8e8; letter-spacing: 1px; white-space: nowrap;
+    min-width: 56px; text-align: right;
+  }
+  /* Flat square add button */
+  .carte-btn {
+    width: 30px; height: 30px; border-radius: 2px;
+    background: #9b1f1f; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s; flex-shrink: 0;
+    color: #fff; font-size: 18px; font-weight: 300; line-height: 1;
+  }
+  .carte-btn:hover { background: #c0392b; }
+  .carte-btn:active { background: #7a1818; }
+
+  /* Ornament divider between items (optional) */
+  .carte-ornament-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 28px; height: 1px; margin: 2px 0;
+  }
+  .carte-ornament-row span {
+    flex: 1; height: 1px; background: #222;
+  }
+
+  /* Footer */
+  .carte-footer {
+    background: #0f0f0f;
+    border-top: 2px solid #9b1f1f;
+    padding: 12px 28px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  }
+  .carte-footer + .carte-footer {
+    border-top: 1px solid #1e1e1e;
+  }
+  .carte-foot-lbl {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: #444; white-space: nowrap;
+  }
+  .ctag {
+    font-size: 11px; color: #666;
+    padding: 4px 11px; border: 1px solid #252525;
+    border-radius: 2px; background: #181818;
+  }
+  .ctag .cp { color: #9b1f1f; font-weight: 700; }
+
+  /* ══ Premium Menu Card — Sandwichs ═════════════════════════ */
+
+  /* Wrapper avec double bordure or */
+  .prem-wrap {
+    position: relative;
+    background: #0e0c07;
+    border: 2px solid #b8942e;
+    box-shadow:
+      inset 0 0 0 4px #0e0c07,
+      inset 0 0 0 6px #b8942e,
+      0 16px 60px rgba(0,0,0,0.8),
+      0 0 60px rgba(184,148,46,0.06);
+    padding: 10px;
+    border-radius: 4px;
+    overflow: visible;
+  }
+
+  /* Cercles de plats aux coins */
+  .prem-food-circle {
+    position: absolute;
+    width: 115px; height: 115px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #c9a84c;
+    box-shadow:
+      0 0 0 3px #0e0c07,
+      0 8px 30px rgba(0,0,0,0.9),
+      0 0 20px rgba(184,148,46,0.25);
+    z-index: 10;
+    background: #1a1208;
+    flex-shrink: 0;
+  }
+  .prem-food-circle.tl { top: -32px; left: -32px; }
+  .prem-food-circle.tr { top: -32px; right: -32px; }
+  .prem-food-circle.bl { bottom: -32px; left: -32px; }
+  .prem-food-circle.br { bottom: -32px; right: -32px; }
+  .prem-food-circle svg { width: 115px; height: 115px; display: block; }
+
+  /* Ligne ornementale interne (cadre doré intérieur supplémentaire) */
+  .prem-inner-frame {
+    border: 1px solid rgba(184,148,46,0.3);
+    border-radius: 2px;
+    padding: 60px 48px 52px;
+  }
+
+  /* Script title */
+  .prem-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: 52px; font-weight: 700;
+    color: #c9a84c; display: block; line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(184,148,46,0.35);
+  }
+  .prem-hd { text-align: center; margin-bottom: 18px; }
+  .prem-hd-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 44px; letter-spacing: 12px; color: #f5ede0; line-height: 1;
+    display: block; margin-top: 2px;
+  }
+  .prem-hd-ornline {
+    display: flex; align-items: center; gap: 10px; margin-top: 14px;
+  }
+  .prem-hd-ornline div { flex: 1; height: 1px; background: linear-gradient(90deg,transparent,#b8942e); }
+  .prem-hd-ornline div:last-child { background: linear-gradient(270deg,transparent,#b8942e); }
+  .prem-hd-ornline span { color: #b8942e; font-size: 14px; }
+
+  .prem-badge-line {
+    text-align: center; font-size: 10px; color: #6a5c38;
+    letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .prem-badge-line::before, .prem-badge-line::after {
+    content: ''; flex: 1; height: 1px; background: rgba(184,148,46,0.18);
+  }
+
+  /* Grille 2 colonnes */
+  .prem-2col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0 36px;
+  }
+  .prem-col { display: flex; flex-direction: column; }
+  .prem-col-title {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #6a5430; margin-bottom: 8px;
+    border-bottom: 1px solid rgba(184,148,46,0.15); padding-bottom: 6px;
+  }
+
+  /* Item row */
+  .prem-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 0; position: relative;
+  }
+  .prem-item + .prem-item { border-top: 1px solid rgba(184,148,46,0.1); }
+  .prem-item-left { flex: 1; min-width: 0; }
+  .prem-item-name {
+    font-family: 'Bebas Neue', cursive; font-size: 19px;
+    letter-spacing: 3px; color: #f0e8d8; display: block; line-height: 1.2;
+  }
+  .prem-item-desc {
+    font-size: 10.5px; color: #4e4530; display: block;
+    margin-top: 2px; font-style: italic; line-height: 1.5;
+  }
+  .prem-dots {
+    flex: 1; border-bottom: 1.5px dotted rgba(184,148,46,0.22);
+    margin: 0 6px; align-self: flex-end; margin-bottom: 4px; min-width: 16px;
+  }
+
+  /* Prix cliquable */
+  .prem-price {
+    font-family: 'Bebas Neue', cursive; font-size: 21px;
+    color: #c9a84c; letter-spacing: 1px; cursor: pointer;
+    white-space: nowrap; flex-shrink: 0; align-self: center;
+    padding: 4px 12px; border: 1px solid rgba(184,148,46,0.3);
+    border-radius: 2px; position: relative; user-select: none;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+  }
+  .prem-price:hover {
+    background: rgba(184,148,46,0.14); border-color: #c9a84c; color: #f0d07a;
+  }
+  .prem-price:active { background: rgba(184,148,46,0.28); }
+
+  /* Diviseur vertical entre les 2 colonnes */
+  .prem-2col-sep {
+    width: 1px; background: linear-gradient(to bottom, transparent, rgba(184,148,46,0.25) 20%, rgba(184,148,46,0.25) 80%, transparent);
+    margin: 0 -18px; z-index: 1;
+  }
+
+  /* Pains */
+  .prem-pains {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 6px; margin: 18px 0 0;
+    padding-top: 14px; border-top: 1px solid rgba(184,148,46,0.15);
+  }
+  .prem-pain {
+    font-size: 10px; color: #6a5c38; letter-spacing: 2px;
+    text-transform: uppercase; padding: 3px 10px;
+    border: 1px solid rgba(184,148,46,0.18); border-radius: 1px;
+  }
+  .prem-pain-sep { color: rgba(184,148,46,0.25); }
+
+  /* Footer suppléments */
+  .prem-footer {
+    border-top: 1px solid rgba(184,148,46,0.15);
+    margin-top: 14px; padding-top: 12px;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px;
+  }
+  .prem-foot-lbl {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: #4e4530; margin-right: 8px; white-space: nowrap;
+  }
+  .prem-suppl { font-size: 11px; color: #7a6a48; }
+  .prem-suppl .ps { color: #c9a84c; font-weight: 700; }
+  .prem-suppl-sep { color: rgba(184,148,46,0.25); margin: 0 4px; }
+
+  /* ── Animation feedback prix cliqué ── */
+  @keyframes price-pop { 0%{background:rgba(184,148,46,0)} 45%{background:rgba(184,148,46,0.45);color:#fff} 100%{background:rgba(184,148,46,0)} }
+  .price-added { animation: price-pop 0.45s ease; }
+  @keyframes float-up { 0%{opacity:1;transform:translateX(-50%) translateY(0)} 100%{opacity:0;transform:translateX(-50%) translateY(-22px)} }
+  .float-badge {
+    position: absolute; top: -18px; left: 50%;
+    transform: translateX(-50%); color: #c9a84c; font-size: 12px;
+    font-weight: 700; pointer-events: none; white-space: nowrap;
+    animation: float-up 0.55s ease forwards; z-index: 10;
+    font-family: 'Bebas Neue', cursive; letter-spacing: 1px;
+  }
+  .jp-price .float-badge { color: #8b1a1a; }
+
+  /* ══ Fradel & Spies Burger Card ════════════════════════════ */
+  .fsc-wrap { font-family:'Montserrat',sans-serif; }
+  .fsc-wrap .fsc-card {
+    background:#2d2d2d; border-radius:16px; overflow:hidden;
+    position:relative; color:#fff; padding:36px 36px 30px 36px; width:100%;
+  }
+  .fsc-wrap .hero-circle {
+    position:absolute; top:-10px; right:-30px; width:290px; height:290px;
+    border-radius:50%; background:#8ab320; z-index:0; pointer-events:none;
+  }
+  .fsc-wrap .deco-circle-bottom {
+    position:absolute; bottom:-50px; right:-50px; width:130px; height:130px;
+    border-radius:50%; background:#8ab320; opacity:0.35; z-index:0; pointer-events:none;
+  }
+  .fsc-wrap .brand-name {
+    position:absolute; top:36px; right:36px; display:flex; align-items:center;
+    gap:10px; font-size:13px; font-weight:600; color:#fff; text-align:right; line-height:1.25; z-index:5;
+  }
+  .fsc-wrap .brand-icon {
+    width:44px; height:44px; border-radius:50%; background:#e8a020;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .fsc-wrap .fsc-hero { position:relative; z-index:1; display:flex; align-items:flex-start; }
+  .fsc-wrap .fsc-titles { flex:1; padding-top:8px; }
+  .fsc-wrap .title-burger { font-size:clamp(44px,7vw,68px); font-weight:900; line-height:1; color:#fff; letter-spacing:-2px; text-transform:uppercase; }
+  .fsc-wrap .title-menu   { font-size:clamp(44px,7vw,68px); font-weight:900; line-height:1; color:#8ab320; letter-spacing:-2px; text-transform:uppercase; }
+  .fsc-wrap .title-divider { width:70px; height:3px; background:#8ab320; margin:10px 0 16px 0; border-radius:2px; }
+  .fsc-wrap .hero-desc { font-size:13.5px; font-weight:400; line-height:1.7; color:#d9d9d9; max-width:230px; }
+  .fsc-wrap .fsc-hero-img-wrap { position:relative; width:clamp(160px,22vw,240px); flex-shrink:0; margin-top:-14px; margin-right:-10px; z-index:2; }
+  .fsc-wrap .fsc-hero-img-wrap img { width:100%; border-radius:50%; display:block; }
+  .fsc-wrap .price-badge {
+    position:absolute; bottom:20px; right:10px; width:72px; height:72px;
+    border-radius:50%; background:#e8a020; display:flex; align-items:center; justify-content:center;
+    font-size:20px; font-weight:900; color:#fff; z-index:3;
+    cursor:pointer; transition:transform 0.18s, box-shadow 0.18s;
+  }
+  .fsc-wrap .price-badge:hover { transform:scale(1.1); box-shadow:0 4px 20px rgba(232,160,32,0.5); }
+  .fsc-wrap .delivery-row { display:flex; align-items:center; gap:12px; margin:20px 0 28px 0; }
+  .fsc-wrap .delivery-icon { width:42px; height:42px; border-radius:50%; background:#3d3d3d; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .fsc-wrap .delivery-text { font-size:13px; }
+  .fsc-wrap .delivery-text strong { display:block; font-weight:800; font-size:14px; letter-spacing:1px; text-transform:uppercase; }
+  .fsc-wrap .fsc-grid { display:grid; grid-template-columns:1fr 1fr 210px; gap:0; border-top:1px solid #444; padding-top:24px; }
+  .fsc-wrap .fsc-burger-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px 12px; grid-column:1/3; }
+  .fsc-wrap .fsc-burger-card { text-align:center; }
+  .fsc-wrap .fsc-img-circle { width:130px; height:130px; border-radius:50%; background:#8ab320; overflow:hidden; margin:0 auto 10px auto; }
+  .fsc-wrap .fsc-img-circle img { width:100%; height:100%; object-fit:cover; }
+  .fsc-wrap .b-price {
+    font-size:26px; font-weight:900; color:#fff; display:inline-block;
+    cursor:pointer; position:relative; padding:2px 8px; border-radius:4px;
+    transition:background 0.18s, color 0.18s;
+  }
+  .fsc-wrap .b-price:hover { background:rgba(232,160,32,0.2); color:#e8a020; }
+  .fsc-wrap .b-name { font-size:13px; font-weight:700; color:#e8a020; text-transform:uppercase; margin:2px 0 4px 0; }
+  .fsc-wrap .b-desc { font-size:11px; font-weight:400; color:#aaa; }
+  .fsc-wrap .other-menu { padding-left:24px; border-left:1px solid #444; margin-left:10px; }
+  .fsc-wrap .other-menu h3 { font-size:18px; font-weight:900; text-transform:uppercase; color:#fff; margin-bottom:10px; }
+  .fsc-wrap .om-divider { width:50px; height:3px; background:#e8a020; border-radius:2px; margin-bottom:18px; }
+  .fsc-wrap .other-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:18px; }
+  .fsc-wrap .oi-arrow { width:22px; height:22px; border-radius:50%; background:#e8a020; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .fsc-wrap .oi-price {
+    font-size:15px; font-weight:900; color:#fff; display:inline-block;
+    cursor:pointer; position:relative; padding:1px 6px; border-radius:3px;
+    transition:background 0.18s, color 0.18s;
+  }
+  .fsc-wrap .oi-price:hover { background:rgba(232,160,32,0.2); color:#e8a020; }
+  .fsc-wrap .oi-name { font-size:12px; font-weight:500; color:#d0d0d0; line-height:1.3; }
+
+  /* ══ Sober Restaurant List — Sandwichs ═════════════════════ */
+  .resto-section {
+    border-radius: 20px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(8,6,4,0.72);
+    backdrop-filter: blur(8px);
+  }
+  .resto-hd {
+    padding: 22px 26px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    position: relative;
+  }
+  .resto-hd::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rc,#d4915a), transparent);
+  }
+  .resto-hd-left { display: flex; align-items: baseline; gap: 12px; }
+  .resto-hd-pre {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2.5px; color: var(--rc,#d4915a);
+  }
+  .resto-hd-name {
+    font-family: 'Bebas Neue', cursive; font-size: 42px; letter-spacing: 4px;
+    color: #f5ede3; line-height: 1;
+  }
+  .resto-badge {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(255,215,0,0.07); border: 1px solid rgba(255,215,0,0.18);
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ── Item rows ── */
+  .resto-list { padding: 0; }
+  .resto-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 15px 26px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.18s;
+  }
+  .resto-row:last-child { border-bottom: none; }
+  .resto-row:hover { background: rgba(255,255,255,0.025); }
+
+  /* Small dish image */
+  .resto-thumb {
+    width: 58px; height: 58px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 27px; line-height: 1;
+    background: rgba(212,145,90,0.10);
+    border: 1px solid rgba(212,145,90,0.20);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  }
+  .resto-info { flex: 1; min-width: 0; }
+  .resto-name {
+    font-family: 'Bebas Neue', cursive; font-size: 20px;
+    letter-spacing: 2.5px; color: #f0e8df; display: block; line-height: 1.2;
+  }
+  .resto-desc {
+    font-size: 11px; color: rgba(255,255,255,0.28);
+    display: block; margin-top: 3px; line-height: 1.5;
+  }
+  .resto-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+  .resto-price {
+    font-family: 'Bebas Neue', cursive; font-size: 24px;
+    color: var(--rc,#d4915a); letter-spacing: 1px; white-space: nowrap;
+    min-width: 52px; text-align: right;
+  }
+
+  /* Footer: pains + suppl */
+  .resto-foot-wrap { border-top: 1px solid rgba(255,255,255,0.06); }
+  .resto-foot {
+    padding: 11px 26px;
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    background: rgba(0,0,0,0.18);
+  }
+  .resto-foot + .resto-foot { border-top: 1px solid rgba(255,255,255,0.04); }
+  .resto-foot-lbl {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: rgba(255,255,255,0.22); white-space: nowrap;
+    margin-right: 4px;
+  }
+  .rtag {
+    padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 500;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+    color: rgba(255,255,255,0.50);
+  }
+  .rtag .rp { color: var(--rc,#d4915a); font-weight: 700; }
+  .rtag-bread {
+    padding: 5px 13px; border-radius: 999px;
+    font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 2px;
+    color: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+  }
+
+  /* ══ Menu Card Style ════════════════════════════════════════ */
+  .menu-category {
+    border-radius: 24px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .menu-cat-hd {
+    padding: 22px 28px;
+    display: flex; align-items: center; gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden;
+  }
+  .menu-cat-hd::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--cat-bg, rgba(255,46,46,0.12));
+    pointer-events: none;
+  }
+  .menu-cat-icon-box {
+    width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; position: relative; z-index: 1;
+    border: 1px solid var(--cat-border, rgba(255,46,46,0.3));
+    background: var(--cat-icon-bg, rgba(255,46,46,0.12));
+  }
+  .menu-cat-info { flex: 1; position: relative; z-index: 1; }
+  .menu-cat-badge {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.22);
+    white-space: nowrap; flex-shrink: 0; position: relative; z-index: 1;
+  }
+
+  /* Item grid */
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(2,1fr);
+    gap: 10px; padding: 14px;
+    background: rgba(0,0,0,0.25);
+  }
+  @media (min-width: 768px) { .menu-grid-3 { grid-template-columns: repeat(3,1fr); } }
+
+  /* Item card */
+  .menu-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative; overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+  }
+  .menu-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--cc, #ff2e2e); border-radius: 16px 16px 0 0;
+  }
+  .menu-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.45), 0 0 0 1px var(--cc, #ff2e2e22);
+  }
+  .menu-card-emoji { font-size: 30px; line-height: 1; }
+  .menu-card-name {
+    font-family: 'Bebas Neue', cursive; font-size: 20px;
+    letter-spacing: 2px; color: white; line-height: 1.1;
+  }
+  .menu-card-desc { font-size: 11px; color: rgba(255,255,255,0.33); line-height: 1.5; flex: 1; }
+  .menu-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.07); margin-top: auto;
+  }
+  /* ══ Price Hotspot overlay sur image menu ═══════════════════ */
+  .menu-img-wrap { position: relative; margin: 8px 0; }
+  .menu-img-wrap img { width: 100%; border-radius: 6px; display: block; box-shadow: 0 16px 60px rgba(0,0,0,0.8); }
+  .phot {
+    position: absolute; cursor: pointer;
+    border-radius: 4px; background: transparent;
+    border: 1px solid transparent;
+    transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
+    user-select: none; overflow: visible;
+  }
+  .phot:hover {
+    background: rgba(184,148,46,0.35);
+    border-color: rgba(220,180,60,0.7);
+    box-shadow: 0 0 14px rgba(184,148,46,0.5);
+  }
+  .phot:active { background: rgba(184,148,46,0.55); }
+  @keyframes cart-pulse { 0%{transform:scale(1)} 40%{transform:scale(1.18);background:rgba(184,148,46,0.55)} 100%{transform:scale(1)} }
+  .phot.added { animation: cart-pulse 0.38s ease; }
+
+  .price-pill {
+    font-family: 'Bebas Neue', cursive; font-size: 24px;
+    color: #FFD700; letter-spacing: 1px;
+    cursor: pointer; position: relative; user-select: none;
+    padding: 4px 12px; border-radius: 3px;
+    border: 1px solid rgba(255,215,0,0.25);
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+  }
+  .price-pill:hover { background: rgba(255,215,0,0.12); border-color: rgba(255,215,0,0.6); }
+  .price-pill:active { background: rgba(255,215,0,0.25); }
+
+  /* Supplement tags */
+  .suppl-zone {
+    padding: 12px 14px 14px;
+    background: rgba(0,0,0,0.25);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .suppl-zone-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: rgba(255,255,255,0.3); margin-bottom: 8px;
+  }
+  .suppl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stag {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.65);
+  }
+  .stag .sp { color: #FFD700; font-weight: 700; }
+
+  /* Pains strip */
+  .pains-strip {
+    display: flex; align-items: center; gap: 0;
+    padding: 12px 14px; background: rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap; gap: 8px;
+  }
+  .pain-badge {
+    padding: 6px 16px; border-radius: 999px; font-size: 13px;
+    font-family: 'Bebas Neue', cursive; letter-spacing: 2px; color: white;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  /* Menu enfant card */
+  .enfant-card {
+    background: rgba(255,46,46,0.08); border: 1px solid rgba(255,46,46,0.25);
+    border-radius: 16px; padding: 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+
+<!-- ══════════════════════════ OVERLAY ══════════════════════════ -->
+<div id="cart-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0" onclick="closeCart()"></div>
+
+<!-- ══════════════════════════ CART PANEL ══════════════════════ -->
+<div id="cart-panel" class="fixed top-0 right-0 h-full w-full max-w-sm z-50 flex flex-col bg-[#111] border-l border-white/10 shadow-2xl">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-2xl">shopping_bag</span>
+      <h2 class="font-heading text-3xl text-white tracking-widest" data-i18n="cart-title">MA COMMANDE</h2>
+    </div>
+    <button onclick="closeCart()" class="text-slate-400 hover:text-white transition-colors">
+      <span class="material-symbols-outlined text-2xl">close</span>
+    </button>
+  </div>
+
+  <!-- Items list -->
+  <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4 space-y-3"></div>
+
+  <!-- Empty state -->
+  <div id="cart-empty" class="flex-1 flex flex-col items-center justify-center gap-4 text-slate-500 px-6">
+    <span class="material-symbols-outlined text-6xl opacity-30">shopping_bag</span>
+    <p id="cart-empty-msg" class="text-center text-sm" data-i18n="cart-empty-msg">Votre panier est vide.<br/>Ajoutez des plats depuis la carte.</p>
+  </div>
+
+  <!-- Footer -->
+  <div id="cart-footer" class="px-6 py-5 border-t border-white/10 space-y-4 hidden">
+    <div class="flex justify-between items-center">
+      <span class="text-slate-400 uppercase tracking-wider text-xs font-bold" data-i18n="cart-total-label">Total</span>
+      <span id="cart-total" class="font-heading text-4xl text-gold">0,00€</span>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="clearCart()"
+        class="flex-1 py-3 rounded-xl border border-white/15 text-slate-400 hover:text-white hover:border-white/30 transition-colors text-sm font-bold uppercase tracking-wider"
+        data-i18n="cart-clear">Vider</button>
+      <button onclick="validerCommande()"
+        class="flex-grow-[2] py-3 rounded-xl bg-primary hover:bg-red-600 transition-colors text-white font-bold uppercase tracking-wider text-sm"
+        data-i18n="cart-validate">Valider la commande</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ FLOATING DOCK ════════════════════ -->
+<div id="dock" class="fixed bottom-6 left-1/2 z-30" style="transform:translateX(-50%);">
+
+  <!-- Panier -->
+  <div class="dock-item" id="di-cart">
+    <div class="dock-tooltip" data-i18n="dock-cart">Panier</div>
+    <button class="dock-icon cart-icon" onclick="openCart()">
+      <span class="material-symbols-outlined text-primary" style="font-size:26px;">shopping_bag</span>
+      <span id="dock-badge">0</span>
+    </button>
+  </div>
+
+
+</div>
+
+<!-- ══════════════════════════ PAGE ═════════════════════════════ -->
+
+<main class="max-w-7xl mx-auto px-6 pb-12 space-y-16">
+
+  <!-- ── Section 1 : Cartes Menu ── -->
+  <section class="scroll-mt-24" id="menu-projection">
+    <div class="flex items-end justify-between mb-6 border-l-4 border-primary pl-6">
+      <div>
+        <h2 class="font-heading text-5xl text-white tracking-wide">
+          <span data-i18n="s1-title">Cartes Menu</span>
+          <span class="text-primary/50 text-2xl ml-2 tracking-normal font-display" data-i18n="s1-subtitle">(Projection)</span>
+        </h2>
+        <p class="text-slate-400 mt-2" data-i18n="s1-desc">Affichage haute définition pour écrans en restaurant</p>
+      </div>
+    </div>
+    <div class="columns-3 gap-4" style="column-gap:1.5rem;">
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-sandwichs-1.png" alt="Carte Sandwichs"/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-burgers.png" alt="Carte Burgers"/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-assiettes.png" alt="Carte Assiettes"/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-burgers-v2.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-burgers-v3.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="carte-burgers-v4.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-1.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-2.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-3.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-6.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-9.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="gemini-10.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-1.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-2.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-3.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-4.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-5.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-6.png" alt=""/></div>
+      <div class="break-inside-avoid rounded-xl overflow-hidden shadow-2xl mb-4"><img class="w-full block" src="french-7.png" alt=""/></div>
+    </div>
+  </section>
+
+  <!-- ── Section 2 : Visuels Animés ── -->
+  <section class="scroll-mt-24" id="visuels-animes">
+    <div class="flex items-end justify-between mb-8 border-l-4 border-gold pl-6">
+      <div>
+        <h2 class="font-heading text-5xl text-white tracking-wide" data-i18n="s2-heading">Visuels <span class="text-gold">Animés</span></h2>
+        <p class="text-slate-400 mt-2" data-i18n="s2-desc">Publicités dynamiques et ambiances visuelles</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual1.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 1</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual2.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 2</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual3.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 3</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual4.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 4</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual5.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 5</span>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl overflow-hidden border border-white/10" style="box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+          <video src="visual6.mp4" autoplay loop muted playsinline style="width:100%;display:block;"></video>
+        </div>
+        <span class="font-heading text-lg text-white tracking-widest px-1 opacity-60">Visuel 6</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Section 3 : La Carte (menu card style) ── -->
+  <section class="scroll-mt-24 pb-24" id="la-carte">
+    <div class="flex items-end justify-between mb-12 border-l-4 border-primary pl-6">
+      <div>
+        <h2 class="font-heading text-5xl text-white tracking-wide" data-i18n="s3-heading">La <span class="text-primary">Carte</span></h2>
+        <p class="text-slate-400 mt-2" data-i18n="s3-desc">Tous nos plats, ingrédients et tarifs</p>
+      </div>
+    </div>
+
+    <div class="space-y-16" style="padding-top:12px;">
+
+      <!-- ════ SANDWICHS — carte fast food interactive ════ -->
+      <div class="font-montserrat w-full rounded-xl overflow-hidden shadow-2xl" style="background:#1c1c1e;">
+        <div class="flex flex-col md:flex-row" style="min-height:800px;">
+
+          <!-- Colonne gauche : photo burger -->
+          <div class="hidden md:block w-full md:w-[38%] relative">
+            <img src="burger-photo.png" alt="Burger &amp; Fries" class="absolute inset-0 w-full h-full object-cover" style="object-position:center center;"/>
+          </div>
+
+          <!-- Colonne droite : contenu -->
+          <div class="w-full md:w-[62%] p-8 lg:p-12 flex flex-col gap-8" style="background:#1c1c1e;">
+
+            <!-- En-tête -->
+            <div class="flex items-center justify-between gap-4" style="background:#000;margin:-2rem -2rem 0 -2rem;padding:1.6rem 2rem;">
+              <div class="title-text text-white uppercase" style="font-size:clamp(2.6rem,4.8vw,4rem);line-height:0.92;letter-spacing:-0.02em;">
+                <div>FAST</div><div>FOOD</div><div>MENU</div>
+              </div>
+              <!-- Burger icon — fidèle à la référence -->
+              <svg viewBox="0 0 140 115" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(100px,11vw,145px);height:auto;flex-shrink:0;">
+                <!-- Chapeau du pain (dôme) -->
+                <path d="M10,58 Q10,4 70,4 Q130,4 130,58" stroke-width="5"/>
+                <!-- Graines de sésame -->
+                <ellipse cx="38" cy="24" rx="6" ry="3.5" fill="white" stroke="none"/>
+                <ellipse cx="58" cy="13" rx="6" ry="3.5" fill="white" stroke="none"/>
+                <ellipse cx="82" cy="13" rx="6" ry="3.5" fill="white" stroke="none"/>
+                <ellipse cx="103" cy="23" rx="6" ry="3.5" fill="white" stroke="none"/>
+                <ellipse cx="70" cy="9" rx="5" ry="3" fill="white" stroke="none"/>
+                <!-- Base du pain supérieur -->
+                <line x1="10" y1="58" x2="130" y2="58" stroke-width="4"/>
+                <!-- Couche fromage -->
+                <rect x="6" y="63" width="128" height="11" rx="3" stroke-width="4"/>
+                <!-- Steak (galette) -->
+                <rect x="2" y="77" width="136" height="12" rx="3" stroke-width="4"/>
+                <!-- Laitue ondulée -->
+                <path d="M2,95 Q16,86 30,95 Q44,104 58,95 Q72,86 86,95 Q100,104 114,95 Q128,86 138,95" stroke-width="3.5"/>
+                <!-- Pain du bas -->
+                <path d="M10,100 L130,100 Q130,116 70,116 Q10,116 10,100 Z" stroke-width="4"/>
+              </svg>
+            </div>
+
+            <!-- Promo badge -->
+            <div style="background:#f58a25;color:#000;font-weight:700;text-transform:uppercase;border-radius:9999px;padding:10px 28px;display:inline-block;font-size:0.85rem;letter-spacing:0.05em;width:fit-content;">
+              Special Promo for New Member
+            </div>
+
+            <!-- Liste des plats -->
+            <div style="display:flex;flex-direction:column;gap:20px;">
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Cheese Burger</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-cheese',4.5)">$ 4.50</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">A burger with a slice of cheese, served in a bread roll.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Supreme Burger</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-supreme',6.2)">$ 6.20</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Double viande fraîche, sauces au choix, garnitures variées.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Fish Burger</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-fish',5.3)">$ 5.30</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Filet de cabillaud pané façon Panko, frit jusqu'à dorure croustillante.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Chicken Burger</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-chicken-b',5.4)">$ 5.40</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Steak de poulet, tomates, laitue, oignons dans un bun moelleux.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Chicken Sandwich</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-chicken-sw',5.3)">$ 5.30</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Blanc de poulet mariné servi entre deux tranches de pain croustillant.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Tuna Sandwich</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-tuna',4.2)">$ 4.20</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Thon, mayo légère, carottes râpées, concombre, jus de citron.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Cheese Sandwich</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-cheese-sw',4.5)">$ 4.50</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Pain de mie, beurre fondu et fromage filant façon grilled cheese.</p>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <h3 style="font-weight:700;font-size:1.1rem;letter-spacing:0.08em;text-transform:uppercase;color:#fff;">Egg Sandwich</h3>
+                  <span style="font-weight:700;font-size:1.1rem;color:#fff;cursor:pointer;position:relative;padding:3px 10px;border-radius:4px;transition:background 0.18s;" onmouseenter="this.style.background='rgba(245,138,37,0.2)'" onmouseleave="this.style.background='transparent'" onclick="addToCartFromPrice(this,'cb-egg',3.1)">$ 3.10</span>
+                </div>
+                <p class="font-lora" style="color:#d48625;font-size:0.8rem;margin-top:5px;line-height:1.6;">Œuf au plat, brouillé ou salade d'œuf — sandwich généreux du matin.</p>
+              </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div style="margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);">
+              <p class="font-lora" style="font-size:0.72rem;color:#9ca3af;line-height:1.7;">
+                Our fast food uses ingredients imported directly from world-renowned brands and the finest plantations — we guarantee both taste and quality in every bite.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+            <!-- ════ ASSIETTES — style japonais, carte blanche ════ -->
+      <div class="jp-section">
+
+        <!-- En-tête encre noire -->
+        <div class="jp-hd">
+          <div class="jp-hd-center">
+            <span class="jp-hd-jp">皿 料理 · <span data-i18n="pre-as">nos</span> plats</span>
+            <span class="jp-hd-title" data-i18n="cat-as">ASSIETTES</span>
+            <div class="jp-hd-line"></div>
+          </div>
+          <div class="jp-hd-badge">
+            <span data-i18n="as-badge">Avec boisson</span><br>
+            <span data-i18n="as-badge-extra">+ 1 €</span>
+          </div>
+        </div>
+
+        <!-- Liste des plats -->
+        <div class="jp-list">
+
+          <!-- KEBAB -->
+          <div class="jp-row">
+            <div class="jp-plate-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+                <!-- Ombre assiette -->
+                <ellipse cx="36" cy="67" rx="24" ry="3.5" fill="rgba(0,0,0,0.07)"/>
+                <!-- Assiette -->
+                <circle cx="36" cy="35" r="29" fill="#fdfaf5" stroke="#d8cebc" stroke-width="1.5"/>
+                <circle cx="36" cy="35" r="24" fill="none" stroke="#ede5d6" stroke-width="0.75"/>
+                <!-- Galette/pain pita -->
+                <ellipse cx="36" cy="37" rx="16" ry="7" fill="#e8d5a0" stroke="#c9b87a" stroke-width="0.8"/>
+                <!-- Tranches de kebab -->
+                <ellipse cx="30" cy="28" rx="8" ry="3.5" fill="#7a3215" transform="rotate(-12,30,28)"/>
+                <ellipse cx="35" cy="31" rx="8" ry="3.5" fill="#8b3d1a" transform="rotate(-8,35,31)"/>
+                <ellipse cx="31" cy="35" rx="7" ry="3" fill="#6e2c12" transform="rotate(6,31,35)"/>
+                <!-- Filet de sauce blanche -->
+                <path d="M26 27 C29 25 32 27 35 26" stroke="#f0ede6" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M27 32 C30 30 33 32 36 31" stroke="#f5f2ec" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <!-- Sauce rouge -->
+                <path d="M25 27 C27 26 29 28 31 27" stroke="#c0392b" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+                <!-- Frites -->
+                <rect x="46" y="25" width="2.5" height="11" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <rect x="50" y="23" width="2.5" height="13" rx="1.2" fill="#d4a53a" stroke="#b8903a" stroke-width="0.4"/>
+                <rect x="54" y="26" width="2.5" height="10" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <!-- Salade -->
+                <path d="M18 45 C21 41 25 45 29 42 C33 45 37 42" stroke="#4a8a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path d="M19 48 C22 45 26 48" stroke="#5a9a4a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <!-- Tomate rondelle -->
+                <circle cx="44" cy="44" r="4" fill="#e74c3c" stroke="#c0392b" stroke-width="0.6"/>
+                <path d="M42 44 L46 44 M44 42 L44 46" stroke="#b03020" stroke-width="0.5"/>
+              </svg>
+            </div>
+            <div class="jp-info">
+              <span class="jp-name">KEBAB</span>
+              <span class="jp-name-jp">ケバブ</span>
+              <span class="jp-desc" data-i18n="d-as-kebab">Kebab, frites, crudités</span>
+            </div>
+            <div class="jp-right">
+              <span class="jp-price" onclick="addToCartFromPrice(this,'as-kebab',11)">11 <span>€</span></span>
+            </div>
+          </div>
+
+          <!-- STEAK -->
+          <div class="jp-row">
+            <div class="jp-plate-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+                <ellipse cx="36" cy="67" rx="24" ry="3.5" fill="rgba(0,0,0,0.07)"/>
+                <circle cx="36" cy="35" r="29" fill="#fdfaf5" stroke="#d8cebc" stroke-width="1.5"/>
+                <circle cx="36" cy="35" r="24" fill="none" stroke="#ede5d6" stroke-width="0.75"/>
+                <!-- Steak -->
+                <ellipse cx="32" cy="34" rx="13" ry="9" fill="#5a2a10" stroke="#3d1a08" stroke-width="0.8"/>
+                <!-- Marbrures / grill marks -->
+                <path d="M22 29 Q26 33 23 38" stroke="#3a1808" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M27 27 Q31 32 28 38" stroke="#3a1808" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M33 27 Q37 32 34 38" stroke="#3a1808" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <!-- Reflet de cuisson -->
+                <ellipse cx="28" cy="30" rx="5" ry="2.5" fill="rgba(255,200,100,0.18)" transform="rotate(-15,28,30)"/>
+                <!-- Frites -->
+                <rect x="47" y="24" width="2.5" height="13" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <rect x="51" y="22" width="2.5" height="15" rx="1.2" fill="#d4a53a" stroke="#b8903a" stroke-width="0.4"/>
+                <rect x="55" y="25" width="2.5" height="12" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <!-- Salade / crudités -->
+                <path d="M19 46 C22 42 26 46 30 43 C34 46 38 43" stroke="#4a8a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <!-- Sauce au poivre -->
+                <path d="M33 38 C36 40 40 39 42 41" stroke="#7a5a30" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <!-- Tomate -->
+                <circle cx="44" cy="45" r="3.5" fill="#e74c3c" stroke="#c0392b" stroke-width="0.6"/>
+              </svg>
+            </div>
+            <div class="jp-info">
+              <span class="jp-name">STEAK</span>
+              <span class="jp-name-jp">ステーキ</span>
+              <span class="jp-desc" data-i18n="d-as-steak">Viande fraîche, frites, crudités</span>
+            </div>
+            <div class="jp-right">
+              <span class="jp-price" onclick="addToCartFromPrice(this,'as-steak',11)">11 <span>€</span></span>
+            </div>
+          </div>
+
+          <!-- CHICKEN -->
+          <div class="jp-row">
+            <div class="jp-plate-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+                <ellipse cx="36" cy="67" rx="24" ry="3.5" fill="rgba(0,0,0,0.07)"/>
+                <circle cx="36" cy="35" r="29" fill="#fdfaf5" stroke="#d8cebc" stroke-width="1.5"/>
+                <circle cx="36" cy="35" r="24" fill="none" stroke="#ede5d6" stroke-width="0.75"/>
+                <!-- Cuisse de poulet (drumstick) -->
+                <ellipse cx="28" cy="32" rx="11" ry="8" fill="#c8752a" stroke="#9a5518" stroke-width="0.8" transform="rotate(-20,28,32)"/>
+                <!-- Os du pilon -->
+                <line x1="32" y1="36" x2="38" y2="44" stroke="#e8d5b0" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="39" cy="45" r="3" fill="#e8d5b0" stroke="#d0bc98" stroke-width="0.6"/>
+                <!-- Texture grillée -->
+                <path d="M20 28 C23 26 26 30 24 33" stroke="#8a4010" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M25 27 C28 25 31 29 29 32" stroke="#8a4010" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <!-- Reflet doré -->
+                <ellipse cx="25" cy="28" rx="4" ry="2" fill="rgba(255,200,80,0.2)" transform="rotate(-20,25,28)"/>
+                <!-- Frites -->
+                <rect x="46" y="24" width="2.5" height="12" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <rect x="50" y="22" width="2.5" height="14" rx="1.2" fill="#d4a53a" stroke="#b8903a" stroke-width="0.4"/>
+                <rect x="54" y="25" width="2.5" height="11" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <!-- Salade -->
+                <path d="M18 46 C21 42 25 46 29 43 C33 46 37 43" stroke="#4a8a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <!-- Citron -->
+                <ellipse cx="43" cy="44" rx="4" ry="3" fill="#f0d060" stroke="#d4b840" stroke-width="0.6"/>
+                <path d="M40 44 L46 44" stroke="#d4b840" stroke-width="0.5"/>
+              </svg>
+            </div>
+            <div class="jp-info">
+              <span class="jp-name">CHICKEN</span>
+              <span class="jp-name-jp">チキン</span>
+              <span class="jp-desc" data-i18n="d-as-chicken">Poulet mariné, frites, crudités</span>
+            </div>
+            <div class="jp-right">
+              <span class="jp-price" onclick="addToCartFromPrice(this,'as-chicken',11)">11 <span>€</span></span>
+            </div>
+          </div>
+
+          <!-- TENDERS -->
+          <div class="jp-row">
+            <div class="jp-plate-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+                <ellipse cx="36" cy="67" rx="24" ry="3.5" fill="rgba(0,0,0,0.07)"/>
+                <circle cx="36" cy="35" r="29" fill="#fdfaf5" stroke="#d8cebc" stroke-width="1.5"/>
+                <circle cx="36" cy="35" r="24" fill="none" stroke="#ede5d6" stroke-width="0.75"/>
+                <!-- Tenders (3 pièces panées) -->
+                <ellipse cx="25" cy="28" rx="8" ry="4" fill="#c8852a" stroke="#9a6018" stroke-width="0.8" transform="rotate(-30,25,28)"/>
+                <ellipse cx="35" cy="31" rx="8" ry="4" fill="#d4903a" stroke="#a06820" stroke-width="0.8" transform="rotate(-10,35,31)"/>
+                <ellipse cx="27" cy="38" rx="7" ry="3.5" fill="#c8852a" stroke="#9a6018" stroke-width="0.8" transform="rotate(20,27,38)"/>
+                <!-- Texture panure (points) -->
+                <circle cx="22" cy="27" r="0.8" fill="#a06018" opacity="0.6"/>
+                <circle cx="26" cy="25" r="0.8" fill="#a06018" opacity="0.6"/>
+                <circle cx="29" cy="28" r="0.8" fill="#a06018" opacity="0.6"/>
+                <circle cx="33" cy="30" r="0.8" fill="#a06018" opacity="0.6"/>
+                <circle cx="37" cy="28" r="0.8" fill="#a06018" opacity="0.6"/>
+                <circle cx="24" cy="38" r="0.8" fill="#a06018" opacity="0.6"/>
+                <!-- Sauce dip -->
+                <ellipse cx="43" cy="40" rx="6" ry="5" fill="#f5e8c0" stroke="#d8c888" stroke-width="0.8"/>
+                <ellipse cx="43" cy="40" rx="4" ry="3.5" fill="#e8c860" opacity="0.5"/>
+                <!-- Frites -->
+                <rect x="47" y="23" width="2.5" height="13" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <rect x="51" y="21" width="2.5" height="15" rx="1.2" fill="#d4a53a" stroke="#b8903a" stroke-width="0.4"/>
+                <rect x="55" y="24" width="2.5" height="12" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <!-- Salade -->
+                <path d="M16 48 C19 44 23 48 27 45 C31 48 35 45" stroke="#4a8a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="jp-info">
+              <span class="jp-name">TENDERS</span>
+              <span class="jp-name-jp">テンダーズ</span>
+              <span class="jp-desc" data-i18n="d-as-tenders">Tenders, frites, crudités</span>
+            </div>
+            <div class="jp-right">
+              <span class="jp-price" onclick="addToCartFromPrice(this,'as-tenders',11)">11 <span>€</span></span>
+            </div>
+          </div>
+
+          <!-- MIX -->
+          <div class="jp-row">
+            <div class="jp-plate-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+                <ellipse cx="36" cy="67" rx="24" ry="3.5" fill="rgba(0,0,0,0.07)"/>
+                <circle cx="36" cy="35" r="29" fill="#fdfaf5" stroke="#d8cebc" stroke-width="1.5"/>
+                <circle cx="36" cy="35" r="24" fill="none" stroke="#ede5d6" stroke-width="0.75"/>
+                <!-- Kebab slice -->
+                <ellipse cx="24" cy="28" rx="8" ry="3.5" fill="#7a3215" transform="rotate(-15,24,28)"/>
+                <ellipse cx="24" cy="33" rx="7" ry="3" fill="#8b3d1a" transform="rotate(-5,24,33)"/>
+                <!-- Steak portion -->
+                <ellipse cx="35" cy="30" rx="7" ry="5" fill="#5a2a10" stroke="#3d1a08" stroke-width="0.6" transform="rotate(10,35,30)"/>
+                <path d="M30 29 Q33 32 31 35" stroke="#3a1808" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+                <!-- Oeuf au plat -->
+                <ellipse cx="28" cy="42" rx="6" ry="4.5" fill="#f5e8b0" stroke="#d8c888" stroke-width="0.6"/>
+                <circle cx="28" cy="42" r="2.5" fill="#e8a030" stroke="#c88020" stroke-width="0.4"/>
+                <!-- Frites -->
+                <rect x="44" y="22" width="2.5" height="13" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <rect x="48" y="20" width="2.5" height="15" rx="1.2" fill="#d4a53a" stroke="#b8903a" stroke-width="0.4"/>
+                <rect x="52" y="23" width="2.5" height="12" rx="1.2" fill="#e8b84b" stroke="#c9993a" stroke-width="0.4"/>
+                <!-- Salade -->
+                <path d="M37 45 C40 41 44 45 48 42 C52 45 56 42" stroke="#4a8a3a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <!-- Sauce drizzle -->
+                <path d="M22 28 C25 26 28 28 31 27" stroke="#f0ede6" stroke-width="1" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="jp-info">
+              <span class="jp-name">MIX</span>
+              <span class="jp-name-jp">ミックス</span>
+              <span class="jp-desc" data-i18n="d-as-mix">2 viandes au choix, frites, œuf, crudités</span>
+            </div>
+            <div class="jp-right">
+              <span class="jp-price" onclick="addToCartFromPrice(this,'as-mix',15)">15 <span>€</span></span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Suppléments — texte pur, aucune boîte -->
+        <div class="jp-footer">
+          <span class="jp-foot-lbl" data-i18n="suppl-label">Suppléments</span>
+          <span class="jp-suppl-item"><span data-i18n="suppl-fromage">Fromage</span> <span class="jp-sp">0.50€</span></span>
+          <span class="jp-suppl-sep">·</span>
+          <span class="jp-suppl-item"><span data-i18n="suppl-oeuf">Œuf</span> <span class="jp-sp">1€</span></span>
+          <span class="jp-suppl-sep">·</span>
+          <span class="jp-suppl-item"><span data-i18n="suppl-bacon">Bacon</span> <span class="jp-sp">1€</span></span>
+          <span class="jp-suppl-sep">·</span>
+          <span class="jp-suppl-item"><span data-i18n="suppl-viande">Viande</span> <span class="jp-sp">2€</span></span>
+        </div>
+
+      </div>
+
+      <!-- ════ BURGERS ════ -->
+      <div class="menu-category" style="--cat-color:#ff6b35;--cat-bg:rgba(255,107,53,0.11);--cat-border:rgba(255,107,53,0.35);--cat-icon-bg:rgba(255,107,53,0.13);">
+
+        <div class="menu-cat-hd">
+          <div class="menu-cat-icon-box">🍔</div>
+          <div class="menu-cat-info">
+            <p class="text-xs font-bold uppercase tracking-widest mb-0.5" style="color:#ff6b35;" data-i18n="pre-bg">Nos</p>
+            <h3 class="font-heading text-5xl text-white tracking-widest leading-none" data-i18n="cat-bg">BURGERS</h3>
+          </div>
+          <div class="menu-cat-badge">
+            <span class="material-symbols-outlined text-gold" style="font-size:14px;">local_drink</span>
+            <span class="text-gold text-xs font-bold uppercase tracking-wider">
+              <span data-i18n="bg-badge">Avec boisson</span>
+              <span class="text-white ml-1" data-i18n="bg-badge-extra">+1€</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="menu-grid menu-grid-3" style="--cc:#ff6b35;">
+          <div class="menu-card">
+            <div class="menu-card-emoji">🍔</div>
+            <div class="menu-card-name">CLASSIC</div>
+            <div class="menu-card-desc" data-i18n="d-bg-classic">Viande fraîche, sauces au choix, crudités</div>
+            <div class="menu-card-footer">
+              <span class="price-pill" onclick="addToCartFromPrice(this,'bg-classic',7.5)">7.50€</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-emoji">🍔🍔</div>
+            <div class="menu-card-name" style="font-size:17px;">DOUBLE CLASSIC</div>
+            <div class="menu-card-desc" data-i18n="d-bg-dbl">Double viande fraîche, sauces au choix, crudités</div>
+            <div class="menu-card-footer">
+              <span class="price-pill" onclick="addToCartFromPrice(this,'bg-dbl',8.5)">8.50€</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-emoji">🍗</div>
+            <div class="menu-card-name">CHICKEN</div>
+            <div class="menu-card-desc" data-i18n="d-bg-chicken">Poulet pané, sauces au choix, crudités</div>
+            <div class="menu-card-footer">
+              <span class="price-pill" onclick="addToCartFromPrice(this,'bg-chicken',7.5)">7.50€</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-emoji">🥓</div>
+            <div class="menu-card-name">BACON</div>
+            <div class="menu-card-desc" data-i18n="d-bg-bacon">Viande fraîche, bacon de bœuf, sauces au choix, crudités</div>
+            <div class="menu-card-footer">
+              <span class="price-pill" onclick="addToCartFromPrice(this,'bg-bacon',8.5)">8.50€</span>
+            </div>
+          </div>
+          <div class="menu-card" style="grid-column: span 2;">
+            <div class="menu-card-emoji">🧀</div>
+            <div class="menu-card-name">RACLETTE</div>
+            <div class="menu-card-desc" data-i18n="d-bg-raclette">Viande fraîche, fromage à raclette, sauces au choix, crudités</div>
+            <div class="menu-card-footer">
+              <span class="price-pill" onclick="addToCartFromPrice(this,'bg-raclette',8.5)">8.50€</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suppléments -->
+        <div class="suppl-zone">
+          <div class="suppl-zone-title" data-i18n="suppl-label">Suppléments</div>
+          <div class="suppl-tags">
+            <span class="stag"><span data-i18n="suppl-fromage">Fromage</span> <span class="sp">0.50€</span></span>
+            <span class="stag"><span data-i18n="suppl-oeuf">Œuf</span> <span class="sp">1€</span></span>
+            <span class="stag"><span data-i18n="suppl-bacon">Bacon</span> <span class="sp">1€</span></span>
+          </div>
+        </div>
+
+        <!-- Extras + Menu Enfant -->
+        <div class="suppl-zone" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <div class="suppl-zone-title" data-i18n="extras-label">Extras &amp; Barquettes</div>
+          <div class="menu-grid menu-grid-3" style="--cc:#ff6b35;padding:0;gap:8px;background:transparent;">
+            <div class="menu-card" style="padding:12px;">
+              <div style="font-size:22px;">🍟</div>
+              <div class="menu-card-name" style="font-size:15px;" data-i18n="extra-frites">Frites seules</div>
+              <div class="menu-card-footer" style="padding-top:8px;">
+                <span class="price-pill" style="font-size:18px;" onclick="addToCartFromPrice(this,'extra-frites',3)">3€</span>
+              </div>
+            </div>
+            <div class="menu-card" style="padding:12px;">
+              <div style="font-size:22px;">🍗</div>
+              <div class="menu-card-name" style="font-size:15px;">TENDERS ×4</div>
+              <div class="menu-card-footer" style="padding-top:8px;">
+                <span class="price-pill" style="font-size:18px;" onclick="addToCartFromPrice(this,'extra-tenders4',6)">6€</span>
+              </div>
+            </div>
+            <div class="menu-card" style="padding:12px;">
+              <div style="font-size:22px;">🥡</div>
+              <div class="menu-card-name" style="font-size:13px;" data-i18n="extra-bvf">Barquette v/f</div>
+              <div class="menu-card-footer" style="padding-top:8px;">
+                <span class="price-pill" style="font-size:18px;" onclick="addToCartFromPrice(this,'extra-barq-vf',5.5)">5.50€</span>
+              </div>
+            </div>
+            <div class="menu-card" style="padding:12px;">
+              <div style="font-size:22px;">🥡</div>
+              <div class="menu-card-name" style="font-size:13px;" data-i18n="extra-bv">Barquette viande</div>
+              <div class="menu-card-footer" style="padding-top:8px;">
+                <span class="price-pill" style="font-size:18px;" onclick="addToCartFromPrice(this,'extra-barq-v',6)">6€</span>
+              </div>
+            </div>
+            <!-- Menu enfant (occupe 2 colonnes) -->
+            <div class="enfant-card" style="grid-column:span 2;--cc:#ff2e2e;">
+              <div class="flex items-center gap-3">
+                <span style="font-size:32px;">🧒</span>
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest text-primary mb-1" data-i18n="menu-enfant-label">Menu Enfant</p>
+                  <p class="font-heading text-3xl leading-none price-pill" style="font-size:28px;border:none;" onclick="addToCartFromPrice(this,'menu-enfant',6.5)">6.50€</p>
+                  <p class="text-slate-400 text-xs mt-1" data-i18n="menu-enfant-desc">Cheeseburger ou nuggets,<br/>frites &amp; Capri-Sun</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ CARTE BURGER — Fradel & Spies Co ════ -->
+      <div class="fsc-wrap">
+        <div class="fsc-card">
+          <div class="hero-circle"></div>
+          <div class="deco-circle-bottom"></div>
+
+          <!-- Logo -->
+          <div class="brand-name">
+            Fradel and<br>Spies Co
+            <div class="brand-icon">
+              <svg viewBox="0 0 40 40" fill="none" style="width:26px;height:26px;">
+                <ellipse cx="20" cy="12" rx="13" ry="6" fill="#fff"/>
+                <rect x="7" y="18" width="26" height="4" rx="2" fill="#fff"/>
+                <rect x="7" y="24" width="26" height="4" rx="2" fill="#fff"/>
+                <ellipse cx="20" cy="30" rx="13" ry="4" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Hero -->
+          <div class="fsc-hero">
+            <div class="fsc-titles">
+              <div class="title-burger">BURGER</div>
+              <div class="title-menu">MENU</div>
+              <div class="title-divider"></div>
+              <p class="hero-desc">
+                Un steak juteux garni de fromage fondu, laitue,<br>
+                tomate, oignon, cornichons et condiments au choix<br>
+                sur un pain grillé aux graines de sésame.
+              </p>
+            </div>
+            <div class="fsc-hero-img-wrap">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Burger vedette"/>
+              <div class="price-badge" style="position:relative;" onclick="addToCartFromPrice(this,'fsc-hero',20)">20&nbsp;€</div>
+            </div>
+          </div>
+
+          <!-- Livraison -->
+          <div class="delivery-row">
+            <div class="delivery-icon">
+              <svg viewBox="0 0 32 28" fill="none" style="width:26px;height:24px;">
+                <circle cx="7" cy="22" r="4" stroke="#e8a020" stroke-width="2.2"/>
+                <circle cx="25" cy="22" r="4" stroke="#e8a020" stroke-width="2.2"/>
+                <path d="M11 22H21M3 22H1M29 22H27" stroke="#e8a020" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7 18V10L13 6H22L27 14H21L19 10H14L11 18" stroke="#e8a020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 14H27" stroke="#e8a020" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="delivery-text">
+              <strong>Livraison</strong>
+              +123-456-7890
+            </div>
+          </div>
+
+          <!-- Grille burgers + autres menus -->
+          <div class="fsc-grid">
+            <div class="fsc-burger-grid">
+
+              <div class="fsc-burger-card">
+                <div class="fsc-img-circle">
+                  <img src="burger-classic.png" alt="Classic Cheeseburger"/>
+                </div>
+                <div class="b-price" onclick="addToCartFromPrice(this,'fsc-classic',8.5)">8,50 €</div>
+                <div class="b-name">Classic Cheeseburger</div>
+                <div class="b-desc">Fromage fondu, laitue, tomate et sauce maison</div>
+              </div>
+
+              <div class="fsc-burger-card">
+                <div class="fsc-img-circle">
+                  <img src="burger-bacon.png" alt="Burger Bacon Champignons"/>
+                </div>
+                <div class="b-price" onclick="addToCartFromPrice(this,'fsc-bacon-champ',12.5)">12,50 €</div>
+                <div class="b-name">Burger Bacon Champignons</div>
+                <div class="b-desc">Bacon croustillant, champignons sautés et gruyère</div>
+              </div>
+
+              <div class="fsc-burger-card">
+                <div class="fsc-img-circle">
+                  <img src="burger-jalapeno.png" alt="Burger Jalapeño Pimenté"/>
+                </div>
+                <div class="b-price" onclick="addToCartFromPrice(this,'fsc-jalapeno',8.5)">8,50 €</div>
+                <div class="b-name">Burger Jalapeño Pimenté</div>
+                <div class="b-desc">Jalapeños frais, sauce piment doux et oignons caramélisés</div>
+              </div>
+
+              <div class="fsc-burger-card">
+                <div class="fsc-img-circle">
+                  <img src="burger-poulet.png" alt="Burger Poulet Avocat"/>
+                </div>
+                <div class="b-price" onclick="addToCartFromPrice(this,'fsc-poulet-av',12.5)">12,50 €</div>
+                <div class="b-name">Burger Poulet Avocat</div>
+                <div class="b-desc">Filet de poulet grillé, avocat frais et mayo citron</div>
+              </div>
+
+            </div>
+
+            <!-- Autres menus -->
+            <div class="other-menu">
+              <h3>Autres Menus</h3>
+              <div class="om-divider"></div>
+
+              <div class="other-item">
+                <div class="oi-arrow">
+                  <svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px;"><path d="M3 2l4 3-4 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div class="oi-price" onclick="addToCartFromPrice(this,'fsc-portobello',9.5)">9,50 €</div>
+                  <div class="oi-name">Burger Portobello aux Champignons</div>
+                </div>
+              </div>
+
+              <div class="other-item">
+                <div class="oi-arrow">
+                  <svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px;"><path d="M3 2l4 3-4 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div class="oi-price" onclick="addToCartFromPrice(this,'fsc-teriyaki',7.5)">7,50 €</div>
+                  <div class="oi-name">Burger Teriyaki Hawaïen</div>
+                </div>
+              </div>
+
+              <div class="other-item">
+                <div class="oi-arrow">
+                  <svg viewBox="0 0 10 10" fill="none" style="width:10px;height:10px;"><path d="M3 2l4 3-4 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div class="oi-price" onclick="addToCartFromPrice(this,'fsc-vegeta',8.5)">8,50 €</div>
+                  <div class="oi-name">Burger Végétarien Spécial</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-background-dark border-t border-white/5 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent mb-12"></div>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+      <div class="flex items-center gap-3 grayscale opacity-70">
+        <span class="material-symbols-outlined text-white text-2xl">restaurant</span>
+        <h2 class="font-heading text-2xl tracking-wider text-white">LE NATIONAL</h2>
+      </div>
+      <div class="flex gap-8">
+        <a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">social_leaderboard</span></a>
+        <a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+        <a class="text-slate-500 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share_reviews</span></a>
+      </div>
+      <p class="text-slate-500 text-xs uppercase tracking-widest" data-i18n="footer-copy">© 2024 LE NATIONAL. TOUS DROITS RÉSERVÉS.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════ PAYMENT MODAL ══════════════════ -->
+<div id="payment-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/75" style="backdrop-filter:blur(6px);" onclick="closePayment()"></div>
+
+  <!-- Panel -->
+  <div class="relative z-10 w-full max-w-md flex flex-col rounded-2xl overflow-hidden border border-white/10 shadow-2xl" style="background:#0e0e0e;max-height:95vh;overflow-y:auto;">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-5 border-b border-white/10 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary" style="font-size:22px;">credit_card</span>
+        <h2 class="font-heading text-3xl text-white tracking-widest" id="pm-title">PAIEMENT SÉCURISÉ</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-green-400 text-sm">lock</span>
+        <button onclick="closePayment()" class="text-slate-500 hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Order summary -->
+    <div class="px-6 py-4 border-b border-white/8 shrink-0" style="background:rgba(255,255,255,0.02);">
+      <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3" id="pm-summary-label">Récapitulatif</p>
+      <div id="pm-summary"></div>
+    </div>
+
+    <!-- Card preview -->
+    <div class="px-6 pt-6 pb-4 shrink-0">
+      <div class="cc-wrapper">
+        <div class="cc-card cc-default" id="cc-card">
+          <!-- Front -->
+          <div class="cc-face cc-front-face">
+            <div class="cc-chip"></div>
+            <div class="cc-number" id="cc-num-display">•••• •••• •••• ••••</div>
+            <div class="cc-bottom">
+              <div>
+                <div class="cc-lbl" id="cc-name-lbl">Titulaire</div>
+                <div class="cc-val" id="cc-name-display">PRÉNOM NOM</div>
+              </div>
+              <div>
+                <div class="cc-lbl" id="cc-exp-lbl">Expire</div>
+                <div class="cc-val" id="cc-exp-display">MM/AA</div>
+              </div>
+              <div id="cc-brand-wrap"></div>
+            </div>
+          </div>
+          <!-- Back -->
+          <div class="cc-face cc-back-face">
+            <div class="cc-stripe"></div>
+            <div class="cc-sig-area">
+              <div class="cc-sig-strip">
+                <div class="cc-sig-lines"><span></span><span></span><span></span></div>
+                <div class="cc-cvv-display" id="cc-cvv-display">•••</div>
+              </div>
+            </div>
+            <div class="cc-back-label">Signature autorisée — Utilisez uniquement par le titulaire</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form id="pay-form" class="px-6 pb-6 space-y-4" onsubmit="processPayment(event)" autocomplete="off">
+
+      <div class="pay-group">
+        <label class="pay-label" id="lbl-cardnum">Numéro de carte</label>
+        <div class="relative">
+          <input id="inp-cardnum" class="pay-input pr-12" type="text"
+            placeholder="1234 5678 9012 3456" maxlength="19"
+            oninput="onCardNum(this)" onpaste="onCardNumPaste(event)"/>
+          <div id="card-type-icon" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center" style="height:28px;width:40px;"></div>
+        </div>
+      </div>
+
+      <div class="pay-group">
+        <label class="pay-label" id="lbl-name">Titulaire de la carte</label>
+        <input id="inp-name" class="pay-input" type="text"
+          placeholder="Jean Dupont"
+          oninput="onName(this)"/>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="pay-group">
+          <label class="pay-label" id="lbl-exp">Date d'expiration</label>
+          <input id="inp-exp" class="pay-input" type="text"
+            placeholder="MM/AA" maxlength="5"
+            oninput="onExpiry(this)"/>
+        </div>
+        <div class="pay-group">
+          <label class="pay-label" id="lbl-cvv">CVV</label>
+          <input id="inp-cvv" class="pay-input" type="text"
+            placeholder="•••" maxlength="4"
+            oninput="onCVV(this)"
+            onfocus="flipCard(true)"
+            onblur="flipCard(false)"/>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <p id="pay-error" class="text-primary text-sm hidden"></p>
+
+      <!-- Submit -->
+      <button id="pay-btn" type="submit"
+        class="w-full py-4 rounded-xl bg-primary text-white font-bold text-base uppercase tracking-widest mt-2">
+        <span class="btn-text" id="pay-btn-text">Payer 0,00€</span>
+        <div class="btn-loader">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+
+      <!-- Secured by -->
+      <div class="flex items-center justify-center gap-4 mt-1">
+        <span class="material-symbols-outlined text-slate-600 text-base">verified_user</span>
+        <span class="text-slate-600 text-xs" id="lbl-secure">Paiement 100% sécurisé — SSL/TLS</span>
+        <div class="flex gap-2 ml-2 items-center">
+          <div style="background:#1a1f71;border-radius:4px;padding:2px 6px;">
+            <span style="font-style:italic;font-weight:900;color:#fff;font-size:13px;">VISA</span>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <span style="width:16px;height:16px;border-radius:50%;background:#eb001b;display:block;"></span>
+            <span style="width:16px;height:16px;border-radius:50%;background:#f79e1b;display:block;margin-left:-6px;"></span>
+          </div>
+          <span style="background:#006fcf;color:#fff;font-size:11px;font-weight:900;padding:2px 6px;border-radius:4px;">AMEX</span>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Success overlay -->
+    <div id="pay-success" class="absolute inset-0 flex flex-col items-center justify-center gap-6" style="background:rgba(10,10,10,0.97);">
+      <div style="width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,0.12);border:2px solid #22c55e;display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <path class="check-path" d="M8 20 L17 29 L32 12" stroke="#22c55e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="text-center">
+        <p class="font-heading text-4xl text-white tracking-widest mb-2" id="success-title">PAIEMENT CONFIRMÉ</p>
+        <p class="text-slate-400 text-sm" id="success-sub">Votre commande a été enregistrée. Merci !</p>
+      </div>
+      <button onclick="onPaymentDone()" class="px-8 py-3 rounded-xl bg-white/8 border border-white/15 text-white font-bold uppercase tracking-wider text-sm hover:bg-white/15 transition-colors" id="success-btn">
+        Fermer
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════ SCRIPT ═══════════════════════════ -->
+<script>
+// ─── Traductions ─────────────────────────────────────────────
+const T = {
+  fr: {
+    // Noms affichés dans le panier (clé → label)
+    'sw-kebab':        'Sandwich Kebab',
+    'sw-steak':        'Sandwich Steak',
+    'sw-chicken':      'Sandwich Chicken',
+    'sw-americain':    'Sandwich Américain',
+    'sw-mix':          'Sandwich Mix',
+    'as-kebab':        'Assiette Kebab',
+    'as-steak':        'Assiette Steak',
+    'as-chicken':      'Assiette Chicken',
+    'as-tenders':      'Assiette Tenders',
+    'as-mix':          'Assiette Mix',
+    'bg-classic':      'Burger Classic',
+    'bg-dbl':          'Burger Double Classic',
+    'bg-chicken':      'Burger Chicken',
+    'bg-bacon':        'Burger Bacon',
+    'bg-raclette':     'Burger Raclette',
+    'extra-frites':    'Frites seules',
+    'extra-tenders4':  'Tenders ×4',
+    'extra-barq-vf':   'Barquette viande/frites',
+    'extra-barq-v':    'Barquette viande',
+    'menu-enfant':     'Menu Enfant',
+    // UI
+    'dock-cart':       'Panier',
+    'cart-title':      'MA COMMANDE',
+    'cart-empty-msg':  'Votre panier est vide.<br/>Ajoutez des plats depuis la carte.',
+    'cart-total-label':'Total',
+    'cart-clear':      'Vider',
+    'cart-validate':   'Valider la commande',
+    'cart-unit':       '/ unité',
+    // Sections
+    's1-title':    'Cartes Menu',
+    's1-subtitle': '(Projection)',
+    's1-desc':     'Affichage haute définition pour écrans en restaurant',
+    's2-heading':  'Visuels <span class="text-gold">Animés</span>',
+    's2-desc':     'Publicités dynamiques et ambiances visuelles',
+    'visual1': 'Visuel 1', 'visual2': 'Visuel 2', 'visual3': 'Visuel 3',
+    's3-heading':  'La <span class="text-primary">Carte</span>',
+    's3-desc':     'Tous nos plats, ingrédients et tarifs',
+    // Sandwichs
+    'pre-sw': 'Nos', 'cat-sw': 'SANDWICHS',
+    'sw-badge': 'Avec frites &amp; boisson', 'sw-badge-extra': '+1€',
+    'd-sw-kebab':     'Kebab, sauces au choix, crudités',
+    'd-sw-steak':     'Viande fraîche, sauces au choix, crudités',
+    'd-sw-chicken':   'Poulet mariné, sauces au choix, crudités',
+    'name-americain': 'AMÉRICAIN',
+    'd-sw-americain': 'Viande fraîche, œuf, sauces au choix, crudités',
+    'd-sw-mix':       '2 viandes au choix, œuf, sauces au choix, crudités',
+    'pains-label': 'Nos pains',
+    'pain-turc': 'Pain Turc', 'pain-baguette': 'Baguette', 'pain-galette': 'Galette',
+    'suppl-label':   'Suppléments',
+    'suppl-fromage': 'Fromage', 'suppl-oeuf': 'Œuf', 'suppl-bacon': 'Bacon', 'suppl-viande': 'Viande',
+    // Assiettes
+    'pre-as': 'Nos', 'cat-as': 'ASSIETTES',
+    'as-badge': 'Avec boisson', 'as-badge-extra': '+1€',
+    'd-as-kebab':   'Kebab, frites, crudités',
+    'd-as-steak':   'Viande fraîche, frites, crudités',
+    'd-as-chicken': 'Poulet mariné, frites, crudités',
+    'd-as-tenders': 'Tenders, frites, crudités',
+    'd-as-mix':     '2 viandes au choix, frites, œuf, crudités',
+    // Burgers
+    'pre-bg': 'Nos', 'cat-bg': 'BURGERS',
+    'bg-badge': 'Avec boisson', 'bg-badge-extra': '+1€',
+    'd-bg-classic':  'Viande fraîche, sauces au choix, crudités',
+    'd-bg-dbl':      'Double viande fraîche, sauces au choix, crudités',
+    'd-bg-chicken':  'Poulet pané, sauces au choix, crudités',
+    'd-bg-bacon':    'Viande fraîche, bacon de bœuf, sauces au choix, crudités',
+    'd-bg-raclette': 'Viande fraîche, fromage à raclette, sauces au choix, crudités',
+    'extras-label':  'Extras &amp; Barquettes',
+    'extra-frites':  'Frites seules',
+    'extra-bvf':     'Barquette v/f',
+    'extra-bv':      'Barquette viande',
+    'menu-enfant-label': 'Menu Enfant',
+    'menu-enfant-desc':  'Cheeseburger ou nuggets,<br/>frites &amp; Capri-Sun',
+    // Fradel & Spies burger card
+    'fsc-hero':        'Burger Vedette',
+    'fsc-classic':     'Classic Cheeseburger',
+    'fsc-bacon-champ': 'Burger Bacon Champignons',
+    'fsc-jalapeno':    'Burger Jalapeño Pimenté',
+    'fsc-poulet-av':   'Burger Poulet Avocat',
+    'fsc-portobello':  'Burger Portobello',
+    'fsc-teriyaki':    'Burger Teriyaki Hawaïen',
+    'fsc-vegeta':      'Burger Végétarien Spécial',
+    // Fast food card items
+    'cb-cheese':     'Cheese Burger',
+    'cb-supreme':    'Supreme Burger',
+    'cb-fish':       'Fish Burger',
+    'cb-chicken-b':  'Chicken Burger',
+    'cb-chicken-sw': 'Chicken Sandwich',
+    'cb-tuna':       'Tuna Sandwich',
+    'cb-cheese-sw':  'Cheese Sandwich',
+    'cb-egg':        'Egg Sandwich',
+    // Carte menu image — Appetizers
+    'app-mozza':      'Mozzarella Sticks',
+    'app-fries':      'French Fries',
+    'app-chicken-f':  'Chicken Fingers',
+    'app-brocoli':    'Broccoli Cheddar Soup',
+    'app-wedges':     'Potato Wedges',
+    'app-onion':      'Chunky Onion Rings',
+    // Gourmet Burgers
+    'bg-bacon-chz':   'Bacon Cheeseburger',
+    'bg-stroganov':   'Stroganoff Burger',
+    'bg-veg-chilli':  'Vegetable Chilli Burger',
+    'bg-4cheese':     'Four Cheese Burger',
+    'bg-qtr-pounder': 'Quarter Pounder with Cheese',
+    'bg-mush-swiss':  'Mushroom Swiss Burger',
+    // Toppings
+    'top-bacon':      'Bacon Bits',
+    'top-cream':      'Cream Cheese',
+    'top-red-pepper': 'Roasted Red Pepper',
+    'top-onion':      'Caramelized Onions',
+    'top-aioli':      'Aioli Sauce',
+    'top-cranberry':  'Cranberry Sauce',
+    'top-sour':       'Sour Cream',
+    // Milkshakes
+    'shake-fudge':         'Hot Fudge Sundae',
+    'shake-straw':         'Strawberry Sundae',
+    'shake-vanilla':       'Vanilla Milkshake',
+    'shake-butterscotch':  'Butterscotch Milkshake',
+    'shake-choco':         'Choco Peanut Butter Milkshake',
+    // Footer
+    'footer-copy': '© 2024 LE NATIONAL. TOUS DROITS RÉSERVÉS.',
+  },
+  en: {
+    // Noms dans le panier
+    'sw-kebab':        'Kebab Sandwich',
+    'sw-steak':        'Steak Sandwich',
+    'sw-chicken':      'Chicken Sandwich',
+    'sw-americain':    'American Sandwich',
+    'sw-mix':          'Mix Sandwich',
+    'as-kebab':        'Kebab Platter',
+    'as-steak':        'Steak Platter',
+    'as-chicken':      'Chicken Platter',
+    'as-tenders':      'Tenders Platter',
+    'as-mix':          'Mix Platter',
+    'bg-classic':      'Classic Burger',
+    'bg-dbl':          'Double Classic Burger',
+    'bg-chicken':      'Chicken Burger',
+    'bg-bacon':        'Bacon Burger',
+    'bg-raclette':     'Raclette Burger',
+    'extra-frites':    'Fries only',
+    'extra-tenders4':  'Tenders ×4',
+    'extra-barq-vf':   'Meat/fries box',
+    'extra-barq-v':    'Meat box',
+    'menu-enfant':     "Kids' Meal",
+    // UI
+    'dock-cart':       'Cart',
+    'cart-title':      'MY ORDER',
+    'cart-empty-msg':  'Your cart is empty.<br/>Add dishes from the menu.',
+    'cart-total-label':'Total',
+    'cart-clear':      'Clear',
+    'cart-validate':   'Place order',
+    'cart-unit':       '/ each',
+    // Sections
+    's1-title':    'Menu Cards',
+    's1-subtitle': '(Display)',
+    's1-desc':     'High definition display for restaurant screens',
+    's2-heading':  'Animated <span class="text-gold">Visuals</span>',
+    's2-desc':     'Dynamic ads and visual ambiances',
+    'visual1': 'Visual 1', 'visual2': 'Visual 2', 'visual3': 'Visual 3',
+    's3-heading':  'The <span class="text-primary">Menu</span>',
+    's3-desc':     'All our dishes, ingredients and prices',
+    // Sandwichs
+    'pre-sw': 'Our', 'cat-sw': 'SANDWICHES',
+    'sw-badge': 'With fries &amp; drink', 'sw-badge-extra': '+€1',
+    'd-sw-kebab':     'Kebab, choice of sauces, salad',
+    'd-sw-steak':     'Fresh meat, choice of sauces, salad',
+    'd-sw-chicken':   'Marinated chicken, choice of sauces, salad',
+    'name-americain': 'AMERICAN',
+    'd-sw-americain': 'Fresh meat, egg, choice of sauces, salad',
+    'd-sw-mix':       '2 meats of your choice, egg, choice of sauces, salad',
+    'pains-label': 'Our breads',
+    'pain-turc': 'Turkish bread', 'pain-baguette': 'Baguette', 'pain-galette': 'Flatbread',
+    'suppl-label':   'Extras',
+    'suppl-fromage': 'Cheese', 'suppl-oeuf': 'Egg', 'suppl-bacon': 'Bacon', 'suppl-viande': 'Meat',
+    // Assiettes
+    'pre-as': 'Our', 'cat-as': 'PLATTERS',
+    'as-badge': 'With drink', 'as-badge-extra': '+€1',
+    'd-as-kebab':   'Kebab, fries, salad',
+    'd-as-steak':   'Fresh meat, fries, salad',
+    'd-as-chicken': 'Marinated chicken, fries, salad',
+    'd-as-tenders': 'Tenders, fries, salad',
+    'd-as-mix':     '2 meats of your choice, fries, egg, salad',
+    // Burgers
+    'pre-bg': 'Our', 'cat-bg': 'BURGERS',
+    'bg-badge': 'With drink', 'bg-badge-extra': '+€1',
+    'd-bg-classic':  'Fresh meat, choice of sauces, salad',
+    'd-bg-dbl':      'Double fresh meat, choice of sauces, salad',
+    'd-bg-chicken':  'Breaded chicken, choice of sauces, salad',
+    'd-bg-bacon':    'Fresh meat, beef bacon, choice of sauces, salad',
+    'd-bg-raclette': 'Fresh meat, raclette cheese, choice of sauces, salad',
+    'extras-label':  'Sides &amp; Boxes',
+    'extra-frites':  'Fries only',
+    'extra-bvf':     'Meat/fries box',
+    'extra-bv':      'Meat box',
+    'menu-enfant-label': "Kids' Meal",
+    'menu-enfant-desc':  'Cheeseburger or nuggets,<br/>fries &amp; Capri-Sun',
+    // Fradel & Spies burger card
+    'fsc-hero':        'Signature Burger',
+    'fsc-classic':     'Classic Cheeseburger',
+    'fsc-bacon-champ': 'Bacon Mushroom Burger',
+    'fsc-jalapeno':    'Spicy Jalapeño Burger',
+    'fsc-poulet-av':   'Chicken Avocado Burger',
+    'fsc-portobello':  'Portobello Mushroom Burger',
+    'fsc-teriyaki':    'Hawaiian Teriyaki Burger',
+    'fsc-vegeta':      'Special Veggie Burger',
+    // Fast food card items
+    'cb-cheese':     'Cheese Burger',
+    'cb-supreme':    'Supreme Burger',
+    'cb-fish':       'Fish Burger',
+    'cb-chicken-b':  'Chicken Burger',
+    'cb-chicken-sw': 'Chicken Sandwich',
+    'cb-tuna':       'Tuna Sandwich',
+    'cb-cheese-sw':  'Cheese Sandwich',
+    'cb-egg':        'Egg Sandwich',
+    // Menu image items
+    'planche':       'Charcuterie Board',
+    'veloute':       'Seasonal Soup',
+    'stjacques':     'Seared Scallops',
+    'foiegras':      'Foie Gras Maison',
+    'pave-boeuf':    'Rossini Beef Steak',
+    'magret':        'Roast Duck Breast',
+    'burger-dore':   'Signature Doré Burger',
+    'sole':          'Sole Meunière',
+    'entrecote':     'Matured Entrecôte',
+    'cote-agneau':   'Grilled Lamb Chop',
+    'saumon':        'Wild Salmon',
+    'frites-m':      'Homemade Fries',
+    'legumes-p':     'Sautéed Vegetables',
+    'puree':         'Homemade Mash',
+    'salade-m':      'Mixed Salad',
+    // Footer
+    'footer-copy': '© 2024 LE NATIONAL. ALL RIGHTS RESERVED.',
+  }
+};
+
+// ─── Langue courante ─────────────────────────────────────────
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  // Dock lang visuel
+  const isFr = lang === 'fr';
+  document.getElementById('lang-fr').classList.toggle('lang-active', isFr);
+  document.getElementById('lang-en').classList.toggle('lang-active', !isFr);
+  document.getElementById('dot-fr').classList.toggle('show', isFr);
+  document.getElementById('dot-en').classList.toggle('show', !isFr);
+  document.getElementById('en-label').style.color = isFr ? 'rgba(255,255,255,0.35)' : '#fff';
+  // Texte FR dans le bouton FR
+  const frLabel = document.querySelector('#lang-fr span.font-heading');
+  if (frLabel) frLabel.style.color = isFr ? '#fff' : 'rgba(255,255,255,0.35)';
+  // Appliquer toutes les clés
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+  });
+  // Rafraîchir le panier (noms traduits)
+  renderCart();
+}
+
+// ─── Panier ──────────────────────────────────────────────────
+let cart = []; // [{ id, key, price, qty }]
+
+function addToCart(key, price) {
+  const existing = cart.find(i => i.key === key);
+  if (existing) { existing.qty++; }
+  else { cart.push({ id: Date.now(), key, price, qty: 1 }); }
+  renderCart();
+  animateBadge();
+  openCart();
+}
+
+function addToCartFromHotspot(el, key, price) {
+  addToCart(key, price);
+  el.classList.remove('added');
+  void el.offsetWidth;
+  el.classList.add('added');
+  const badge = document.createElement('span');
+  badge.className = 'float-badge';
+  badge.textContent = '+1';
+  el.style.position = 'absolute'; // already is, but ensure
+  el.appendChild(badge);
+  setTimeout(() => { el.classList.remove('added'); badge.remove(); }, 600);
+}
+
+function addToCartFromPrice(el, key, price) {
+  addToCart(key, price);
+  el.classList.remove('price-added');
+  void el.offsetWidth; // reflow
+  el.classList.add('price-added');
+  const badge = document.createElement('span');
+  badge.className = 'float-badge';
+  badge.textContent = '+1';
+  el.appendChild(badge);
+  setTimeout(() => { el.classList.remove('price-added'); badge.remove(); }, 600);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  renderCart();
+}
+
+function clearCart() {
+  cart = [];
+  renderCart();
+}
+
+function validerCommande() {
+  if (cart.length === 0) return;
+  closeCart();
+  openPayment();
+}
+
+// ─── Payment Modal ────────────────────────────────────────────
+const PM_LABELS = {
+  fr: {
+    title:    'PAIEMENT SÉCURISÉ',
+    summary:  'Récapitulatif',
+    cardnum:  'Numéro de carte',
+    name:     'Titulaire de la carte',
+    exp:      "Date d'expiration",
+    cvv:      'CVV',
+    pay:      'Payer',
+    secure:   'Paiement 100% sécurisé — SSL/TLS',
+    success:  'PAIEMENT CONFIRMÉ',
+    successSub: 'Votre commande a été enregistrée. Merci !',
+    close:    'Fermer',
+    nameHolder: 'PRÉNOM NOM',
+    expHolder: 'MM/AA',
+    titular:  'Titulaire',
+    expires:  'Expire',
+  },
+  en: {
+    title:    'SECURE PAYMENT',
+    summary:  'Order Summary',
+    cardnum:  'Card number',
+    name:     'Cardholder name',
+    exp:      'Expiry date',
+    cvv:      'CVV',
+    pay:      'Pay',
+    secure:   '100% Secure payment — SSL/TLS',
+    success:  'PAYMENT CONFIRMED',
+    successSub: 'Your order has been placed. Thank you!',
+    close:    'Close',
+    nameHolder: 'FIRST LAST',
+    expHolder: 'MM/YY',
+    titular:  'Cardholder',
+    expires:  'Expires',
+  }
+};
+
+function openPayment() {
+  const lang  = currentLang;
+  const L     = PM_LABELS[lang];
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  // Labels
+  document.getElementById('pm-title').textContent       = L.title;
+  document.getElementById('pm-summary-label').textContent = L.summary;
+  document.getElementById('lbl-cardnum').textContent    = L.cardnum;
+  document.getElementById('lbl-name').textContent       = L.name;
+  document.getElementById('lbl-exp').textContent        = L.exp;
+  document.getElementById('lbl-cvv').textContent        = L.cvv;
+  document.getElementById('lbl-secure').textContent     = L.secure;
+  document.getElementById('success-title').textContent  = L.success;
+  document.getElementById('success-sub').textContent    = L.successSub;
+  document.getElementById('success-btn').textContent    = L.close;
+  document.getElementById('cc-name-lbl').textContent    = L.titular;
+  document.getElementById('cc-exp-lbl').textContent     = L.expires;
+  document.getElementById('inp-name').placeholder       = L.nameHolder;
+  document.getElementById('inp-exp').placeholder        = L.expHolder;
+  document.getElementById('pay-btn-text').textContent   = `${L.pay} ${total.toFixed(2).replace('.',',')}€`;
+
+  // Summary
+  const summaryEl = document.getElementById('pm-summary');
+  const rows = cart.map(i => {
+    const name = T[lang][i.key] || i.key;
+    return `<div class="pm-row">
+      <span class="text-slate-300 text-sm">${i.qty}× ${name}</span>
+      <span class="text-gold font-bold text-sm">${(i.price*i.qty).toFixed(2).replace('.',',')}€</span>
+    </div>`;
+  }).join('');
+  summaryEl.innerHTML = rows + `
+    <div class="pm-row pm-total">
+      <span class="text-white font-bold uppercase tracking-wider text-sm">${lang==='fr'?'Total':'Total'}</span>
+      <span class="font-heading text-2xl text-gold">${total.toFixed(2).replace('.',',')}€</span>
+    </div>`;
+
+  // Reset form & card
+  document.getElementById('pay-form').reset();
+  document.getElementById('cc-num-display').textContent  = '•••• •••• •••• ••••';
+  document.getElementById('cc-name-display').textContent = L.nameHolder;
+  document.getElementById('cc-exp-display').textContent  = L.expHolder;
+  document.getElementById('cc-cvv-display').textContent  = '•••';
+  document.getElementById('cc-brand-wrap').innerHTML     = '';
+  setCardType('default');
+  document.getElementById('pay-error').classList.add('hidden');
+  document.getElementById('pay-success').classList.remove('show');
+  document.getElementById('pay-btn').classList.remove('loading');
+  document.getElementById('cc-card').classList.remove('flipped');
+
+  // Show modal
+  const modal = document.getElementById('payment-modal');
+  modal.classList.add('open');
+}
+
+function closePayment() {
+  document.getElementById('payment-modal').classList.remove('open');
+}
+
+function onPaymentDone() {
+  clearCart();
+  closePayment();
+}
+
+// ─── Card type detection ──────────────────────────────────────
+function detectCardType(num) {
+  const n = num.replace(/\s/g,'');
+  if (/^4/.test(n))          return 'visa';
+  if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return 'master';
+  if (/^3[47]/.test(n))      return 'amex';
+  return 'default';
+}
+
+function setCardType(type) {
+  const card = document.getElementById('cc-card');
+  card.className = `cc-card cc-${type}`;
+  const wrap = document.getElementById('cc-brand-wrap');
+  const ti   = document.getElementById('card-type-icon');
+  if (type === 'visa') {
+    wrap.innerHTML = '<div class="cc-brand">VISA</div>';
+    ti.innerHTML   = '<span style="font-style:italic;font-weight:900;color:#2d5be3;font-size:18px;">VISA</span>';
+  } else if (type === 'master') {
+    wrap.innerHTML = '<div class="cc-mc"><span></span><span></span></div>';
+    ti.innerHTML   = '<div style="display:flex;"><span style="width:18px;height:18px;border-radius:50%;background:#eb001b;display:block;"></span><span style="width:18px;height:18px;border-radius:50%;background:#f79e1b;display:block;margin-left:-7px;"></span></div>';
+  } else if (type === 'amex') {
+    wrap.innerHTML = '<div style="color:#fff;font-weight:900;font-size:14px;letter-spacing:2px;">AMEX</div>';
+    ti.innerHTML   = '<span style="background:#006fcf;color:#fff;font-size:12px;font-weight:900;padding:2px 6px;border-radius:4px;">AMEX</span>';
+  } else {
+    wrap.innerHTML = '';
+    ti.innerHTML   = '';
+  }
+}
+
+// ─── Input handlers ───────────────────────────────────────────
+function onCardNum(el) {
+  let v = el.value.replace(/\D/g,'');
+  const type = detectCardType(v);
+  setCardType(type);
+  // Amex: 4-6-5 format
+  if (type === 'amex') {
+    v = v.substring(0,15);
+    v = v.replace(/^(\d{4})(\d{0,6})(\d{0,5}).*/, (_,a,b,c) =>
+      b ? (c ? `${a} ${b} ${c}` : `${a} ${b}`) : a);
+    el.maxLength = 17;
+  } else {
+    v = v.substring(0,16);
+    v = v.replace(/(\d{4})(?=\d)/g,'$1 ');
+    el.maxLength = 19;
+  }
+  el.value = v;
+  // Update card display
+  const masked = v.replace(/\d(?=(?:\D*\d){4})/g,'•').padEnd(type==='amex'?17:19,'•');
+  document.getElementById('cc-num-display').textContent = masked || '•••• •••• •••• ••••';
+}
+function onCardNumPaste(e) {
+  setTimeout(() => onCardNum(e.target), 10);
+}
+function onName(el) {
+  const L = PM_LABELS[currentLang];
+  document.getElementById('cc-name-display').textContent =
+    el.value.toUpperCase() || L.nameHolder;
+}
+function onExpiry(el) {
+  let v = el.value.replace(/\D/g,'');
+  if (v.length >= 3) v = v.substring(0,2) + '/' + v.substring(2,4);
+  el.value = v;
+  const L = PM_LABELS[currentLang];
+  document.getElementById('cc-exp-display').textContent = v || L.expHolder;
+}
+function onCVV(el) {
+  el.value = el.value.replace(/\D/g,'');
+  const dots = '•'.repeat(el.value.length);
+  document.getElementById('cc-cvv-display').textContent = dots || '•••';
+}
+function flipCard(back) {
+  document.getElementById('cc-card').classList.toggle('flipped', back);
+}
+
+// ─── Process payment ──────────────────────────────────────────
+function processPayment(e) {
+  e.preventDefault();
+  const lang = currentLang;
+  const errEl = document.getElementById('pay-error');
+  errEl.classList.add('hidden');
+
+  // Basic validation
+  const num  = document.getElementById('inp-cardnum').value.replace(/\s/g,'');
+  const name = document.getElementById('inp-name').value.trim();
+  const exp  = document.getElementById('inp-exp').value.trim();
+  const cvv  = document.getElementById('inp-cvv').value.trim();
+
+  if (num.length < 15)  { showPayError(lang==='fr'?'Numéro de carte invalide.':'Invalid card number.'); return; }
+  if (!name)            { showPayError(lang==='fr'?'Veuillez saisir le nom du titulaire.':'Please enter the cardholder name.'); return; }
+  if (!/^\d{2}\/\d{2}$/.test(exp)) { showPayError(lang==='fr'?'Date invalide (MM/AA).':'Invalid date (MM/YY).'); return; }
+  if (cvv.length < 3)  { showPayError(lang==='fr'?'CVV invalide.':'Invalid CVV.'); return; }
+
+  // Loading
+  const btn = document.getElementById('pay-btn');
+  btn.classList.add('loading');
+
+  // Simulate payment processing (1.8s)
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    document.getElementById('pay-success').classList.add('show');
+  }, 1800);
+}
+
+function showPayError(msg) {
+  const el = document.getElementById('pay-error');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+// ─── Rendu du panier ─────────────────────────────────────────
+function renderCart() {
+  const itemsEl  = document.getElementById('cart-items');
+  const emptyEl  = document.getElementById('cart-empty');
+  const footerEl = document.getElementById('cart-footer');
+  const badgeEl  = document.getElementById('dock-badge');
+  const totalEl  = document.getElementById('cart-total');
+  const lang = currentLang;
+
+  const totalQty   = cart.reduce((s, i) => s + i.qty, 0);
+  const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  // Badge dock
+  badgeEl.textContent = totalQty;
+  badgeEl.classList.toggle('show', totalQty > 0);
+
+  if (cart.length === 0) {
+    itemsEl.classList.add('hidden');
+    emptyEl.classList.remove('hidden');
+    footerEl.classList.add('hidden');
+    return;
+  }
+  itemsEl.classList.remove('hidden');
+  emptyEl.classList.add('hidden');
+  footerEl.classList.remove('hidden');
+
+  totalEl.textContent = totalPrice.toFixed(2).replace('.', ',') + '€';
+
+  const unitLabel = T[lang]['cart-unit'] || '/ unité';
+  itemsEl.innerHTML = cart.map(item => {
+    const name = T[lang][item.key] || item.key;
+    return `
+    <div class="flex items-center gap-3 rounded-xl px-4 py-3" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)">
+      <div class="flex-1 min-w-0">
+        <p class="text-white text-sm font-semibold truncate">${name}</p>
+        <p class="text-gold text-xs font-bold mt-0.5">${item.price.toFixed(2).replace('.', ',')}€ ${unitLabel}</p>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+        <span class="text-white font-bold text-sm w-5 text-center">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+      </div>
+      <span class="text-gold font-heading text-xl shrink-0 w-16 text-right">${(item.price * item.qty).toFixed(2).replace('.', ',')}€</span>
+      <button onclick="removeFromCart(${item.id})" class="text-slate-600 hover:text-primary transition-colors ml-1">
+        <span class="material-symbols-outlined text-base">delete</span>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+// ─── Ouverture / fermeture du panneau ────────────────────────
+function openCart() {
+  const overlay = document.getElementById('cart-overlay');
+  overlay.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    document.getElementById('cart-panel').classList.add('open');
+  });
+}
+
+function closeCart() {
+  const overlay = document.getElementById('cart-overlay');
+  document.getElementById('cart-panel').classList.remove('open');
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.classList.add('hidden'), 350);
+}
+
+function animateBadge() {
+  const b = document.getElementById('dock-badge');
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
+}
+
+// ─── Floating Dock — effet magnification macOS ───────────────
+(function () {
+  const dock      = document.getElementById('dock');
+  const items     = Array.from(dock.querySelectorAll('.dock-item'));
+  const BASE      = 52;   // px taille de base de l'icône
+  const MAX_SCALE = 1.65; // zoom max sur l'icône survolée
+  const REACH     = 130;  // portée de l'effet en px
+
+  function getItemCenter(item) {
+    const icon = item.querySelector('.dock-icon');
+    const r = icon.getBoundingClientRect();
+    return r.left + r.width / 2;
+  }
+
+  dock.addEventListener('mousemove', (e) => {
+    items.forEach(item => {
+      const center = getItemCenter(item);
+      const dist   = Math.abs(e.clientX - center);
+      if (dist < REACH) {
+        // Courbe cosinus pour une transition douce
+        const t     = 1 - dist / REACH;
+        const scale = 1 + (MAX_SCALE - 1) * Math.pow(t, 1.6);
+        item.style.transform = `scale(${scale.toFixed(3)})`;
+      } else {
+        item.style.transform = 'scale(1)';
+      }
+    });
+  });
+
+  dock.addEventListener('mouseleave', () => {
+    items.forEach(item => { item.style.transform = 'scale(1)'; });
+  });
+})();
+
+// Init
+renderCart();
+</script>
+</body></html>
