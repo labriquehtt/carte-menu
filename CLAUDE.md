@@ -10,8 +10,8 @@ ancien projet, à ignorer.
 
 ## 🎬 Reel "LA SOURCE" — `reel-la-source/`
 
-Vidéo 9:16, 1080×1920, 30 fps, 159 s, sans audio (voix / musique / bruitages ajoutés au
-montage dans CapCut). Tout est généré par code : une page SVG animée par keyframes, rendue
+Vidéo 9:16, 1080×1920, 30 fps, 159 s, sans audio ni sous-titres (voix, musique, bruitages
+et sous-titres ajoutés au montage dans CapCut). Tout est généré par code : une page SVG animée par keyframes, rendue
 image par image dans Chromium puis encodée en H.264.
 
 - `brief.md` : **le brief complet** (timeline, sous-titres, gestes, règles). Source de vérité.
@@ -19,7 +19,8 @@ image par image dans Chromium puis encodée en H.264.
   de la fiche personnage Claude Design) + les filtres (effet dessin, effet pixel).
 - `reel.js` : moteur (pistes de keyframes, easings POP/SOFT/ANTICIPATION/CHUTE, hit-stops,
   follow-through) + rig du robot + gestes CLAQUE / TIRE / ÉCRASE + toute la timeline
-  (`buildTimeline`) + sous-titres (`SUB_RAW`).
+  (`buildTimeline`) + décor de nuit (`buildDecor`) + lignes de voix (`VOICE_RAW`, qui
+  servent seulement à animer la bouche du robot).
 - `render.js` : rendu (Playwright + ffmpeg de `imageio-ffmpeg`).
 - `assets/` : polices (Fredoka, Space Grotesk, IBM Plex Mono) et pins du chapeau.
 
@@ -46,6 +47,8 @@ Ne jamais redessiner le robot : réutiliser les `<g id="rb-…">` de `index.html
   incertain, satisfait, endormi (+ `eveil` = endormi avec un œil ouvert, scène 7).
 - Le robot ne recouvre jamais l'intérieur d'un cadre affiché ; les cadres n'entrent/sortent
   que par CLAQUE, TIRE ou ÉCRASE.
+- Pas de sous-titres à l'image (faits dans CapCut) : garder le bas-droite libre.
+- Décor sans violet ni rose : l'incrustation chromatique s'applique à toute la piste.
 - Tout l'aléatoire vient de graines fixes : le rendu est reproductible image par image.
 - `renderFrame(i)` ne dépend d'aucun état précédent → rendu parallèle par segments.
 

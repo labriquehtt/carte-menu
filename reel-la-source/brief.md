@@ -1,5 +1,14 @@
 # REEL INSTAGRAM — "LA SOURCE" — brief de référence
 
+## MODIFICATIONS v2 (demandées après la première version)
+- **Sous-titres retirés de l'image** : ils seront faits au montage dans CapCut (voix et texte
+  adaptés à l'image). La section "SOUS-TITRES CINÉTIQUES" ci-dessous n'est plus appliquée ;
+  les timecodes des lignes restent utilisés pour animer la bouche du robot.
+- **Décor ajouté** : nuit de film noir de détective — ciel bleu nuit → sarcelle, lune verte
+  (rappel de #4DFF8F), lumière de store vénitien, skyline aux fenêtres ambrées, poussières en
+  suspension. Aucune teinte violette/rose (sûr pour l'incrustation du magenta).
+- Le bas-droite de l'image est laissé libre pour les sous-titres CapCut.
+
 Source : prompt préparé avec Claude (conversation "Claude Interface"), version finale
 avec le MODE ÉCRAN (gros plan d'ouverture) et la nouvelle scène 1.
 Le robot officiel vient du projet Claude Design "Robot détective — fiche personnage"

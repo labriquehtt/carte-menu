@@ -14,10 +14,41 @@ html,body{margin:0;padding:0;background:#0A0A0F;overflow:hidden}
 <body>
 <svg id="stage" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
 <defs>
-<radialGradient id="bgGrad" gradientUnits="userSpaceOnUse" cx="540" cy="860" r="1180">
-<stop offset="0" stop-color="#16161F"></stop>
-<stop offset="0.55" stop-color="#0E0E15"></stop>
-<stop offset="1" stop-color="#0A0A0F"></stop>
+<!-- DÉCOR : nuit de film noir (bleus nuit → sarcelle, jamais de violet/rose : sûr pour l'incrustation) -->
+<linearGradient id="skyGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1920">
+<stop offset="0" stop-color="#070B1C"></stop>
+<stop offset="0.38" stop-color="#0C1A33"></stop>
+<stop offset="0.66" stop-color="#123248"></stop>
+<stop offset="0.8" stop-color="#17404F"></stop>
+<stop offset="1" stop-color="#0B1B26"></stop>
+</linearGradient>
+<radialGradient id="moonHalo" gradientUnits="userSpaceOnUse" cx="900" cy="150" r="330">
+<stop offset="0" stop-color="#4DFF8F" stop-opacity="0.32"></stop>
+<stop offset="0.3" stop-color="#3FD0B0" stop-opacity="0.12"></stop>
+<stop offset="1" stop-color="#3FD0B0" stop-opacity="0"></stop>
+</radialGradient>
+<radialGradient id="moonDisc" gradientUnits="userSpaceOnUse" cx="884" cy="136" r="78">
+<stop offset="0" stop-color="#F4FFF7"></stop>
+<stop offset="0.7" stop-color="#D2FBE2"></stop>
+<stop offset="1" stop-color="#A8EFC8"></stop>
+</radialGradient>
+<radialGradient id="cityGlow" gradientUnits="userSpaceOnUse" cx="540" cy="1520" r="760">
+<stop offset="0" stop-color="#D4A64A" stop-opacity="0.22"></stop>
+<stop offset="0.45" stop-color="#2A8C8C" stop-opacity="0.12"></stop>
+<stop offset="1" stop-color="#2A8C8C" stop-opacity="0"></stop>
+</radialGradient>
+<linearGradient id="blindGrad" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#BFF6FF" stop-opacity="0"></stop>
+<stop offset="0.5" stop-color="#BFF6FF" stop-opacity="1"></stop>
+<stop offset="1" stop-color="#BFF6FF" stop-opacity="0"></stop>
+</linearGradient>
+<linearGradient id="streetFade" gradientUnits="userSpaceOnUse" x1="0" y1="1560" x2="0" y2="1920">
+<stop offset="0" stop-color="#060A12" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#05080F" stop-opacity="0.95"></stop>
+</linearGradient>
+<radialGradient id="dustGrad">
+<stop offset="0" stop-color="#FFFFFF" stop-opacity="1"></stop>
+<stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
 </radialGradient>
 
 <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
@@ -27,9 +58,6 @@ html,body{margin:0;padding:0;background:#0A0A0F;overflow:hidden}
 <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
 <feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur>
 <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-</filter>
-<filter id="subShadow" x="-20%" y="-40%" width="140%" height="180%">
-<feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.7"></feDropShadow>
 </filter>
 
 <!-- EFFET DESSIN : contours qui tremblent + grain papier (robot uniquement) -->
@@ -131,14 +159,14 @@ html,body{margin:0;padding:0;background:#0A0A0F;overflow:hidden}
 </g>
 </defs>
 
-<rect id="bgRect" x="0" y="0" width="1080" height="1920" fill="url(#bgGrad)"></rect>
+<rect id="bgRect" x="0" y="0" width="1080" height="1920" fill="url(#skyGrad)"></rect>
+<g id="L-decor"></g>
 <rect id="bgFade" x="0" y="0" width="1080" height="1920" fill="#000000" opacity="0"></rect>
 <g id="L-back"></g>
 <g id="L-world"></g>
 <g id="L-robot"></g>
 <g id="L-front"></g>
 <g id="L-key"></g>
-<g id="L-subs" filter="url(#subShadow)"></g>
 <g id="L-debug"></g>
 </svg>
 <script src="reel.js"></script>

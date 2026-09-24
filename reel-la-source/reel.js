@@ -279,6 +279,79 @@ function ecrase(t, el, others, landX, topY, dest, o = {}) {
   return tl;
 }
 
+/* ================= DÉCOR : nuit de film noir =================
+   Ciel bleu nuit → sarcelle, lune verte (rappel de l'accent #4DFF8F), lumière de store
+   vénitien, skyline aux fenêtres ambrées, poussières en suspension. Aucune teinte
+   violette ou rose : le fond reste sûr pour l'incrustation chromatique du magenta. */
+const DECOR = { stars: [], flick: [], dust: [], blinds: null };
+function buildDecor() {
+  const D = $('L-decor'); const R = rng(2026);
+  mk('circle', { cx: 900, cy: 150, r: 330, fill: 'url(#moonHalo)' }, D);
+  mk('circle', { cx: 900, cy: 150, r: 78, fill: 'url(#moonDisc)' }, D);
+  const cr = g(D, { fill: '#9FE6C0', opacity: 0.55 });
+  [[872, 128, 15], [921, 176, 9], [930, 116, 6], [880, 186, 5]].forEach(c => mk('circle', { cx: c[0], cy: c[1], r: c[2] }, cr));
+
+  const st = g(D, { fill: '#E4F7FF' });
+  for (let i = 0; i < 80; i++) {
+    const x = R() * 1080, y = 30 + R() * 1180;
+    if (Math.hypot(x - 900, y - 150) < 150) continue;
+    DECOR.stars.push({ el: mk('circle', { cx: r3(x), cy: r3(y), r: r3(0.8 + R() * 1.7) }, st), base: 0.2 + R() * 0.5, ph: R() * PI2, sp: 0.5 + R() * 1.5 });
+  }
+
+  const bl = g(D, { opacity: 0.075 }); DECOR.blinds = bl;
+  const bi = g(bl, { transform: 'rotate(-28 1080 0)' });
+  for (let k = 0; k < 10; k++) mk('rect', { x: -300, y: 60 + k * 78, width: 1900, height: 34, fill: 'url(#blindGrad)' }, bi);
+
+  mk('rect', { x: 0, y: 700, width: 1080, height: 1220, fill: 'url(#cityGlow)' }, D);
+
+  const WIN = [['#F2C46B', 0.86], ['#F2C46B', 0.86], ['#F2C46B', 0.86], ['#FFD98C', 0.9], ['#8FE3FF', 0.96], ['#4DFF8F', 1]];
+  const pickWin = () => { const r = R(); for (const [c, p] of WIN) if (r < p) return c; return '#F2C46B'; };
+  const skyline = (layer, fill, topMin, topMax, wMin, wMax, win) => {
+    const lg = g(D); let x = -20; let id = 0;
+    while (x < 1100) {
+      const w = wMin + R() * (wMax - wMin), top = topMin + R() * (topMax - topMin);
+      mk('rect', { x: r3(x), y: r3(top), width: r3(w), height: r3(1920 - top), fill }, lg);
+      const roof = R();
+      if (roof < 0.22) mk('rect', { x: r3(x + w * 0.3), y: r3(top - 26), width: r3(w * 0.4), height: 26, fill }, lg);
+      else if (roof < 0.34) { mk('path', { d: `M ${r3(x + w / 2)} ${r3(top - 60)} V ${r3(top)}`, stroke: fill, 'stroke-width': 4 }, lg); mk('circle', { cx: r3(x + w / 2), cy: r3(top - 62), r: 3.5, fill: '#FF6B5A', opacity: 0.8 }, lg); }
+      else if (roof < 0.44 && w > 90) {
+        const cx = x + w * 0.65;
+        mk('path', { d: `M ${r3(cx - 16)} ${r3(top)} L ${r3(cx - 12)} ${r3(top - 20)} M ${r3(cx + 16)} ${r3(top)} L ${r3(cx + 12)} ${r3(top - 20)}`, stroke: fill, 'stroke-width': 4 }, lg);
+        mk('path', { d: `M ${r3(cx - 18)} ${r3(top - 20)} h 36 v -30 q -18 -12 -36 0 z`, fill }, lg);
+      }
+      const cw = win.w, ch = win.h, gx = win.gx, gy = win.gy;
+      const cols = Math.max(1, Math.floor((w - 16) / gx)), x0 = x + (w - cols * gx) / 2 + (gx - cw) / 2;
+      for (let yy = top + 18; yy < 1880; yy += gy) for (let c = 0; c < cols; c++) {
+        if (R() > win.p) continue;
+        const color = pickWin(), op = win.op[0] + R() * (win.op[1] - win.op[0]);
+        const el = mk('rect', { x: r3(x0 + c * gx), y: r3(yy), width: cw, height: ch, rx: 1.5, fill: color, opacity: r3(op) }, lg);
+        if (R() < 0.12) DECOR.flick.push({ el, op, id: layer * 10000 + id });
+        id++;
+      }
+      x += w + (R() < 0.3 ? 6 + R() * 18 : 0);
+    }
+  };
+  skyline(1, '#12263C', 1290, 1470, 55, 140, { w: 7, h: 10, gx: 16, gy: 22, p: 0.2, op: [0.22, 0.45] });
+  skyline(2, '#0A1522', 1450, 1600, 90, 175, { w: 9, h: 13, gx: 21, gy: 27, p: 0.24, op: [0.45, 0.8] });
+  mk('rect', { x: 0, y: 1560, width: 1080, height: 360, fill: 'url(#streetFade)' }, D);
+
+  const du = g(D);
+  for (let i = 0; i < 28; i++) {
+    DECOR.dust.push({ el: mk('circle', { r: r3(2.5 + R() * 6), fill: 'url(#dustGrad)' }, du), x: R() * 1080, y: R() * 1920, vx: -6 + R() * 12, vy: -10 - R() * 14, op: 0.08 + R() * 0.16, ph: R() * PI2 });
+  }
+}
+function renderDecor(ta) {
+  for (const s of DECOR.stars) attr(s.el, 'opacity', s.base * (0.65 + 0.35 * Math.sin(ta * s.sp + s.ph)));
+  const k = Math.floor(ta / 2.2);
+  for (const w of DECOR.flick) attr(w.el, 'opacity', hash(w.id * 31 + k) < 0.3 ? w.op * 0.15 : w.op);
+  attr(DECOR.blinds, 'transform', `translate(${r3(10 * Math.sin(ta * 0.21))} ${r3(14 * Math.sin(ta * 0.13))})`);
+  for (const d of DECOR.dust) {
+    const x = ((d.x + d.vx * ta + 12 * Math.sin(ta * 0.5 + d.ph)) % 1120 + 1120) % 1120 - 20;
+    const y = ((d.y + d.vy * ta) % 1960 + 1960) % 1960 - 20;
+    attr(d.el, 'cx', x); attr(d.el, 'cy', y); attr(d.el, 'opacity', d.op * (0.6 + 0.4 * Math.sin(ta * 0.7 + d.ph)));
+  }
+}
+
 /* ================= DÉCOR ET PLACEHOLDERS ================= */
 let VIDEO, POL2, POL5, CARD5, GLOBE, ICONS = [], TREE, HOUSE, STONE, SOURCE_TXT, BUBBLE;
 const WIG = {};
@@ -352,7 +425,7 @@ function buildWorld() {
   });
 
   // scène 4 : arbre, maison, caillou (dessins simples)
-  const tg = g(Lw); const tw = g(tg); WIG.tree = { g: tw, px: 150, py: 1250, t0: 1e9, seed: 11 };
+  const tg = g(Lw); mk('ellipse', { cx: 150, cy: 1253, rx: 96, ry: 13, fill: '#000000', 'fill-opacity': 0.45 }, tg); const tw = g(tg); WIG.tree = { g: tw, px: 150, py: 1250, t0: 1e9, seed: 11 };
   markup(tw, `
     <path d="M 134 1250 L 139 1092 Q 150 1074 161 1092 L 166 1250 Z" fill="#6B4A33" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
     <path d="M 150 1160 L 112 1118" stroke="${INK}" stroke-width="16" stroke-linecap="round"/>
@@ -363,7 +436,7 @@ function buildWorld() {
     <path d="M 98 940 Q 110 910 140 900" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="6" stroke-linecap="round"/>`);
   TREE = new El(tg, 150, 1060, { s: 0, top: 876 });
 
-  const hg = g(Lw); const hw = g(hg); WIG.house = { g: hw, px: 900, py: 1250, t0: 1e9, seed: 23 };
+  const hg = g(Lw); mk('ellipse', { cx: 900, cy: 1253, rx: 128, ry: 14, fill: '#000000', 'fill-opacity': 0.45 }, hg); const hw = g(hg); WIG.house = { g: hw, px: 900, py: 1250, t0: 1e9, seed: 23 };
   markup(hw, `
     <rect x="950" y="1012" width="28" height="56" fill="#8C6A45" stroke="${INK}" stroke-width="5"/>
     <rect x="805" y="1098" width="190" height="152" fill="#D8BD93" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
@@ -376,7 +449,7 @@ function buildWorld() {
     <path d="M 846 1134 V 1170 M 826 1152 H 866 M 954 1134 V 1170 M 934 1152 H 974" stroke="${INK}" stroke-width="3"/>`);
   HOUSE = new El(hg, 900, 1125, { s: 0, top: 993 });
 
-  const sg = g(Lf); const sw = g(sg); WIG.stone = { g: sw, px: 358, py: 1300, t0: 1e9, seed: 37 };
+  const sg = g(Lf); mk('ellipse', { cx: 360, cy: 1302, rx: 66, ry: 10, fill: '#000000', 'fill-opacity': 0.45 }, sg); const sw = g(sg); WIG.stone = { g: sw, px: 358, py: 1300, t0: 1e9, seed: 37 };
   markup(sw, `
     <path d="M 302 1300 Q 296 1250 334 1230 Q 372 1214 404 1238 Q 428 1262 418 1300 Z" fill="#8E97A3" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
     <path d="M 320 1258 Q 332 1240 352 1236" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="5" stroke-linecap="round"/>
@@ -594,7 +667,7 @@ function followThrough(t, s) {
 /* ----- bouche : formes de parole pendant chaque ligne ----- */
 const SPEECH = [];
 function buildSpeech() {
-  SUBS.forEach((L, i) => {
+  VOICE.forEach((L, i) => {
     const t0 = L.t0, t1 = Math.min(L.t1, L.te) - 0.12;
     const R = rng(1000 + i); const seq = []; let t = t0 + 0.04, last = '';
     const sleepy = t0 >= 145.5;
@@ -761,147 +834,71 @@ function renderRobot(t, ta) {
   } else RB.fx.removeAttribute('filter');
 }
 
-/* ================= SOUS-TITRES ================= */
-const Z = {
-  CU: { x: 540, y: 1500, w: 860 },
-  R: { x: 668, y: 1420, w: 590 },
-  L: { x: 400, y: 1420, w: 540 },
-  C: { x: 540, y: 1482, w: 860 },
-  R2: { x: 668, y: 1478, w: 590 },
-};
-const SUB_RAW = [
-  [0.5, 3.5, 'On a demandé à une *IA*', 'CU'],
-  [3.5, 6.9, 'de *donner vie* à ce dessin,', 'CU'],
-  [6.9, 8.4, 'et regardez bien', 'R'],
-  [8.4, 11.2, 'ce qui se passe.', 'R'],
-  [11.2, 15.1, 'Ce dessin, c’est celui de *Philippe Delord*,', 'L'],
-  [15.1, 17.6, 'un dessinateur qui m’a autorisé', 'L'],
-  [17.6, 19.6, 'à utiliser son travail', 'L'],
-  [19.6, 21.9, 'pour cette vidéo.', 'L'],
-  [21.9, 24.3, 'La consigne était simple,', 'R'],
-  [24.3, 26.7, 'faire vivre la scène,', 'R'],
-  [26.7, 30.2, 'et pourtant il y a quelque chose', 'R'],
-  [30.2, 34.1, 'qui se met à *couler* du toit,', 'R'],
-  [34.1, 35.6, 'la maison s’efface', 'R'],
-  [35.6, 37.0, 'puis revient,', 'R'],
-  [37.0, 40.0, 'et honnêtement personne ne peut dire', 'R'],
-  [40.0, 42.4, 'si c’est du *bois*,', 'R'],
-  [42.4, 43.8, 'de l’*eau*', 'R'],
-  [43.8, 46.2, 'ou de la *fumée*,', 'R'],
-  [46.2, 49.0, 'pas même la machine.', 'R'],
-  [49.0, 51.9, 'Parce que pour une IA,', 'C'],
-  [51.9, 53.3, 'donner vie,', 'C'],
-  [53.3, 57.1, 'ça veut juste dire *faire bouger*.', 'C'],
-  [57.1, 60.0, 'Elle n’a jamais vu *la vie*,', 'C'],
-  [60.0, 63.5, 'elle a vu des *millions* de vidéos', 'C'],
-  [63.5, 66.9, 'où tout ce qui est vivant bouge,', 'C'],
-  [66.9, 68.9, 'alors elle fait bouger', 'C'],
-  [68.9, 71.3, 'tout ce qu’elle peut,', 'C'],
-  [71.3, 75.1, 'même ce qui n’était pas censé bouger.', 'C'],
-  [75.1, 78.1, 'Et c’est exactement ce que pointe', 'R'],
-  [78.1, 79.5, '*Yann LeCun*,', 'R'],
-  [79.5, 80.9, 'un Français,', 'R'],
-  [80.9, 84.3, 'l’un des pionniers de l’IA moderne,', 'R'],
-  [84.3, 87.7, 'qui a reçu le *prix Turing*,', 'R'],
-  [87.7, 91.0, 'l’équivalent du Nobel en informatique.', 'R'],
-  [91.0, 93.0, 'Pour lui, ces modèles', 'R'],
-  [93.0, 96.4, 'ne font que prédire des *pixels*,', 'R'],
-  [96.4, 98.8, 'sans *aucun monde* derrière,', 'R'],
-  [98.8, 102.2, 'sans savoir ce qu’est un toit,', 'R'],
-  [102.2, 105.5, 'du bois ou de l’eau.', 'R'],
-  [105.5, 108.0, 'D’ailleurs, il a quitté Meta', 'R'],
-  [108.0, 111.5, 'et levé plus d’un *milliard* de dollars', 'R'],
-  [111.5, 113.4, 'pour construire l’inverse,', 'R'],
-  [113.4, 116.8, 'ce qu’on appelle les *world models*,', 'R'],
-  [116.8, 119.3, 'des IA qui comprendraient vraiment', 'R'],
-  [119.3, 122.1, 'comment le monde fonctionne.', 'R'],
-  [122.1, 124.5, 'Mais le plus troublant,', 'R'],
-  [124.5, 127.0, 'c’est que ce lieu s’appelle', 'R'],
-  [127.0, 129.0, '*La Source*.', 'R'],
-  [129.0, 130.4, 'Alors *vous*,', 'R'],
-  [130.4, 132.4, 'qu’est-ce que *vous* voyez', 'R'],
-  [132.4, 135.2, 'couler de ce toit ?', 'R'],
-  [135.2, 138.1, 'Parce que la machine, elle,', 'R'],
-  [138.1, 140.5, 'n’a rien voulu dire,', 'R'],
-  [140.5, 143.5, 'c’est nous qui cherchons *un sens*.', 'R', 143.5],
-  [145.5, 147.4, 'Alors au fond,', 'R2'],
-  [147.4, 148.8, '*qui rêve*,', 'R2'],
-  [148.8, 151.3, 'elle ou nous ?', 'R2'],
-  [151.3, 152.9, '*Hallucination*,', 'C'],
-  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 'C', 999],
+/* ================= LIGNES DE VOIX (pour la bouche du robot) =================
+   Plus de sous-titres à l'image : ils seront faits au montage. Ces timecodes servent
+   uniquement à animer la bouche pendant que la voix parle. */
+const VOICE_RAW = [
+  [0.5, 3.5, 'On a demandé à une IA'],
+  [3.5, 6.9, 'de donner vie à ce dessin,'],
+  [6.9, 8.4, 'et regardez bien'],
+  [8.4, 11.2, 'ce qui se passe.'],
+  [11.2, 15.1, 'Ce dessin, c’est celui de Philippe Delord,'],
+  [15.1, 17.6, 'un dessinateur qui m’a autorisé'],
+  [17.6, 19.6, 'à utiliser son travail'],
+  [19.6, 21.9, 'pour cette vidéo.'],
+  [21.9, 24.3, 'La consigne était simple,'],
+  [24.3, 26.7, 'faire vivre la scène,'],
+  [26.7, 30.2, 'et pourtant il y a quelque chose'],
+  [30.2, 34.1, 'qui se met à couler du toit,'],
+  [34.1, 35.6, 'la maison s’efface'],
+  [35.6, 37.0, 'puis revient,'],
+  [37.0, 40.0, 'et honnêtement personne ne peut dire'],
+  [40.0, 42.4, 'si c’est du bois,'],
+  [42.4, 43.8, 'de l’eau'],
+  [43.8, 46.2, 'ou de la fumée,'],
+  [46.2, 49.0, 'pas même la machine.'],
+  [49.0, 51.9, 'Parce que pour une IA,'],
+  [51.9, 53.3, 'donner vie,'],
+  [53.3, 57.1, 'ça veut juste dire faire bouger.'],
+  [57.1, 60.0, 'Elle n’a jamais vu la vie,'],
+  [60.0, 63.5, 'elle a vu des millions de vidéos'],
+  [63.5, 66.9, 'où tout ce qui est vivant bouge,'],
+  [66.9, 68.9, 'alors elle fait bouger'],
+  [68.9, 71.3, 'tout ce qu’elle peut,'],
+  [71.3, 75.1, 'même ce qui n’était pas censé bouger.'],
+  [75.1, 78.1, 'Et c’est exactement ce que pointe'],
+  [78.1, 79.5, 'Yann LeCun,'],
+  [79.5, 80.9, 'un Français,'],
+  [80.9, 84.3, 'l’un des pionniers de l’IA moderne,'],
+  [84.3, 87.7, 'qui a reçu le prix Turing,'],
+  [87.7, 91.0, 'l’équivalent du Nobel en informatique.'],
+  [91.0, 93.0, 'Pour lui, ces modèles'],
+  [93.0, 96.4, 'ne font que prédire des pixels,'],
+  [96.4, 98.8, 'sans aucun monde derrière,'],
+  [98.8, 102.2, 'sans savoir ce qu’est un toit,'],
+  [102.2, 105.5, 'du bois ou de l’eau.'],
+  [105.5, 108.0, 'D’ailleurs, il a quitté Meta'],
+  [108.0, 111.5, 'et levé plus d’un milliard de dollars'],
+  [111.5, 113.4, 'pour construire l’inverse,'],
+  [113.4, 116.8, 'ce qu’on appelle les world models,'],
+  [116.8, 119.3, 'des IA qui comprendraient vraiment'],
+  [119.3, 122.1, 'comment le monde fonctionne.'],
+  [122.1, 124.5, 'Mais le plus troublant,'],
+  [124.5, 127.0, 'c’est que ce lieu s’appelle'],
+  [127.0, 129.0, 'La Source.'],
+  [129.0, 130.4, 'Alors vous,'],
+  [130.4, 132.4, 'qu’est-ce que vous voyez'],
+  [132.4, 135.2, 'couler de ce toit ?'],
+  [135.2, 138.1, 'Parce que la machine, elle,'],
+  [138.1, 140.5, 'n’a rien voulu dire,'],
+  [140.5, 143.5, 'c’est nous qui cherchons un sens.', 143.5],
+  [145.5, 147.4, 'Alors au fond,'],
+  [147.4, 148.8, 'qui rêve,'],
+  [148.8, 151.3, 'elle ou nous ?'],
+  [151.3, 152.9, 'Hallucination,'],
+  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 999],
 ];
-const SUBS = SUB_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_RAW[i + 1] ? SUB_RAW[i + 1][0] : 999) }));
-
-function parseWords(text) {
-  const out = []; let kw = false, cur = '', curKw = false;
-  for (const ch of text) {
-    if (ch === '*') { kw = !kw; if (kw) curKw = true; continue; }
-    if (ch === ' ') { if (cur) out.push({ t: cur, kw: curKw }); cur = ''; curKw = kw; continue; }
-    cur += ch; if (kw) curKw = true;
-  }
-  if (cur) out.push({ t: cur, kw: curKw });
-  return out;
-}
-function buildSubs() {
-  const layer = $('L-subs');
-  const meas = mk('text', { x: 0, y: -500, 'font-family': 'Fredoka', 'font-weight': 700 }, layer);
-  const FS = 60, KFS = 78, SP = 17;
-  SUBS.forEach((L, i) => {
-    const words = parseWords(L.text);
-    for (const w of words) { meas.setAttribute('font-size', w.kw ? KFS : FS); meas.textContent = w.t; w.w = meas.getComputedTextLength(); w.fs = w.kw ? KFS : FS; }
-    const Zn = Z[L.zone]; const rows = []; let row = [], rw = 0;
-    for (const w of words) {
-      const add = (row.length ? SP : 0) + w.w;
-      if (row.length && rw + add > Zn.w) { rows.push({ words: row, w: rw }); row = []; rw = 0; }
-      rw += (row.length ? SP : 0) + w.w; row.push(w);
-    }
-    if (row.length) rows.push({ words: row, w: rw });
-    rows.forEach(r => { r.h = Math.max(...r.words.map(w => w.fs)) * 1.12; });
-    const bh = rows.reduce((a, r) => a + r.h, 0);
-    const R = rng(90 + i * 7);
-    L.jx = (R() - 0.5) * 44; L.jy = (R() - 0.5) * 34; L.rot = (i % 2 ? 1 : -1) * (1.2 + R() * 1.8);
-    L.g = g(layer); vis(L.g, false);
-    let y = -bh / 2;
-    for (const r of rows) {
-      let x = -r.w / 2; const base = y + r.h * 0.8;
-      for (const w of r.words) {
-        w.g = g(L.g);
-        w.el = mk('text', { x: r3(x), y: r3(base), 'font-family': 'Fredoka', 'font-weight': 700, 'font-size': w.fs, fill: w.kw ? GREEN : '#FFFFFF', stroke: '#0A0A0F', 'stroke-width': 10, 'stroke-linejoin': 'round', 'paint-order': 'stroke fill' }, w.g);
-        w.el.textContent = w.t;
-        w.cx = x + w.w / 2; w.cy = base - w.fs * 0.34;
-        x += w.w + SP;
-      }
-      y += r.h;
-    }
-    L.words = words;
-    words.forEach((w, k) => { w.ta = L.t0 + (L.t1 - L.t0) * (k / words.length); });
-  });
-  meas.remove();
-}
-function renderSubs(t) {
-  for (const L of SUBS) {
-    if (t < L.t0 || t >= L.te) { vis(L.g, false); continue; }
-    vis(L.g, true);
-    const Zn = Z[L.zone];
-    const ex = clamp((t - (L.te - 0.15)) / 0.15);
-    attr(L.g, 'transform', `translate(${r3(Zn.x + L.jx)} ${r3(Zn.y + L.jy - 6 * E.qin(ex))}) rotate(${r3(L.rot)}) scale(${r3(1 - 0.04 * ex)})`);
-    attr(L.g, 'opacity', 1 - ex);
-    for (const w of L.words) {
-      const u = t - w.ta;
-      if (u < 0) { vis(w.g, false); continue; }
-      vis(w.g, true);
-      if (w.kw) {
-        const k = E.pop(clamp(u / 0.3));
-        attr(w.g, 'transform', `translate(${r3(w.cx)} ${r3(w.cy)}) scale(${r3(Math.max(0.001, k))}) translate(${r3(-w.cx)} ${r3(-w.cy)})`);
-        attr(w.g, 'opacity', clamp(u / 0.06));
-      } else {
-        const k = E.soft(clamp(u / 0.25));
-        attr(w.g, 'transform', `translate(0 ${r3(10 * (1 - k))})`);
-        attr(w.g, 'opacity', k);
-      }
-    }
-  }
-}
+const VOICE = VOICE_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], te: r[3] ?? (VOICE_RAW[i + 1] ? VOICE_RAW[i + 1][0] : 999) }));
 
 /* ================= LA SOURCE (lettres) ================= */
 function buildSourceText() {
@@ -1202,7 +1199,8 @@ function buildTimeline() {
 /* ================= RENDU D'UNE IMAGE ================= */
 function renderWorld(t, ta) {
   const f = E.soft(clamp((ta - 151.3) / 1.0));
-  attr($('bgFade'), 'opacity', 0.6 * f);
+  attr($('bgFade'), 'opacity', 0.82 * f);
+  renderDecor(ta);
   for (const id of ['L-world', 'L-back', 'L-front']) attr($(id), 'opacity', 1 - f);
   for (const e of ELS) e.apply(ta);
   for (const k in WIG) wiggle(WIG[k], ta);
@@ -1215,7 +1213,6 @@ function renderFrame(i) {
   renderWorld(t, ta);
   renderRobot(t, ta);
   renderKey(ta);
-  renderSubs(t);
   if (DEBUG) {
     const d = $('L-debug'); d.textContent = '';
     const tx = mk('text', { x: 20, y: 60, 'font-family': 'IBM Plex Mono', 'font-size': 34, fill: '#FFFF00' }, d);
@@ -1228,6 +1225,7 @@ async function init() {
   await document.fonts.load('700 58px "Space Grotesk"');
   await document.fonts.load('500 30px "IBM Plex Mono"');
   await document.fonts.ready;
+  buildDecor();
   buildWorld();
   buildRobot();
   buildKey();
@@ -1235,7 +1233,6 @@ async function init() {
   buildFaces();
   buildHitstops();
   buildPhase();
-  buildSubs();
   buildSpeech();
   buildSourceText();
   await Promise.all(Array.from(document.images || []).map(im => im.decode ? im.decode().catch(() => {}) : null));
