@@ -158,12 +158,6 @@
    2
   ],
   [
-   "NEON",
-   "\"LA SOURCE\" s'écrit",
-   "deep cinematic impact hit followed by a neon sign buzzing to life and a marker writing quickly",
-   2
-  ],
-  [
    "DREAM",
    "Bulle de rêve",
    "soft magical dream bubble opening, gentle chimes and airy shimmer",
@@ -584,12 +578,6 @@
    "end": null,
    "id": "LAND",
    "note": "atterrit sous le cadre"
-  },
-  {
-   "t": 79.87,
-   "end": null,
-   "id": "NEON",
-   "note": "\"La Source.\" : hit-stop + LA SOURCE s'écrit"
   },
   {
    "t": 83.18,

@@ -57,8 +57,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     short reverse digital glitch resolving into a clean tone
 [HOLO] Globe filaire qui se dessine — 2 s — utilisé 1×
     sci-fi hologram drawing itself line by line, electric tracing shimmer
-[NEON] "LA SOURCE" s'écrit — 2 s — utilisé 1×
-    deep cinematic impact hit followed by a neon sign buzzing to life and a marker writing quickly
 [DREAM] Bulle de rêve — 2 s — utilisé 1×
     soft magical dream bubble opening, gentle chimes and airy shimmer
 [DRIP] Gouttes dans le rêve (boucle) — 6 s — utilisé 1×
@@ -139,7 +137,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  1:16.8  SNAP      CLAQUE en plein vol
  1:16.9  POP       le cadre vidéo revient
  1:17.0  LAND      atterrit sous le cadre
- 1:19.9  NEON      "La Source." : hit-stop + LA SOURCE s'écrit
  1:23.2  ZOOM_IN   zoom sur le toit
  1:25.0  DEZOOM    on ressort du zoom
  1:30.3  DREAM     il s'endort, la bulle de rêve s'ouvre

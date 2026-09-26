@@ -64,8 +64,8 @@ exact en temps vidéo, hit-stops compris, via `window.videoTimeOf`), `MUSIQUE-su
 (brief musique Suno calé sur les temps forts et le silence) et `sons_cues.json`.
 À relancer après toute modification de la timeline.
 
-Bruitages : les 35 sons (`SOUNDS` de sons.js ; plus d'ambiance de fond, la voix et la musique
-doivent rester "pures") ont été générés via le connecteur ElevenLabs (modèle
+Bruitages : les 34 sons (`SOUNDS` de sons.js ; ambiance de fond et néon sur « LA SOURCE » retirés
+à la demande : la voix et la musique doivent rester pures) ont été générés via le connecteur ElevenLabs (modèle
 `eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
 https://elevenlabs.io/app/flows/LxzHYbIplS9K9SBhNABw) et rangés dans `media/sfx/<ID>.mp3`
 (hors Git). `python3 mix_sons.py` les pose aux repères de `sons_cues.json` → `out/bruitages.wav`
