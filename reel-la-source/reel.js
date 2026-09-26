@@ -1041,6 +1041,9 @@ const SUB_RAW = [
   [175.2, 177.0, 'enfilez un *casque*,', 'R'],
   [177.0, 180.2, 'et entrez dans le *dessin*.', 'R', 180.4],
 ];
+// Sous-titres à l'image désactivés : ils sont faits au montage (CapCut, détection de la voix).
+// SUB_RAW reste la référence du texte : il anime la bouche du robot et donne le téléprompteur.
+const SHOW_SUBS = false;
 const SUBS = SUB_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_RAW[i + 1] ? SUB_RAW[i + 1][0] : 999) }));
 
 function parseWords(text) {
@@ -1497,7 +1500,7 @@ async function renderFrame(i) {
   renderWorld(t, ts, ta);
   renderRobot(t, ts, ta);
   renderKey(ta);
-  renderSubs(ts);
+  if (SHOW_SUBS) renderSubs(ts);
   if (PENDING.length) { await Promise.all(PENDING.splice(0)); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); }
   if (DEBUG) {
     const d = $('L-debug'); d.textContent = '';
@@ -1520,7 +1523,7 @@ async function init() {
   buildFaces();
   buildHitstops();
   buildPhase();
-  buildSubs();
+  if (SHOW_SUBS) buildSubs(); else vis($('L-subs'), false);
   buildSpeech();
   buildSourceText();
   await Promise.all(Array.from(document.images || []).map(im => im.decode ? im.decode().catch(() => {}) : null));

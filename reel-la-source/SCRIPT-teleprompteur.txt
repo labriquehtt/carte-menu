@@ -1,87 +1,36 @@
-LA SOURCE — script voix (téléprompteur)
-Durée vidéo : 1:56 · débit ≈ 2,7 mots/s · (m:ss) = moment où la ligne apparaît à l'image
+On a demandé à une IA de donner vie à ce dessin, et regardez bien ce qui se passe.
+
+Ce dessin, c’est celui de Philippe Delord, un dessinateur qui m’a autorisé à utiliser son travail pour cette vidéo.
+
+La consigne était simple, faire vivre la scène, et pourtant il y a quelque chose qui se met à couler du toit, la maison s’efface puis revient, et honnêtement personne ne peut dire si c’est du bois, de l’eau ou de la fumée, pas même la machine.
+
+Parce que pour une IA, donner vie, ça veut juste dire faire bouger. Elle n’a jamais vu la vie, elle a vu des millions de vidéos où tout ce qui est vivant bouge, alors elle fait bouger tout ce qu’elle peut, même ce qui n’était pas censé bouger.
+
+Et c’est exactement ce que pointe Yann LeCun, un Français, l’un des pionniers de l’IA moderne, qui a reçu le prix Turing, l’équivalent du Nobel en informatique.
+
+Pour lui, ces modèles ne font que prédire des pixels, sans aucun monde derrière, sans savoir ce qu’est un toit, du bois ou de l’eau.
+
+D’ailleurs, il a quitté Meta et levé plus d’un milliard de dollars pour construire l’inverse, ce qu’on appelle les world models : des IA qui sauraient qu’un toit ne coule pas.
+
+Revenons à ce jardin. Philippe Delord l’a baptisé La Source.
 
 
-— 1 · Le dessin prend vie —
-(0:00)  On a demandé à une IA
-(0:02)  de donner vie à ce dessin,
-(0:04)  et regardez bien
-(0:05)  ce qui se passe.
+Hasard ?
 
-— 2 · Philippe Delord —
-(0:07)  Ce dessin, c’est celui de Philippe Delord,
-(0:09)  un dessinateur qui m’a autorisé
-(0:11)  à utiliser son travail
-(0:12)  pour cette vidéo.
+Et vous, que voyez-vous couler de ce toit ?
 
-— 3 · Quelque chose coule du toit —
-(0:13)  La consigne était simple,
-(0:15)  faire vivre la scène,
-(0:16)  et pourtant il y a quelque chose
-(0:18)  qui se met à couler du toit,
-(0:21)  la maison s’efface
-(0:22)  puis revient,
-(0:23)  et honnêtement personne ne peut dire
-(0:25)  si c’est du bois,
-(0:26)  de l’eau
-(0:27)  ou de la fumée,
-(0:29)  pas même la machine.
+Parce que la machine, elle, n’a rien voulu dire, c’est nous qui cherchons un sens.
 
-— 4 · Donner vie = faire bouger —
-(0:30)  Parce que pour une IA,
-(0:32)  donner vie,
-(0:33)  ça veut juste dire faire bouger.
-(0:35)  Elle n’a jamais vu la vie,
-(0:37)  elle a vu des millions de vidéos
-(0:39)  où tout ce qui est vivant bouge,
-(0:42)  alors elle fait bouger
-(0:43)  tout ce qu’elle peut,
-(0:44)  même ce qui n’était pas censé bouger.
 
-— 5 · Yann LeCun et les world models —
-(0:47)  Et c’est exactement ce que pointe
-(0:49)  Yann LeCun,
-(0:50)  un Français,
-(0:50)  l’un des pionniers de l’IA moderne,
-(0:53)  qui a reçu le prix Turing,
-(0:55)  l’équivalent du Nobel en informatique.
-(0:57)  Pour lui, ces modèles
-(0:58)  ne font que prédire des pixels,
-(1:00)  sans aucun monde derrière,
-(1:02)  sans savoir ce qu’est un toit,
-(1:04)  du bois ou de l’eau.
-(1:06)  D’ailleurs, il a quitté Meta
-(1:07)  et levé plus d’un milliard de dollars
-(1:10)  pour construire l’inverse,
-(1:11)  ce qu’on appelle les world models :
-(1:13)  des IA qui sauraient
-(1:15)  qu’un toit ne coule pas.
+Alors au fond, qui rêve, elle ou nous ?
 
-— 6 · La Source —
-(1:16)  Revenons à ce jardin.
-(1:18)  Philippe Delord l’a baptisé
-(1:19)  La Source.
-(1:21)  Hasard ?
-(1:22)  Et vous, que voyez-vous
-(1:23)  couler de ce toit ?
-(1:25)  Parce que la machine, elle,
-(1:26)  n’a rien voulu dire,
-(1:28)  c’est nous qui cherchons un sens.
-   [silence ~1 s]
-(1:31)  Alors au fond,
-(1:32)  qui rêve,
-(1:33)  elle ou nous ?
+Hallucination,
 
-— 7 · Hallucination —
-(1:35)  Hallucination,
-(1:36)  ou simplement une autre façon de voir ?
+ou simplement une autre façon de voir ?
 
-— 8 · Galerie Delord — LK Studio —
-(1:40)  Affaire à suivre…
-(1:41)  Les autres dessins de Philippe Delord
-(1:44)  vous attendent dans sa galerie,
-(1:45)  sur LK Studio.
-(1:47)  Et la galerie se visite aussi
-(1:48)  en réalité virtuelle :
-(1:50)  enfilez un casque,
-(1:51)  et entrez dans le dessin.
+
+Affaire à suivre…
+
+Les autres dessins de Philippe Delord vous attendent dans sa galerie, sur LK Studio.
+
+Et la galerie se visite aussi en réalité virtuelle : enfilez un casque, et entrez dans le dessin.
