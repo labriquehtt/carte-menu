@@ -107,7 +107,10 @@ appliqué seulement là où il y a de la musique ; le modèle UVR, lui, perd la 
    mouvement de moins de 4 s, hors hit-stops, néon, bulle, effets). Robot (idle, clignements,
    bouche), décor et clips vivent en temps réel `RR` (= vidéo, figé pendant les hit-stops) : ils
    continuent pendant les attentes. `node sons.js` + `mix_sons.py` recalent les bruitages.
-5. `mix_voix.py` : voix à -16 LUFS + bruitages 6 dB dessous, ajoutés à la vidéo encodée.
+5. `mix_voix.py` : voix à -16 LUFS + bruitages (clip d'ouverture compris) 8 dB plus bas et qui
+   s'effacent quand la voix parle (sidechaincompress) → ~20 dB sous la voix ; ajoutés à la vidéo
+   encodée. Voix prise dans `voix_capcut_propre.wav` (export CapCut refait sans musique, calé à
+   0 ms près sur le premier), sinon `voix_seule.wav`, sinon `voix.wav`.
 
 ### Miniature (couverture du reel)
 

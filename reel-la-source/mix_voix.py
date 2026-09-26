@@ -5,7 +5,8 @@
 
 media/voix/voix.wav vient de l'export CapCut (même durée que la vidéo, calé à 0:00 ; extrait par
 `ffmpeg -i export.mov -vn media/voix/voix.wav`). La voix est nettoyée des graves parasites et
-ramenée à -16 LUFS ; les bruitages (out/bruitages.wav) passent 6 dB en dessous ; limiteur final
+ramenée à -16 LUFS ; les bruitages (out/bruitages.wav) passent 8 dB plus bas et s'effacent encore quand
+la voix parle (sidechaincompress) : ~20 dB sous la voix pendant la parole ; limiteur final
 à -1 dBFS. Écrit aussi out/bande-son-voix.wav.
 """
 import argparse
@@ -20,16 +21,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 def main():
     ap = argparse.ArgumentParser()
-    seule = os.path.join(HERE, 'media', 'voix', 'voix_seule.wav')   # sans musique (separe_voix.py)
-    ap.add_argument('--voice', default=seule if os.path.exists(seule) else os.path.join(HERE, 'media', 'voix', 'voix.wav'))
+    # voix sans musique : de préférence l'export CapCut refait sans musique, sinon la séparation
+    cands = [os.path.join(HERE, 'media', 'voix', f) for f in ('voix_capcut_propre.wav', 'voix_seule.wav', 'voix.wav')]
+    ap.add_argument('--voice', default=next(f for f in cands if os.path.exists(f)))
     ap.add_argument('--sfx', default=os.path.join(HERE, 'out', 'bruitages.wav'))
-    ap.add_argument('--sfx-gain', type=float, default=-6)
+    ap.add_argument('--sfx-gain', type=float, default=-8)
     ap.add_argument('--wav', default=os.path.join(HERE, 'out', 'bande-son-voix.wav'))
     ap.add_argument('--video')
     ap.add_argument('--out')
     a = ap.parse_args()
-    graph = (f'[0:a]highpass=f=70,loudnorm=I=-16:TP=-2:LRA=11,aresample=44100[v];'
-             f'[1:a]volume={a.sfx_gain}dB[s];'
+    # bruitages bas, et qui s'effacent encore quand la voix parle (compression déclenchée par la voix)
+    graph = (f'[0:a]highpass=f=70,loudnorm=I=-16:TP=-2:LRA=11,aresample=44100,asplit=2[v][vk];'
+             f'[1:a]volume={a.sfx_gain}dB[s0];'
+             f'[s0][vk]sidechaincompress=threshold=0.08:ratio=3:attack=10:release=300[s];'
              f'[v][s]amix=inputs=2:normalize=0:duration=longest,alimiter=limit=0.891:level=false[o]')
     subprocess.run([FF, '-v', 'error', '-y', '-i', a.voice, '-i', a.sfx, '-filter_complex', graph,
                     '-map', '[o]', '-ac', '2', '-ar', '44100', a.wav], check=True)
