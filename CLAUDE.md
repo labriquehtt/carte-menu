@@ -35,8 +35,10 @@ image par image dans Chromium puis encodée en H.264.
 
 - `roof` (clip IA du dessin qui "coule", 3:2) : écran de la tête en gros plan (0–4,15 s) et
   cadre vidéo (scènes 1, 3, 6 ; repart du début à chaque apparition puis boucle avec fondu).
-  Sa 1re image = le dessin original de Philippe Delord → polaroid de la scène 2.
-- `lecun` : photo de Yann LeCun → polaroid de la scène 5.
+  Sa 1re image = le dessin original de Philippe Delord → cadre de la scène 2 (ajusté 3:2).
+  Zoom sur l'écoulement du toit (`roofZoom`) pendant « couler du toit » (scènes 3 et 6).
+- `lecun` : photo de Yann LeCun → cadre de la scène 5 (ajusté 4:5, photo entière).
+- Les cadres photo épousent le format de leur image (pas de fond noir ni de marge polaroid).
 - `site` (scroll de l-k-studio.com/gallery_delord.html, 16:9, 23,4 s) : fenêtre navigateur
   de l'outro, lue ×1,66 (`SITE_RATE`) pour tenir dans les 14 s.
 - `renderFrame` est asynchrone : il attend le chargement des images des clips.

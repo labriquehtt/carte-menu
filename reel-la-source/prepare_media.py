@@ -3,10 +3,10 @@
 
   python3 prepare_media.py --roof media/src/toit.mp4 --site media/src/site.mp4 --lecun media/src/lecun.webp
 
-- roof  : clip IA du dessin (3:2) → media/roof/NNNN.jpg à 30 fps ; sa 1re image recadrée
-          carrée devient le dessin original du polaroid (media/delord.jpg)
+- roof  : clip IA du dessin (3:2) → media/roof/NNNN.jpg à 30 fps ; sa 1re image entière
+          devient le dessin original de la scène 2 (media/delord.jpg)
 - site  : scroll du site LK Studio (16:9) → media/site/NNNN.jpg à 30 fps
-- lecun : photo portrait → media/lecun.jpg, recadrée carrée sur le visage
+- lecun : photo portrait (4:5) → media/lecun.jpg, entière
 Écrit media/manifest.js, lu par index.html. Sans médias, la vidéo retombe sur les
 emplacements vides et l'écran magenta.
 """
@@ -34,12 +34,6 @@ def frames(src, name, width):
     return len(glob.glob(os.path.join(out, '*.jpg')))
 
 
-def square(im, bias=0.5):
-    w, h = im.size
-    s = min(w, h)
-    return im.crop(((w - s) // 2, int((h - s) * bias), (w - s) // 2 + s, int((h - s) * bias) + s))
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--roof')
@@ -55,13 +49,14 @@ def main():
         man['roof'] = frames(a.roof, 'roof', 1086)
         first = os.path.join(D, 'first.png')
         subprocess.run([FF, '-v', 'error', '-y', '-i', a.roof, '-frames:v', '1', first], check=True)
-        square(Image.open(first).convert('RGB')).save(os.path.join(D, 'delord.jpg'), quality=92)
+        Image.open(first).convert('RGB').save(os.path.join(D, 'delord.jpg'), quality=92)   # dessin entier (3:2)
         os.remove(first)
         man['delord'] = True
     if a.site:
         man['site'] = frames(a.site, 'site', 1040)
     if a.lecun:
-        square(Image.open(a.lecun).convert('RGB'), 0.35).resize((736, 736), Image.LANCZOS).save(os.path.join(D, 'lecun.jpg'), quality=92)
+        im = Image.open(a.lecun).convert('RGB')   # photo entière, cadre au format 4:5
+        im.resize((800, round(800 * im.height / im.width)), Image.LANCZOS).save(os.path.join(D, 'lecun.jpg'), quality=92)
         man['lecun'] = True
     with open(mpath, 'w') as f:
         f.write('window.MEDIA = ' + json.dumps(man) + ';\n')

@@ -150,7 +150,7 @@ const DEF = {
   hr: 0, hdx: 0, hdy: 0, gx: 0, gy: 0,
   armR: PR.down, armL: PL.down, handR: 1, handL: 1,
   loupe: [0, 0, 0, 1], loupeUp: 1, eR: 1, lid: 1, rOpen: 0,
-  hatTilt: 0, hatLift: 0, faceOn: 0, speed: 1, groundY: FLOOR, qmark: 0, phys: 0, vr: [150, -44, 0],
+  hatTilt: 0, hatLift: 0, faceOn: 0, speed: 1, groundY: FLOOR, qmark: 0, phys: 0, vr: [150, -44, 0], vz: [1, 540, 780],
 };
 const TR = {};
 const T = n => TR[n] || (TR[n] = new Track(DEF[n]));
@@ -204,6 +204,12 @@ function hops(t0, x1, n, dur = 0.3, apex = 30) {
   const x0 = T('x').at(t0);
   for (let i = 1; i <= n; i++) hop(t0 + (i - 1) * (dur + 0.12), lerp(x0, x1, i / n), dur, apex);
   return t0 + n * (dur + 0.12) - 0.12;
+}
+const ROOF_ROI = [650, 650];   // écoulement sous le toit, dans les coordonnées du cadre vidéo
+function roofZoom(t0, t1) {
+  to('vz', t0, t0 + 0.85, [1.75, ROOF_ROI[0], ROOF_ROI[1]], 'soft');
+  to('vz', t0 + 0.85, t1, [1.9, ROOF_ROI[0], ROOF_ROI[1] + 10], 'io');
+  to('vz', t1, t1 + 0.9, [1, 540, 780], 'soft');
 }
 function nod(t) {
   to('hdy', t, t + 0.16, 7, 'soft'); to('hdy', t + 0.16, t + 0.42, 0, 'pop');
@@ -377,9 +383,9 @@ function setHref(el, href) {
 }
 const clipSrc = (name, sec) => `media/${name}/${String(clamp(Math.floor(sec * 30) + 1, 1, MEDIA[name])).padStart(4, '0')}.jpg`;
 function makePlayer(parent, x, y, w, h, clip) {
-  const gg = g(parent, { 'clip-path': `url(#${clip})` });
+  const gg = g(parent, { 'clip-path': `url(#${clip})` }), zg = g(gg);
   const a = { preserveAspectRatio: 'xMidYMid slice', x, y, width: w, height: h };
-  return { g: gg, main: mk('image', a, gg), blend: mk('image', { ...a, opacity: 0 }, gg) };
+  return { g: gg, z: zg, main: mk('image', a, zg), blend: mk('image', { ...a, opacity: 0 }, zg) };
 }
 /* Lecture du clip du toit : une première lecture complète (le dessin s'anime),
    puis boucle sur [S, E] avec un fondu de X secondes pour masquer le raccord. */
@@ -402,6 +408,15 @@ const isShown = el => { for (let n = el; n && n.style; n = n.parentNode) if (n.s
 /* ================= DÉCOR ET PLACEHOLDERS ================= */
 let VIDEO, POL2, POL5, CARD5, GLOBE, ICONS = [], TREE, HOUSE, STONE, SOURCE_TXT, BUBBLE, BROWSER, URLCARD;
 let VIDEO_PL = null, SITE_PL = null, SCREEN_PL = null;
+const P2 = { x: 90, y: 480, w: 900, h: 600 };   // dessin original (3:2)
+const P5 = { x: 70, y: 330, w: 400, h: 500 };   // Yann LeCun (4:5)
+/* TIRE de la scène 2 : tourné de 20°, seul le coin bas-gauche dépasse du bord droit,
+   à portée de main du robot (1035, 1444). */
+const P2_PEEK = (() => {
+  const a = 20 * DEG, hw = P2.w / 2, hh = P2.h / 2;
+  const cx = -hw * Math.cos(a) - hh * Math.sin(a), cy = -hw * Math.sin(a) + hh * Math.cos(a);
+  return [1035 - cx - (P2.x + hw), 1444 - cy - (P2.y + hh)];
+})();
 const DOODLES = { g: null, items: [] };
 const WIG = {};
 
@@ -414,19 +429,19 @@ function buildWorld() {
   if (MEDIA.roof) { VIDEO_PL = makePlayer(vg, 2, 422, 1076, 716, 'clipVideo'); mk('rect', { x: VID.x + 1, y: VID.y + 1, width: VID.w - 2, height: VID.h - 2, rx: 28, fill: 'none', stroke: GREEN, 'stroke-width': 2 }, vg); }
   VIDEO = new El(vg, 540, VID.y + VID.h / 2, { s: 0, top: VID.y });
 
-  // polaroid scène 2 : 600×720
+  // scène 2 : le dessin original, cadre ajusté à son format 3:2 (900×600)
   const pg = g(Lw);
-  mk('rect', { x: 241, y: 421, width: 598, height: 718, rx: 18, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, pg);
-  mk('rect', { x: 276, y: 456, width: 528, height: 528, rx: 6, fill: '#101012', stroke: '#26262C', 'stroke-width': 2 }, pg);
-  if (MEDIA.delord) mk('image', { href: 'media/delord.jpg', x: 276, y: 456, width: 528, height: 528, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol2)' }, pg);
-  POL2 = new El(pg, 540, 780, { tx: 1100, ty: 428.3, r: 20, top: 420 });
+  mk('rect', { x: P2.x, y: P2.y, width: P2.w, height: P2.h, rx: 16, fill: '#141414' }, pg);
+  if (MEDIA.delord) mk('image', { href: 'media/delord.jpg', x: P2.x, y: P2.y, width: P2.w, height: P2.h, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol2)' }, pg);
+  mk('rect', { x: P2.x + 1, y: P2.y + 1, width: P2.w - 2, height: P2.h - 2, rx: 16, fill: 'none', stroke: GREEN, 'stroke-width': 2 }, pg);
+  POL2 = new El(pg, P2.x + P2.w / 2, P2.y + P2.h / 2, { tx: P2_PEEK[0] + 200, ty: P2_PEEK[1], r: 20, top: P2.y });
 
-  // scène 5 : polaroid vide + carte titre
+  // scène 5 : photo de Yann LeCun, cadre ajusté à son format 4:5 (400×500) + carte titre
   const p5 = g(Lw);
-  mk('rect', { x: 71, y: 331, width: 418, height: 502, rx: 16, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, p5);
-  mk('rect', { x: 96, y: 356, width: 368, height: 368, rx: 6, fill: '#101012', stroke: '#26262C', 'stroke-width': 2 }, p5);
-  if (MEDIA.lecun) mk('image', { href: 'media/lecun.jpg', x: 96, y: 356, width: 368, height: 368, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol5)' }, p5);
-  POL5 = new El(p5, 280, 582, { ty: -1100, top: 330 });
+  mk('rect', { x: P5.x, y: P5.y, width: P5.w, height: P5.h, rx: 16, fill: '#141414' }, p5);
+  if (MEDIA.lecun) mk('image', { href: 'media/lecun.jpg', x: P5.x, y: P5.y, width: P5.w, height: P5.h, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol5)' }, p5);
+  mk('rect', { x: P5.x + 1, y: P5.y + 1, width: P5.w - 2, height: P5.h - 2, rx: 16, fill: 'none', stroke: GREEN, 'stroke-width': 2 }, p5);
+  POL5 = new El(p5, P5.x + P5.w / 2, P5.y + P5.h / 2, { ty: -1100, top: P5.y });
 
   const c5 = g(Lw);
   mk('rect', { x: 531, y: 401, width: 468, height: 278, rx: 18, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, c5);
@@ -1203,7 +1218,7 @@ function buildTimeline() {
   face(10.6, 'neutre');
   ecrase(10.6, VIDEO, [], 300, VID.y, [889, FLOOR]);
   // 11.2 le coin du polaroid dépasse du bord droit
-  POL2.tx.key(11.2, 1100, 'step'); POL2.tx.key(11.55, 900, 'soft');
+  POL2.tx.key(11.2, P2_PEEK[0] + 200, 'step'); POL2.tx.key(11.55, P2_PEEK[0], 'soft');
   arm('R', 11.72, 11.88, 'reach');
   to('gx', 11.5, 11.8, 10); to('gy', 11.5, 11.8, 2);
   const tp = 11.9;      // [TIRE]
@@ -1211,8 +1226,9 @@ function buildTimeline() {
   to('sx', tp - 0.03, tp + 0.1, 1.15); to('sy', tp - 0.03, tp + 0.1, 0.9);
   to('x', tp, tp + 0.3, 845);
   arm('R', tp, tp + 0.08, 'pull');
-  eto(POL2.tx, tp, tp + 0.38, -18); POL2.tx.key(tp + 0.5, 0, 'soft');
-  eto(POL2.ty, tp, tp + 0.38, -8.7); POL2.ty.key(tp + 0.5, 0, 'soft');
+  const p2l = Math.hypot(P2_PEEK[0], P2_PEEK[1]);   // overshoot de 20 px dans le sens du glissement
+  eto(POL2.tx, tp, tp + 0.38, -P2_PEEK[0] / p2l * 20); POL2.tx.key(tp + 0.5, 0, 'soft');
+  eto(POL2.ty, tp, tp + 0.38, -P2_PEEK[1] / p2l * 20); POL2.ty.key(tp + 0.5, 0, 'soft');
   eto(POL2.r, tp, tp + 0.38, -1.5); POL2.r.key(tp + 0.5, 0, 'soft');
   arm('R', tp + 0.12, tp + 0.42, 'down');
   to('sx', tp + 0.28, tp + 0.42, 1); to('sy', tp + 0.28, tp + 0.42, 1);
@@ -1235,7 +1251,7 @@ function buildTimeline() {
   face(19.6, 'neutre');
 
   /* ---------- SCÈNE 3 · 21.9–49.0 ---------- */
-  ecrase(21.3, POL2, [], 690, 420, [BLX, FLOOR], { fast: true });
+  ecrase(21.3, POL2, [], 690, P2.y, [BLX, FLOOR], { fast: true });
   claque(21.9, [VIDEO]);
   face(21.9, 'neutre');
   to('gx', 22.6, 23.0, 4); to('gy', 22.6, 23.0, -10);
@@ -1243,6 +1259,8 @@ function buildTimeline() {
   face(26.7, 'curieux');
   arm('R', 26.7, 27.2, 'raiseLoupe'); to('loupe', 26.75, 27.2, [58, -92, 50, 1.05]);
   to('gx', 26.7, 27.1, 10); to('gy', 26.7, 27.1, -12); to('rot', 26.7, 27.2, 3);
+  // zoom sur le toit qui coule : punch-in nerveux, lente poussée, puis on ressort pour "la maison s'efface"
+  roofZoom(29.9, 34.1);
   // 30.2 pose "examine un indice", œil-loupe agrandi
   arm('R', 30.2, 30.55, 'examine'); to('loupe', 30.2, 30.55, [0, 0, 0, 1.3]); to('eR', 30.25, 30.6, 1.35, 'pop');
   to('rot', 30.2, 30.55, -6); to('gx', 30.2, 30.5, 4); to('gy', 30.2, 30.5, -6);
@@ -1303,13 +1321,14 @@ function buildTimeline() {
   /* ---------- SCÈNE 5 · 75.1–122.1 ---------- */
   // [TIRE] depuis le haut : il saute, attrape le coin du polaroid et le tire vers le bas
   const hang = handOf(PL.hang);
-  const cornerLocal = [70, 834];
-  const rP = -25 * DEG, cvec = [-210, 252];
+  const cornerLocal = [P5.x, P5.y + P5.h];
+  const rP = -25 * DEG, cvec = [-P5.w / 2, P5.h / 2];
   const cr = [cvec[0] * Math.cos(rP) - cvec[1] * Math.sin(rP), cvec[0] * Math.sin(rP) + cvec[1] * Math.cos(rP)];
   const peek = [330, 150];                       // seul un coin dépasse du bord haut
   const c0 = [peek[0] - cr[0], peek[1] - cr[1]];
-  POL5.tx.key(0, c0[0] - 280, 'step'); POL5.ty.key(0, c0[1] - 582 - 260, 'step'); POL5.r.key(0, -25, 'step');
-  POL5.ty.key(74.2, c0[1] - 582 - 260, 'step'); POL5.ty.key(74.5, c0[1] - 582, 'soft');
+  const p5c = [P5.x + P5.w / 2, P5.y + P5.h / 2];
+  POL5.tx.key(0, c0[0] - p5c[0], 'step'); POL5.ty.key(0, c0[1] - p5c[1] - 260, 'step'); POL5.r.key(0, -25, 'step');
+  POL5.ty.key(74.2, c0[1] - p5c[1] - 260, 'step'); POL5.ty.key(74.5, c0[1] - p5c[1], 'soft');
   CARD5.ty.key(0, -1100, 'step');
   const feetFromCorner = (c, t) => [c[0] - S0 * T('sx').at(t) * hang[0], c[1] - S0 * T('sy').at(t) * (hang[1] - 166)];
   const f0 = feetFromCorner(peek, 0);
@@ -1321,7 +1340,7 @@ function buildTimeline() {
   sqk(74.95, 1, 'soft');
   set('groundY', 74.5, FLOOR);
   const tt = 75.1;
-  const ov = [280 - c0[0], 582 - c0[1]]; const ol = Math.hypot(ov[0], ov[1]); const on = [ov[0] / ol * 20, ov[1] / ol * 20];
+  const ov = [p5c[0] - c0[0], p5c[1] - c0[1]]; const ol = Math.hypot(ov[0], ov[1]); const on = [ov[0] / ol * 20, ov[1] / ol * 20];
   eto(POL5.tx, tt, tt + 0.38, on[0]); POL5.tx.key(tt + 0.5, 0, 'soft');
   eto(POL5.ty, tt, tt + 0.38, on[1]); POL5.ty.key(tt + 0.5, 0, 'soft');
   eto(POL5.r, tt, tt + 0.38, 1.5); POL5.r.key(tt + 0.5, 0, 'soft');
@@ -1374,6 +1393,7 @@ function buildTimeline() {
   face(129.0, 'neutre');
   to('gx', 129.0, 129.4, 0); to('gy', 129.0, 129.4, 0); to('hr', 129.0, 129.4, 0);
   face(130.4, 'curieux');
+  roofZoom(132.25, 135.2);   // "qu'est-ce que vous voyez couler de ce toit ?"
   face(135.2, 'reflechit');
   to('speed', 138.1, 143.5, 0.35, 'soft');
   // 140.5 il s'assoit, les yeux se ferment
@@ -1448,6 +1468,9 @@ function renderWorld(t, ts, ta) {
   if (VIDEO_PL && isShown(VIDEO_PL.g)) {
     let a0 = VIDEO_APPEAR[0]; for (const a of VIDEO_APPEAR) if (ta >= a) a0 = a;
     playRoof(VIDEO_PL, (ta - a0) / SPEED);
+    const [z, px, py] = T('vz').at(ta);   // zoom : le point (px, py) du clip vient au centre du cadre
+    if (z > 1.0005) attr(VIDEO_PL.z, 'transform', `translate(540 780) scale(${r3(z)}) translate(${r3(-px)} ${r3(-py)})`);
+    else VIDEO_PL.z.removeAttribute('transform');
   }
   if (SITE_PL && isShown(SITE_PL.g)) setHref(SITE_PL.main, clipSrc('site', Math.max(0, (ta - 162.05) / SPEED * SITE_RATE)));
   renderSourceText(ta); renderBubble(ta);
