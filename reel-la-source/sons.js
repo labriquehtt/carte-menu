@@ -41,8 +41,6 @@ const SOUNDS = [
   ['CHIME', 'Un œil s\'ouvre', 'tiny soft electronic chime, a robot eye slowly opening', 1],
   ['POWER', 'La lumière revient', 'lights turning back on, soft electrical hum rising, city waking up', 1.5],
   ['VR', 'Il enfile le casque VR', 'VR headset clicking on, futuristic whoosh into a virtual world', 1.5],
-  ['DING', 'Carton final', 'bright cheerful interface notification ding', 0.6],
-  ['HAT', 'Coup de chapeau', 'short playful cartoon whistle, a friendly hat tip', 1],
 ];
 
 // [temps script, id, note, fin (boucles, temps script)]
@@ -89,8 +87,7 @@ const CUES = [
   [173.2, 'SNAP', 'CLAQUE'], [173.25, 'POP', 'le casque VR apparaît dans sa main'],
   [175.3, 'VR', 'il enfile le casque'],
   [177.4, 'PENCIL', '"entrez dans le dessin" : effet dessin', 180.2],
-  [180.35, 'SWISH', 'il retire le casque'], [180.7, 'DING', 'carton l-k-studio.com'],
-  [181.6, 'HAT', 'coup de chapeau'],
+  [180.35, 'SWISH', 'il retire le casque'],
 ];
 
 // repères musicaux (temps script) : la musique doit épouser ces moments

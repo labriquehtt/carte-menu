@@ -1551,12 +1551,66 @@ function buildTimeline() {
 }
 
 /* ================= RENDU D'UNE IMAGE ================= */
+/* ================= CARTE « WORLD MODEL » =================
+   Explication courte pour le grand public : apparaît au centre quand la voix dit « world models »,
+   se range à gauche sous la photo de LeCun (place libre entre la photo, le globe et le robot),
+   disparaît juste avant l'ÉCRASE de 121.5 (le robot saute vers la carte YANN LeCUN). Temps vidéo. */
+const WM = { g: null, parts: [], dots: [], t: null };
+const WM_W = 500, WM_H = 305, WM_CENTER = [540, 800, 1.3], WM_DOCK = [62 + WM_W * 1.06 / 2, 850 + WM_H * 1.06 / 2, 1.06];
+function buildWMCard() {
+  WM.g = g($('L-world')); vis(WM.g, false);
+  const c = g(WM.g, { transform: `translate(${-WM_W / 2} ${-WM_H / 2})` });
+  mk('rect', { x: 0, y: 0, width: WM_W, height: WM_H, rx: 20, fill: '#0D141C', 'fill-opacity': 0.95, stroke: GREEN, 'stroke-width': 2.5 }, c);
+  mk('rect', { x: 0, y: 0, width: WM_W, height: WM_H, rx: 20, fill: 'none', stroke: GREEN, 'stroke-width': 2, opacity: 0.5, filter: 'url(#glow)' }, c);
+  const part = (y0) => { const p = g(c); WM.parts.push({ g: p, y0 }); return p; };
+  const txt = (parent, x, y, str, font, size, fill, extra = {}) => { const e = mk('text', { x, y, 'font-family': font, 'font-weight': font === 'IBM Plex Mono' ? 500 : 700, 'font-size': size, fill, ...extra }, parent); e.textContent = str; return e; };
+  const p0 = part(0);
+  const tt = txt(p0, 30, 64, 'WORLD MODEL', 'Space Grotesk', 44, GREEN, { 'letter-spacing': 2, filter: 'url(#glow)' });
+  const tw = tt.getComputedTextLength();
+  for (let i = 0; i < 3; i++) WM.dots.push(mk('circle', { cx: 30 + tw + 16 + i * 16, cy: 58, r: 4.5, fill: GREEN }, p0));
+  mk('rect', { x: 30, y: 86, width: WM_W - 60, height: 2, rx: 1, fill: GREEN, opacity: 0.45 }, p0);
+  const p1 = part(1);   // ✕ IA vidéo : imite des pixels
+  mk('path', { d: 'M 32 118 L 50 136 M 50 118 L 32 136', stroke: '#F2A65A', 'stroke-width': 5, 'stroke-linecap': 'round' }, p1);
+  txt(p1, 66, 137, 'IA vidéo', 'Space Grotesk', 30, '#F2F3F5');
+  txt(p1, 66, 170, 'imite des pixels', 'IBM Plex Mono', 24, '#AAB4BE');
+  const p2 = part(2);   // ✓ World model : apprend à comprendre le monde
+  mk('path', { d: 'M 31 210 L 39 219 L 53 200', stroke: GREEN, 'stroke-width': 5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none' }, p2);
+  txt(p2, 66, 219, 'World model', 'Space Grotesk', 30, GREEN);
+  txt(p2, 66, 252, 'apprend à comprendre le monde', 'IBM Plex Mono', 24, '#E4F7FF');
+  const p3 = part(3);
+  txt(p3, WM_W / 2, 288, 'gravité · matière · cause → effet', 'IBM Plex Mono', 21, GREEN, { 'text-anchor': 'middle', opacity: 0.9 });
+  // instants : « world » dit par la voix → carte ; départ avant le saut du robot (ÉCRASE 121.5)
+  let tIn = videoAt(113.6);
+  for (const L of SUBS) if (window.VOICE_SUBS && /\*world/.test(L.text) && L.wt) {
+    const k = parseWords(L.text).findIndex(w => /^world/i.test(w.t)); if (k >= 0) tIn = L.wt[k] / SPEED;
+  }
+  const tOut = videoAt(121.5) - 0.35;
+  WM.t = { in: tIn, dock: Math.min(tIn + 2.7, tOut - 2.1), out: tOut };
+}
+function renderWMCard(t) {
+  const T0 = WM.t; if (!T0 || t < T0.in || t > T0.out + 0.35) { vis(WM.g, false); return; }
+  vis(WM.g, true);
+  const pin = E.pop(clamp((t - T0.in) / 0.4));
+  const dk = E.soft(clamp((t - T0.dock) / 0.55));
+  const out = E.soft(clamp((t - T0.out) / 0.3));
+  const x = lerp(WM_CENTER[0], WM_DOCK[0], dk), y = lerp(WM_CENTER[1], WM_DOCK[1], dk);
+  const sc = lerp(WM_CENTER[2], WM_DOCK[2], dk) * Math.max(0.001, pin) * (1 - 0.6 * out);
+  attr(WM.g, 'transform', `translate(${r3(x)} ${r3(y)}) scale(${r3(sc)})`);
+  attr(WM.g, 'opacity', 1 - out);
+  WM.parts.forEach((P, i) => {   // les lignes arrivent l'une après l'autre
+    const u = E.soft(clamp((t - T0.in - 0.12 - 0.28 * i) / 0.3));
+    attr(P.g, 'opacity', u); attr(P.g, 'transform', `translate(${r3(-14 * (1 - u))} 0)`);
+  });
+  WM.dots.forEach((d, i) => attr(d, 'opacity', 0.25 + 0.75 * (((t - T0.in) * 2.2 - i * 0.33) % 1 + 1) % 1));
+}
+
 function renderWorld(t, ts, ta) {
   const f = Math.min(E.soft(clamp((ta - 151.3) / 1.0)), 1 - E.soft(clamp((ta - 159.0) / 1.0)));
   attr($('bgFade'), 'opacity', 0.82 * f);
   renderDecor(RR);
   for (const id of ['L-world', 'L-back', 'L-front']) attr($(id), 'opacity', 1 - f);
   for (const e of ELS) e.apply(ta);
+  renderWMCard(t);
   for (const k in WIG) wiggle(WIG[k], ta);
   renderMosaic(ta); renderPixGrid(t, ts);
   if (VIDEO_PL && isShown(VIDEO_PL.g)) {
@@ -1608,6 +1662,7 @@ async function init() {
   if (SHOW_SUBS) buildSubs(); else vis($('L-subs'), false);
   buildSpeech();
   buildSourceText();
+  buildWMCard();
   await Promise.all(Array.from(document.images || []).map(im => im.decode ? im.decode().catch(() => {}) : null));
   window.renderFrame = renderFrame;
   window.renderAt = t => renderFrame(Math.round(t * FPS));

@@ -69,10 +69,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     lights turning back on, soft electrical hum rising, city waking up
 [VR] Il enfile le casque VR — 1.5 s — utilisé 1×
     VR headset clicking on, futuristic whoosh into a virtual world
-[DING] Carton final — 0.6 s — utilisé 1×
-    bright cheerful interface notification ding
-[HAT] Coup de chapeau — 1 s — utilisé 1×
-    short playful cartoon whistle, a friendly hat tip
 
 ═══ 2. PLACEMENT DANS LA VIDÉO ═══
  0:04.4  TV_OFF    l'écran de la tête s'éteint
@@ -153,8 +149,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  1:49.7  VR        il enfile le casque
  1:50.7  PENCIL    "entrez dans le dessin" : effet dessin  (jusqu'à 1:52.4)
  1:52.5  SWISH     il retire le casque
- 1:52.8  DING      carton l-k-studio.com
- 1:53.3  HAT       coup de chapeau
 
 Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
 à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.

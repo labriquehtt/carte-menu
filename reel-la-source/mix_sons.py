@@ -34,7 +34,7 @@ MIX = {
     'QUESTION': (-19, 0.8), 'WOOD': (-19, 0.6), 'DROP': (-19, 0.6), 'SMOKE': (-20, 1.0),
     'WOBBLE': (-19, 2.2), 'DATA': (-20, 3.2), 'GLITCH': (-17, 2.4), 'UNGLITCH': (-20, 0.8),
     'HOLO': (-19, 2.2), 'DREAM': (-19, 2.2), 'FADE': (-14, 3.5),
-    'CHIME': (-20, 1.2), 'POWER': (-19, 1.8), 'VR': (-18, 1.8), 'DING': (-18, 0.8), 'HAT': (-17, 1.2),
+    'CHIME': (-20, 1.2), 'POWER': (-19, 1.8), 'VR': (-18, 1.8),
 }
 BEDS = {'PENCIL', 'ROOF'}
 ROOF_LEVEL = -21   # son du clip sur l'écran de la tête (eau, vent, feuilles)

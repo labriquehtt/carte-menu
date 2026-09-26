@@ -192,18 +192,6 @@
    "Il enfile le casque VR",
    "VR headset clicking on, futuristic whoosh into a virtual world",
    1.5
-  ],
-  [
-   "DING",
-   "Carton final",
-   "bright cheerful interface notification ding",
-   0.6
-  ],
-  [
-   "HAT",
-   "Coup de chapeau",
-   "short playful cartoon whistle, a friendly hat tip",
-   1
   ]
  ],
  "cues": [
@@ -674,18 +662,6 @@
    "end": null,
    "id": "SWISH",
    "note": "il retire le casque"
-  },
-  {
-   "t": 112.76,
-   "end": null,
-   "id": "DING",
-   "note": "carton l-k-studio.com"
-  },
-  {
-   "t": 113.32,
-   "end": null,
-   "id": "HAT",
-   "note": "coup de chapeau"
   }
  ],
  "music": [
