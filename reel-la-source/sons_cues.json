@@ -140,18 +140,6 @@
    3
   ],
   [
-   "GLITCH",
-   "Robot qui se pixelise",
-   "8-bit retro digital glitch, pixelated crunch and bleeps",
-   2.2
-  ],
-  [
-   "UNGLITCH",
-   "Retour à la normale",
-   "short reverse digital glitch resolving into a clean tone",
-   0.6
-  ],
-  [
    "HOLO",
    "Globe filaire qui se dessine",
    "sci-fi hologram drawing itself line by line, electric tracing shimmer",
@@ -506,18 +494,6 @@
    "end": null,
    "id": "LAND",
    "note": "il lâche et atterrit"
-  },
-  {
-   "t": 58.11,
-   "end": null,
-   "id": "GLITCH",
-   "note": "le robot se pixelise"
-  },
-  {
-   "t": 59.85,
-   "end": null,
-   "id": "UNGLITCH",
-   "note": "retour net"
   },
   {
    "t": 69.5,

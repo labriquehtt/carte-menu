@@ -51,10 +51,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     rubbery cartoon wobble, jelly boing, an object wiggling unnaturally
 [DATA] Mosaïque de vidéos — 3 s — utilisé 1×
     digital data whoosh, many video thumbnails flickering by, soft glitch texture
-[GLITCH] Robot qui se pixelise — 2.2 s — utilisé 1×
-    8-bit retro digital glitch, pixelated crunch and bleeps
-[UNGLITCH] Retour à la normale — 0.6 s — utilisé 1×
-    short reverse digital glitch resolving into a clean tone
 [HOLO] Globe filaire qui se dessine — 2 s — utilisé 1×
     sci-fi hologram drawing itself line by line, electric tracing shimmer
 [DREAM] Bulle de rêve — 2 s — utilisé 1×
@@ -123,8 +119,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  0:46.0  FALL      les objets tombent
  0:46.3  PAPER     il tire la photo vers le bas
  0:46.8  LAND      il lâche et atterrit
- 0:58.1  GLITCH    le robot se pixelise
- 0:59.9  UNGLITCH  retour net
  1:09.5  SNAP      CLAQUE (assis)
  1:09.6  HOLO      le globe se dessine
  1:15.8  JUMP      ÉCRASE : saut

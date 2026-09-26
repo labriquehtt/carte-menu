@@ -66,8 +66,9 @@ exact en temps vidéo, hit-stops compris, via `window.videoTimeOf`), `MUSIQUE-su
 (brief musique Suno calé sur les temps forts et le silence) et `sons_cues.json`.
 À relancer après toute modification de la timeline.
 
-Bruitages : les 34 sons (`SOUNDS` de sons.js ; ambiance de fond et néon sur « LA SOURCE » retirés
-à la demande : la voix et la musique doivent rester pures) ont été générés via le connecteur ElevenLabs (modèle
+Bruitages : les 30 sons (`SOUNDS` de sons.js ; retirés à la demande : ambiance de fond, néon sur
+« LA SOURCE », glitch 8-bit du passage en pixels et son retour, ding du carton l-k-studio.com et
+sifflet du coup de chapeau) ont été générés via le connecteur ElevenLabs (modèle
 `eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
 https://elevenlabs.io/app/flows/LxzHYbIplS9K9SBhNABw) et rangés dans `media/sfx/<ID>.mp3`
 (hors Git). `python3 mix_sons.py` les pose aux repères de `sons_cues.json` → `out/bruitages.wav`
@@ -87,7 +88,7 @@ et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/
 avec sa voix + bruitages + nouvelle musique de fond « deep tech »** : 4 morceaux eleven_music_v2
 (techno mélodique profonde, IA/tech, 118 BPM, la mineur ; drone suspendu ; rêve éthéré ; outro)
 dans `media/music2/` (prises A ; le jazz de `media/music/` jugé « trop tuto YouTube »), montés par
-`mix_musique.py --src media/music2 --bpm 118 --wav out/musique2.wav` (groove étiré ~6 %, breakdown
+`mix_musique.py --src media/music2 --bpm 118 --wav out/musique2.wav` (groove étiré ~6 %, sans bégaiement 8-bit, breakdown
 naturel autour de « prédire des pixels », drop sur « il a quitté Meta », outro qui démarre sur « Les
 dessins de Philippe Delord » pour que l'accord final tombe sur le coup de chapeau), puis
 `mix_voix.py --music out/musique2.wav --music-gain -8` : **musique très basse** (~18-23 dB sous la
@@ -118,6 +119,13 @@ appliqué seulement là où il y a de la musique ; le modèle UVR, lui, perd la 
    s'effacent quand la voix parle (sidechaincompress) → ~20 dB sous la voix ; ajoutés à la vidéo
    encodée. Voix prise dans `voix_capcut_propre.wav` (export CapCut refait sans musique, calé à
    0 ms près sur le premier), sinon `voix_seule.wav`, sinon `voix.wav`.
+
+### Carte « World model »
+
+`buildWMCard` / `renderWMCard` (reel.js, temps vidéo) : explication grand public qui apparaît au
+centre quand la voix dit « world » (IA vidéo : imite des pixels / World model : apprend à
+comprendre le monde / gravité · matière · cause → effet), se range sous la photo de LeCun (entre
+la photo, le globe et le robot) et s'efface 0,35 s avant l'ÉCRASE de 121.5.
 
 ### Miniature (couverture du reel)
 

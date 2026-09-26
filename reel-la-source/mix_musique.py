@@ -7,7 +7,7 @@
 
 Quatre morceaux générés séparément (media/music/<PART>.mp3, hors Git), même tonalité et
 même tempo, puis coupés et enchaînés ici aux repères `music` de sons_cues.json :
-  GROOVE   du dézoom jusqu'à « La Source. » (arrêt net), avec un bégaiement 8-bit sur le glitch
+  GROOVE   du dézoom jusqu'à « La Source. » (arrêt net) ; --stutter : bégaiement 8-bit sur le glitch
   SUSPENS  « presque rien » après l'arrêt, ralenti façon bande qui freine, jusqu'au silence
   REVE     le rêve du robot, fondu à « Hallucination »
   OUTRO    fin LK Studio, l'accord final posé pile sur le coup de chapeau
@@ -108,6 +108,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--src', default=os.path.join(HERE, 'media', 'music'))
     ap.add_argument('--bpm', type=float, default=BPM)
+    ap.add_argument('--stutter', action='store_true')
     ap.add_argument('--wav', default=os.path.join(HERE, 'out', 'musique.wav'))
     ap.add_argument('--sfx')
     ap.add_argument('--video')
@@ -124,8 +125,10 @@ def main():
     # GROOVE : du dézoom à l'arrêt net sur « La Source. »
     g0, stop = M['Groove'], M['STOP']
     g = fit(part(a.src, 'GROOVE'), stop - g0, a.bpm)[:int((stop - g0) * SR)].copy()
-    gl0, gl1 = int((M['Glitch'] - g0) * SR), int((cue['UNGLITCH'] - g0) * SR)
-    g[gl0:gl1] = stutter(g[gl0:gl1].copy(), beat)
+    if a.stutter:   # bégaiement 8-bit sur « prédire des pixels » (désactivé : jugé désagréable)
+        gl0 = int((M['Glitch'] - g0) * SR)
+        gl1 = int((cue.get('UNGLITCH', M['Glitch'] + 1.75) - g0) * SR)
+        g[gl0:gl1] = stutter(g[gl0:gl1].copy(), beat)
     g = fade(g, 0.25, 0.02)
     put(mix, g, g0)
 
