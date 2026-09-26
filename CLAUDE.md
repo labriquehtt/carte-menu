@@ -10,7 +10,7 @@ ancien projet, à ignorer.
 
 ## 🎬 Reel "LA SOURCE" — `reel-la-source/`
 
-Vidéo 9:16, 1080×1920, 30 fps, **100 s**, sans audio (voix, musique, bruitages ajoutés au
+Vidéo 9:16, 1080×1920, 30 fps, **116 s** (dont l'outro LK Studio / Galerie Delord de 100 à 116 s), sans audio (voix, musique, bruitages ajoutés au
 montage dans CapCut ; les sous-titres à l'image servent de base pour poser la voix).
 La timeline est écrite dans les timecodes du brief (159 s de "temps script") et lue ×1,59
 (`SPEED`) ; temps vidéo = temps script ÷ 1,59. Tout est généré par code : une page SVG animée par keyframes, rendue

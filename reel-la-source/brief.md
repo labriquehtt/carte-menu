@@ -11,6 +11,15 @@
 - **v2 — décor** : nuit de film noir de détective — ciel bleu nuit → sarcelle, lune verte
   (rappel de #4DFF8F), lumière de store vénitien, skyline aux fenêtres ambrées, poussières en
   suspension. Aucune teinte violette/rose (sûr pour l'incrustation du magenta).
+- **v4 — outro LK Studio (scène 8, 159.0–184.44 script → 100–116 s vidéo)** : la lumière
+  revient, le robot se réveille ; [CLAQUE] 162.0 → fenêtre de navigateur
+  « l-k-studio.com/gallery_delord.html » (zone de contenu 16:9 : x 20, y 500, 1040×585, pour
+  le scroll du site) ; il la désigne ; [CLAQUE] 173.2 → casque VR dans sa main, il l'enfile
+  (loupe relevée) ; « entrez dans le dessin » = effet dessin + croquis ; il retire le casque,
+  carton « GALERIE DELORD · l-k-studio.com », coup de chapeau. Texte :
+  Affaire à suivre… / Les autres dessins de Philippe Delord / vous attendent dans sa galerie, /
+  sur LK Studio. / Et la galerie se visite aussi / en réalité virtuelle : / enfilez un casque, /
+  et entrez dans le dessin.
 - **Montage CapCut (v3)** : le mode écran magenta dure de **0 à 4,15 s** (extinction télé à
   3,96 s) → le clip Kling va sur la piste du dessous de 0 à 4,15 s.
 

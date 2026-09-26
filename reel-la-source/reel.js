@@ -8,7 +8,7 @@
    La vidéo est lue SPEED fois plus vite : 159 s de script → 100 s de vidéo (débit de parole
    normal, ~2,7 mots/s). Les hit-stops, l'idle, les clignements, la bouche et le décor restent
    en temps réel. */
-const SCRIPT_DURATION = 159, SPEED = 159 / 100;
+const SCRIPT_DURATION = 184.44, SPEED = 159 / 100;   // 184.44 s script → 116 s vidéo (outro LK Studio incluse)
 const W = 1080, H = 1920, FPS = 30, DURATION = SCRIPT_DURATION / SPEED;
 const NS = 'http://www.w3.org/2000/svg';
 const GREEN = '#4DFF8F', INK = '#1B1620';
@@ -125,6 +125,9 @@ const PR = {
   pull: [60, 38, 124, 44, 176, 16],
   reachR: [58, 38, 112, 60, 150, 40],
   balance: [58, 38, 128, -10, 146, -78],
+  pointR: [58, 38, 130, -20, 150, -100],
+  holdVR: [58, 38, 140, 10, 150, -80],
+  onHead: [58, 38, 140, -30, 112, -110],
 };
 const mirror = p => [-p[0], p[1], -p[2], p[3], -p[4], p[5]];
 const PL = {};
@@ -147,7 +150,7 @@ const DEF = {
   hr: 0, hdx: 0, hdy: 0, gx: 0, gy: 0,
   armR: PR.down, armL: PL.down, handR: 1, handL: 1,
   loupe: [0, 0, 0, 1], loupeUp: 1, eR: 1, lid: 1, rOpen: 0,
-  hatTilt: 0, hatLift: 0, faceOn: 0, speed: 1, groundY: FLOOR, qmark: 0, phys: 0,
+  hatTilt: 0, hatLift: 0, faceOn: 0, speed: 1, groundY: FLOOR, qmark: 0, phys: 0, vr: [150, -44, 0],
 };
 const TR = {};
 const T = n => TR[n] || (TR[n] = new Track(DEF[n]));
@@ -358,7 +361,8 @@ function renderDecor(ta) {
 }
 
 /* ================= DÉCOR ET PLACEHOLDERS ================= */
-let VIDEO, POL2, POL5, CARD5, GLOBE, ICONS = [], TREE, HOUSE, STONE, SOURCE_TXT, BUBBLE;
+let VIDEO, POL2, POL5, CARD5, GLOBE, ICONS = [], TREE, HOUSE, STONE, SOURCE_TXT, BUBBLE, BROWSER, URLCARD;
+const DOODLES = { g: null, items: [] };
 const WIG = {};
 
 function buildWorld() {
@@ -480,6 +484,38 @@ function buildWorld() {
   mk('path', { d: 'M 546 1246 V 1230 H 558 V 1246' }, mini);
   for (let i = 0; i < 3; i++) BUBBLE.drips.push(mk('line', { x1: 0, y1: 0, x2: 0, y2: 0, 'stroke-width': 3 }, mini));
 
+  // outro : fenêtre de navigateur (contenu 16:9 = x 20, y 500, 1040×585, pour le scroll du site)
+  const bw = g(Lw);
+  mk('rect', { x: 21, y: 441, width: 1038, height: 643, rx: 22, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, bw);
+  mk('path', { d: 'M 22 463 Q 22 442 43 442 H 1037 Q 1058 442 1058 463 V 499 H 22 Z', fill: '#1A1E26' }, bw);
+  mk('path', { d: 'M 22 500 H 1058', stroke: '#2A2F3A', 'stroke-width': 2 }, bw);
+  [['#FF6B5A', 58], ['#D4A64A', 86], ['#4DFF8F', 114]].forEach(([c, x]) => mk('circle', { cx: x, cy: 471, r: 8, fill: c }, bw));
+  mk('rect', { x: 150, y: 456, width: 760, height: 30, rx: 15, fill: '#0E1116', stroke: '#2A2F3A', 'stroke-width': 1.5 }, bw);
+  mk('path', { d: 'M 170 468 v -4 a 6 6 0 0 1 12 0 v 4 M 167 468 h 18 v 11 h -18 Z', fill: 'none', stroke: GREEN, 'stroke-width': 2, 'stroke-linejoin': 'round' }, bw);
+  const url = mk('text', { x: 196, y: 478, 'font-family': 'IBM Plex Mono', 'font-weight': 500, 'font-size': 19, fill: '#C9D1D9' }, bw);
+  url.textContent = 'l-k-studio.com/gallery_delord.html';
+  BROWSER = new El(bw, 540, 762, { s: 0, top: 440 });
+
+  const uc = g(Lw);
+  const u1 = mk('text', { x: 668, y: 1392, 'text-anchor': 'middle', 'font-family': 'IBM Plex Mono', 'font-weight': 500, 'font-size': 24, 'letter-spacing': 5, fill: '#C9D1D9', stroke: '#0A0A0F', 'stroke-width': 6, 'paint-order': 'stroke fill' }, uc);
+  u1.textContent = 'GALERIE DELORD';
+  const u2 = mk('text', { x: 668, y: 1478, 'text-anchor': 'middle', 'font-family': 'Fredoka', 'font-weight': 700, 'font-size': 80, fill: GREEN, stroke: '#0A0A0F', 'stroke-width': 10, 'stroke-linejoin': 'round', 'paint-order': 'stroke fill', filter: 'url(#softGlow)' }, uc);
+  u2.textContent = 'l-k-studio.com';
+  const ul = mk('path', { d: 'M 440 1502 H 896', stroke: GREEN, 'stroke-width': 4, 'stroke-linecap': 'round', pathLength: 1, 'stroke-dasharray': '1 1' }, uc);
+  URLCARD = new El(uc, 668, 1440, { s: 0, top: 1360 });
+  URLCARD.hook = t => attr(ul, 'stroke-dashoffset', 1 - E.soft(clamp((t - 180.9) / 0.5)));
+
+  // croquis qui se dessinent autour de lui ("entrez dans le dessin")
+  const dg = g(Lf, { fill: 'none', stroke: GREEN, 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', filter: 'url(#glow)' });
+  const DOODLE_ART = [
+    'M 22 1150 L 50 1124 L 78 1150 M 28 1144 V 1176 H 72 V 1144',
+    'M 190 1098 L 197 1116 L 216 1117 L 201 1128 L 206 1146 L 190 1136 L 174 1146 L 179 1128 L 164 1117 L 183 1116 Z',
+    'M 338 1146 m -4 0 a 4 4 0 1 1 8 0 a 9 9 0 1 1 -18 0 a 14 14 0 1 1 28 0',
+    'M 14 1340 q 12 -14 24 0 t 24 0 t 24 0',
+    'M 336 1560 q 20 -40 0 -64 q -22 26 0 64 Z M 336 1560 v -44',
+  ];
+  DOODLES.g = dg; DOODLES.items = DOODLE_ART.map((d, i) => ({ el: mk('path', { d, pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1 }, dg), t: 177.5 + i * 0.35 }));
+
   // décor : mosaïque de vidéos (scène 4) et grille de pixels (scène 5)
   const mos = g(Lb); const R = rng(4242);
   const rows = [];
@@ -568,6 +604,14 @@ function buildRobot() {
     ouv: mk('rect', { x: -14, y: -10, width: 28, height: 20, rx: 9 }, RB.talk),
     o: mk('ellipse', { cx: 0, cy: 0, rx: 8, ry: 11, fill: 'none', stroke: GREEN, 'stroke-width': 5 }, RB.talk),
   };
+  RB.vr = g(RB.head);   // casque VR de l'outro (par-dessus l'écran)
+  markup(RB.vr, `
+    <rect x="-116" y="-121" width="232" height="30" rx="15" fill="#2A2F3A" stroke="${INK}" stroke-width="5"/>
+    <rect x="-98" y="-152" width="196" height="104" rx="32" fill="#20242E" stroke="${INK}" stroke-width="6"/>
+    <rect x="-86" y="-141" width="172" height="82" rx="24" fill="#15161C" stroke="#3A3F4B" stroke-width="3"/>
+    <g filter="url(#glow)" fill="${GREEN}"><rect x="-70" y="-116" width="56" height="32" rx="14" opacity="0.9"/><rect x="14" y="-116" width="56" height="32" rx="14" opacity="0.9"/></g>
+    <path d="M -76 -128 Q -76 -136 -66 -136 L -30 -136" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="0" cy="-66" r="4" fill="${GREEN}"/>`);
   RB.loupe = g(RB.body); mk('use', { href: '#loupe' }, RB.loupe);
   RB.arms.L.front = makeArm(RB.body); RB.arms.R.front = makeArm(RB.body);
   RB.sparks = g(RB.body, { stroke: GREEN, 'stroke-width': 5, 'stroke-linecap': 'round', filter: 'url(#glow)' });
@@ -675,7 +719,7 @@ function buildSpeech() {
   SUBS.forEach((L, i) => {
     const t0 = L.t0 / SPEED, t1 = Math.min(L.t1, L.te) / SPEED - 0.1;   // temps réel
     const R = rng(1000 + i); const seq = []; let t = t0 + 0.04, last = '';
-    const sleepy = L.t0 >= 145.5;
+    const sleepy = L.t0 >= 145.5 && L.t0 < 159;
     const pool = sleepy ? ['ferm', 'mi', 'ferm', 'mi'] : ['mi', 'mi', 'ouv', 'ouv', 'o', 'ferm', 'mi', 'ouv'];
     while (t < t1) {
       let sh; do { sh = pool[Math.floor(R() * pool.length)]; } while (sh === last);
@@ -695,8 +739,12 @@ function mouthAt(t) {
 }
 
 /* ----- effets dessin / pixel ----- */
-const DRAW = [11.2, 19.6], PIX = [93.0, 96.4];
-function drawAmt(t) { if (t < DRAW[0] || t > DRAW[1]) return 0; return Math.min(E.soft((t - DRAW[0]) / 0.3), E.soft((DRAW[1] - t) / 0.3)); }
+const DRAWS = [[11.2, 19.6], [177.4, 180.2]], PIX = [93.0, 96.4];
+const inDraw = t => DRAWS.some(([a, b]) => t >= a && t <= b);
+function drawAmt(t) {
+  for (const [a, b] of DRAWS) if (t >= a && t <= b) return Math.min(E.soft((t - a) / 0.3), E.soft((b - t) / 0.3));
+  return 0;
+}
 function pixBlock(t) {
   if (t < PIX[0] || t > PIX[1] + 0.3) return 0;
   if (t < PIX[0] + 0.12) return lerp(4, 18, E.soft((t - PIX[0]) / 0.12));
@@ -729,7 +777,7 @@ function buildHitstops() {
 const warp = t => warpWith(HSR, t);
 // effets dessin/pixel : le robot bouge à 12 images par seconde RÉELLE
 function robotTime(ts, ta) {
-  if ((ts >= DRAW[0] && ts <= DRAW[1]) || (ts >= PIX[0] && ts <= PIX[1])) return Math.floor(ta * 12 / SPEED + 1e-6) * SPEED / 12;
+  if (inDraw(ts) || (ts >= PIX[0] && ts <= PIX[1])) return Math.floor(ta * 12 / SPEED + 1e-6) * SPEED / 12;
   return ta;
 }
 
@@ -789,6 +837,10 @@ function renderRobot(t, ts, ta) {
     attr(RB.talk, 'transform', `translate(${mc[0]} ${mc[1]})`);
     for (const k in RB.mouths) vis(RB.mouths[k], k === mouth);
   } else vis(RB.talk, false);
+
+  const V = v('vr');
+  vis(RB.vr, V[2] > 0.005);
+  if (V[2] > 0.005) attr(RB.vr, 'transform', `translate(${r3(V[0])} ${r3(V[1])}) translate(0 -96) scale(${r3(V[2])}) translate(0 96)`);
 
   // loupe
   const up = v('loupeUp'), L4 = v('loupe');
@@ -908,7 +960,16 @@ const SUB_RAW = [
   [147.4, 148.8, '*qui rêve*,', 'R2'],
   [148.8, 151.3, 'elle ou nous ?', 'R2'],
   [151.3, 152.9, '*Hallucination*,', 'C'],
-  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 'C', 999],
+  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 'C', 159.0],
+  // SCÈNE 8 · outro LK Studio (Galerie Delord)
+  [160.1, 162.0, 'Affaire à suivre…', 'R'],
+  [162.0, 165.5, 'Les autres dessins de *Philippe Delord*', 'R'],
+  [165.5, 168.4, 'vous attendent dans sa *galerie*,', 'R'],
+  [168.4, 170.2, 'sur *LK Studio*.', 'R'],
+  [170.2, 173.2, 'Et la galerie se visite aussi', 'R'],
+  [173.2, 175.2, 'en *réalité virtuelle* :', 'R'],
+  [175.2, 177.0, 'enfilez un *casque*,', 'R'],
+  [177.0, 180.2, 'et entrez dans le *dessin*.', 'R', 180.4],
 ];
 const SUBS = SUB_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_RAW[i + 1] ? SUB_RAW[i + 1][0] : 999) }));
 
@@ -1014,7 +1075,7 @@ function renderSourceText(ta) {
 /* ================= BULLE DE RÊVE ================= */
 const BUB_T = 143.5;
 function renderBubble(ta) {
-  const on = ta >= BUB_T; vis(BUBBLE.g, on); if (!on) return;
+  const on = ta >= BUB_T && ta < 158.9; vis(BUBBLE.g, on); if (!on) return;
   const pc = (el, t0, cx, cy) => { const k = E.pop(clamp((ta - t0) / 0.35)); vis(el, k > 0.001); attr(el, 'transform', `translate(${cx} ${cy}) scale(${r3(Math.max(0.001, k))}) translate(${-cx} ${-cy})`); };
   pc(BUBBLE.c1, BUB_T, 300, 1250); pc(BUBBLE.c2, BUB_T + 0.15, 345, 1214);
   const k = E.pop(clamp((ta - BUB_T - 0.3) / 0.45));
@@ -1273,15 +1334,61 @@ function buildTimeline() {
   /* ---------- SCÈNE 7 · 151.3–159.0 ---------- */
   hitstop(151.3, 0.15);
   to('y', 151.45, 152.25, 1235); to('x', 151.75, 152.9, 540); to('s', 151.6, 152.9, 1.0);   // il s'élève d'abord, puis glisse au centre (sans passer sur le texte)
-  T('groundY').seg(151.45, 160, t => T('y').at(t));
+  T('groundY').seg(151.45, 159.45, t => T('y').at(t));
   face(152.0, 'eveil');
   to('rOpen', 152.0, 153.1, 1, 'io');
   to('rOpen', 157.0, 157.07, 0.05, 'qin'); to('rOpen', 157.07, 157.24, 1, 'soft');
+  VIDEO.s.key(158.9, 0, 'step');   // déjà invisible dans le noir : il ne revient pas avec la lumière
+
+  /* ---------- SCÈNE 8 · 159.0–184.4 · outro LK Studio (Galerie Delord) ---------- */
+  // la lumière revient, il se réveille, se lève et saute à sa place sous le cadre
+  face(159.1, 'curieux');
+  to('sit', 159.1, 159.4, 0); to('float', 159.1, 159.4, 6);
+  crouch(159.3, 159.45, 0.84);
+  jump(159.45, 0.5, BLX, FLOOR, 40);
+  to('s', 159.45, 159.95, S0);
+  set('groundY', 159.5, FLOOR);
+  face(160.1, 'neutre'); to('gx', 160.0, 160.4, 5); to('gy', 160.0, 160.4, -8);
+  // 162.0 [CLAQUE] → la fenêtre du site
+  claque(162.0, [BROWSER]);
+  to('gx', 162.4, 162.8, 6); to('gy', 162.4, 162.8, -12);
+  // il désigne la galerie
+  face(165.5, 'satisfait');
+  arm('R', 165.5, 165.85, 'pointR'); to('rot', 165.5, 165.85, 4);
+  face(168.4, 'neutre');
+  arm('R', 169.9, 170.2, 'down'); to('rot', 169.9, 170.2, 0);
+  face(170.2, 'curieux');
+  // 173.2 [CLAQUE] → un casque VR apparaît dans sa main
+  claque(173.2, [], { sat: false, armAfter: 'holdVR' });
+  T('vr').key(173.25, [150, -44, 0], 'step'); T('vr').key(173.5, [150, -44, 0.54], 'pop'); T('vr').key(173.65, [150, -44, 0.5], 'soft');
+  to('gx', 173.3, 173.6, 10); to('gy', 173.3, 173.6, -10);
+  // 175.3 il l'enfile, la loupe se relève
+  arm('R', 175.3, 175.6, 'onHead');
+  to('vr', 175.35, 175.75, [0, 0, 1]);
+  to('loupeUp', 175.3, 175.6, 1);
+  sqk(175.72, 0.93, 'soft'); sqk(175.95, 1, 'pop');
+  arm('R', 175.8, 176.1, 'down');
+  face(175.75, 'neutre'); to('gx', 175.6, 175.8, 0); to('gy', 175.6, 175.8, 0);
+  // 177.4 "entrez dans le dessin" : il regarde autour de lui, redevient dessin
+  to('hr', 177.5, 177.9, -8); to('hr', 178.3, 178.8, 8); to('hr', 179.2, 179.6, -4); to('hr', 179.9, 180.2, 0);
+  to('rot', 177.5, 177.9, -3); to('rot', 178.3, 178.8, 3); to('rot', 179.2, 179.6, 0);
+  // 180.2 il retire le casque, la loupe retombe ; carton final
+  arm('R', 180.2, 180.4, 'onHead');
+  to('vr', 180.35, 180.6, [0, -130, 1]); to('vr', 180.6, 180.75, [0, -150, 0], 'soft');
+  to('loupeUp', 180.55, 181.0, 0, 'pop');
+  arm('R', 180.6, 180.9, 'down');
+  face(180.6, 'satisfait');
+  URLCARD.s.key(180.7, 0, 'step'); URLCARD.s.key(180.95, 1.08, 'pop'); URLCARD.s.key(181.1, 1, 'soft');
+  URLCARD.r.key(180.7, -3, 'step'); URLCARD.r.key(180.95, 0, 'soft');
+  to('gx', 180.8, 181.1, 8); to('gy', 180.8, 181.1, 2);
+  // il soulève son chapeau
+  arm('L', 181.4, 181.65, 'hatfix'); to('hatLift', 181.6, 181.8, -18, 'pop'); to('hatTilt', 181.6, 181.8, -10, 'pop');
+  to('hatLift', 182.0, 182.3, 0); to('hatTilt', 182.0, 182.3, 0); arm('L', 182.2, 182.5, 'down');
 }
 
 /* ================= RENDU D'UNE IMAGE ================= */
 function renderWorld(t, ts, ta) {
-  const f = E.soft(clamp((ta - 151.3) / 1.0));
+  const f = Math.min(E.soft(clamp((ta - 151.3) / 1.0)), 1 - E.soft(clamp((ta - 159.0) / 1.0)));
   attr($('bgFade'), 'opacity', 0.82 * f);
   renderDecor(ta / SPEED);
   for (const id of ['L-world', 'L-back', 'L-front']) attr($(id), 'opacity', 1 - f);
@@ -1289,6 +1396,11 @@ function renderWorld(t, ts, ta) {
   for (const k in WIG) wiggle(WIG[k], ta);
   renderMosaic(ta); renderPixGrid(t, ts);
   renderSourceText(ta); renderBubble(ta);
+  const dOn = ta >= 177.4 && ta < 180.8; vis(DOODLES.g, dOn);
+  if (dOn) {
+    attr(DOODLES.g, 'opacity', 1 - E.soft(clamp((ta - 180.2) / 0.5)));
+    for (const d of DOODLES.items) attr(d.el, 'stroke-dashoffset', 1 - E.soft(clamp((ta - d.t) / 0.45)));
+  }
 }
 let DEBUG = false;
 function renderFrame(i) {
