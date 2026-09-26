@@ -25,6 +25,21 @@ image par image dans Chromium puis encodée en H.264.
   aussi la bouche du robot).
 - `render.js` : rendu (Playwright + ffmpeg de `imageio-ffmpeg`).
 - `assets/` : polices (Fredoka, Space Grotesk, IBM Plex Mono) et pins du chapeau.
+- `prepare_media.py` : prépare `media/` (clips en images à 30 fps, photos recadrées,
+  `media/manifest.js`). **`media/` n'est pas dans Git** (dépôt public, droits d'auteur) :
+  dans une nouvelle session, redemander les fichiers à l'utilisateur, puis
+  `python3 prepare_media.py --roof toit.mp4 --site site.mp4 --lecun lecun.webp`.
+  Sans médias, la vidéo retombe sur les cadres vides et l'écran magenta.
+
+### Médias intégrés
+
+- `roof` (clip IA du dessin qui "coule", 3:2) : écran de la tête en gros plan (0–4,15 s) et
+  cadre vidéo (scènes 1, 3, 6 ; repart du début à chaque apparition puis boucle avec fondu).
+  Sa 1re image = le dessin original de Philippe Delord → polaroid de la scène 2.
+- `lecun` : photo de Yann LeCun → polaroid de la scène 5.
+- `site` (scroll de l-k-studio.com/gallery_delord.html, 16:9, 23,4 s) : fenêtre navigateur
+  de l'outro, lue ×1,66 (`SITE_RATE`) pour tenir dans les 14 s.
+- `renderFrame` est asynchrone : il attend le chargement des images des clips.
 
 ### Commandes
 
@@ -43,8 +58,9 @@ Ne jamais redessiner le robot : réutiliser les `<g id="rb-…">` de `index.html
 
 ### Règles importantes
 
-- Magenta `#FF00FF` réservé à l'écran du mode écran (0–6.6 s script = 0–4,15 s vidéo), exactement x 60, y 440,
-  960×640, rayon 143 — rien par-dessus, tête immobile.
+- Écran du mode écran (0–6.6 s script = 0–4,15 s vidéo) : exactement x 60, y 440, 960×640,
+  rayon 143 — rien par-dessus, tête immobile. Il affiche le clip `roof` ; sans médias, magenta
+  `#FF00FF` pur pour une incrustation au montage.
 - Expressions autorisées seulement : neutre, curieux, perplexe, surpris, reflechit, sceptique,
   incertain, satisfait, endormi (+ `eveil` = endormi avec un œil ouvert, scène 7).
 - Le robot ne recouvre jamais l'intérieur d'un cadre affiché ; les cadres n'entrent/sortent

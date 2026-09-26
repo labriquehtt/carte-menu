@@ -360,8 +360,48 @@ function renderDecor(ta) {
   }
 }
 
+/* ================= MÉDIAS INTÉGRÉS (media/, préparés par prepare_media.py) =================
+   Les clips sont des suites d'images à 30 fps ; chaque image de la vidéo attend que ses
+   images soient chargées avant d'être capturée. */
+const MEDIA = window.MEDIA || {};
+const PENDING = [];
+function setHref(el, href) {
+  if (el.getAttribute('href') === href) return;
+  PENDING.push(new Promise(res => {
+    const done = () => res();
+    el.addEventListener('load', done, { once: true });
+    el.addEventListener('error', done, { once: true });
+    setTimeout(done, 4000);
+    el.setAttribute('href', href);
+  }));
+}
+const clipSrc = (name, sec) => `media/${name}/${String(clamp(Math.floor(sec * 30) + 1, 1, MEDIA[name])).padStart(4, '0')}.jpg`;
+function makePlayer(parent, x, y, w, h, clip) {
+  const gg = g(parent, { 'clip-path': `url(#${clip})` });
+  const a = { preserveAspectRatio: 'xMidYMid slice', x, y, width: w, height: h };
+  return { g: gg, main: mk('image', a, gg), blend: mk('image', { ...a, opacity: 0 }, gg) };
+}
+/* Lecture du clip du toit : une première lecture complète (le dessin s'anime),
+   puis boucle sur [S, E] avec un fondu de X secondes pour masquer le raccord. */
+const ROOF_LOOP = { S: 1.0, E: 4.95, X: 0.6 };
+function roofTimes(ct) {
+  const { S, E, X } = ROOF_LOOP, P = E - S - X;
+  let m = ct;
+  if (ct >= E) m = S + X + ((ct - E) % P);
+  if (m > E - X) return [m, S + (m - (E - X)), (m - (E - X)) / X];
+  return [m, 0, 0];
+}
+function playRoof(pl, ct) {
+  const [m, n, w] = roofTimes(Math.max(0, ct));
+  setHref(pl.main, clipSrc('roof', m));
+  if (w > 0) { setHref(pl.blend, clipSrc('roof', n)); attr(pl.blend, 'opacity', w); }
+  else attr(pl.blend, 'opacity', 0);
+}
+const isShown = el => { for (let n = el; n && n.style; n = n.parentNode) if (n.style.display === 'none') return false; return true; };
+
 /* ================= DÉCOR ET PLACEHOLDERS ================= */
 let VIDEO, POL2, POL5, CARD5, GLOBE, ICONS = [], TREE, HOUSE, STONE, SOURCE_TXT, BUBBLE, BROWSER, URLCARD;
+let VIDEO_PL = null, SITE_PL = null, SCREEN_PL = null;
 const DOODLES = { g: null, items: [] };
 const WIG = {};
 
@@ -371,18 +411,21 @@ function buildWorld() {
   // cadre vidéo 1080×720, uni, contour vert 2 px, aucun contenu
   const vg = g(Lw);
   mk('rect', { x: VID.x + 1, y: VID.y + 1, width: VID.w - 2, height: VID.h - 2, rx: 28, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, vg);
+  if (MEDIA.roof) { VIDEO_PL = makePlayer(vg, 2, 422, 1076, 716, 'clipVideo'); mk('rect', { x: VID.x + 1, y: VID.y + 1, width: VID.w - 2, height: VID.h - 2, rx: 28, fill: 'none', stroke: GREEN, 'stroke-width': 2 }, vg); }
   VIDEO = new El(vg, 540, VID.y + VID.h / 2, { s: 0, top: VID.y });
 
   // polaroid scène 2 : 600×720
   const pg = g(Lw);
   mk('rect', { x: 241, y: 421, width: 598, height: 718, rx: 18, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, pg);
   mk('rect', { x: 276, y: 456, width: 528, height: 528, rx: 6, fill: '#101012', stroke: '#26262C', 'stroke-width': 2 }, pg);
+  if (MEDIA.delord) mk('image', { href: 'media/delord.jpg', x: 276, y: 456, width: 528, height: 528, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol2)' }, pg);
   POL2 = new El(pg, 540, 780, { tx: 1100, ty: 428.3, r: 20, top: 420 });
 
   // scène 5 : polaroid vide + carte titre
   const p5 = g(Lw);
   mk('rect', { x: 71, y: 331, width: 418, height: 502, rx: 16, fill: '#141414', stroke: GREEN, 'stroke-width': 2 }, p5);
   mk('rect', { x: 96, y: 356, width: 368, height: 368, rx: 6, fill: '#101012', stroke: '#26262C', 'stroke-width': 2 }, p5);
+  if (MEDIA.lecun) mk('image', { href: 'media/lecun.jpg', x: 96, y: 356, width: 368, height: 368, preserveAspectRatio: 'xMidYMid slice', 'clip-path': 'url(#clipPol5)' }, p5);
   POL5 = new El(p5, 280, 582, { ty: -1100, top: 330 });
 
   const c5 = g(Lw);
@@ -494,6 +537,7 @@ function buildWorld() {
   mk('path', { d: 'M 170 468 v -4 a 6 6 0 0 1 12 0 v 4 M 167 468 h 18 v 11 h -18 Z', fill: 'none', stroke: GREEN, 'stroke-width': 2, 'stroke-linejoin': 'round' }, bw);
   const url = mk('text', { x: 196, y: 478, 'font-family': 'IBM Plex Mono', 'font-weight': 500, 'font-size': 19, fill: '#C9D1D9' }, bw);
   url.textContent = 'l-k-studio.com/gallery_delord.html';
+  if (MEDIA.site) SITE_PL = makePlayer(bw, 22, 501, 1036, 583, 'clipSite');
   BROWSER = new El(bw, 540, 762, { s: 0, top: 440 });
 
   const uc = g(Lw);
@@ -1109,7 +1153,9 @@ function renderPixGrid(t, ts) {
 /* ================= MAGENTA (mode écran) ================= */
 let KEY;
 function buildKey() {
-  KEY = mk('rect', { x: 60, y: 440, width: 960, height: 640, rx: 143, fill: '#FF00FF', 'shape-rendering': 'geometricPrecision' }, $('L-key'));
+  KEY = g($('L-key'));
+  if (MEDIA.roof) SCREEN_PL = makePlayer(KEY, 60, 440, 960, 640, 'clipScreen');
+  else mk('rect', { x: 60, y: 440, width: 960, height: 640, rx: 143, fill: '#FF00FF', 'shape-rendering': 'geometricPrecision' }, KEY);
 }
 function renderKey(ta) {
   if (ta >= 6.6) { vis(KEY, false); return; }
@@ -1119,9 +1165,13 @@ function renderKey(ta) {
     sy = lerp(1, 0.012, E.qin(clamp((ta - 6.3) / 0.15)));
     if (ta >= 6.45) sx = lerp(1, 0, E.qin(clamp((ta - 6.45) / 0.15)));
   }
+  if (SCREEN_PL) playRoof(SCREEN_PL, ta / SPEED);
   if (sx === 1 && sy === 1) KEY.removeAttribute('transform');
   else attr(KEY, 'transform', `translate(540 760) scale(${r3(sx)} ${r3(sy)}) translate(-540 -760)`);
 }
+
+const VIDEO_APPEAR = [7.65, 21.95, 122.15];   // pops du cadre vidéo (temps script) : le clip repart du début
+const SITE_RATE = 1.66;                        // le scroll (23,4 s) tient dans les 14 s de l'outro
 
 /* ================= LA TIMELINE ================= */
 function buildTimeline() {
@@ -1395,6 +1445,11 @@ function renderWorld(t, ts, ta) {
   for (const e of ELS) e.apply(ta);
   for (const k in WIG) wiggle(WIG[k], ta);
   renderMosaic(ta); renderPixGrid(t, ts);
+  if (VIDEO_PL && isShown(VIDEO_PL.g)) {
+    let a0 = VIDEO_APPEAR[0]; for (const a of VIDEO_APPEAR) if (ta >= a) a0 = a;
+    playRoof(VIDEO_PL, (ta - a0) / SPEED);
+  }
+  if (SITE_PL && isShown(SITE_PL.g)) setHref(SITE_PL.main, clipSrc('site', Math.max(0, (ta - 162.05) / SPEED * SITE_RATE)));
   renderSourceText(ta); renderBubble(ta);
   const dOn = ta >= 177.4 && ta < 180.8; vis(DOODLES.g, dOn);
   if (dOn) {
@@ -1403,12 +1458,13 @@ function renderWorld(t, ts, ta) {
   }
 }
 let DEBUG = false;
-function renderFrame(i) {
+async function renderFrame(i) {
   const t = i / FPS, ts = t * SPEED, ta = warp(ts);
   renderWorld(t, ts, ta);
   renderRobot(t, ts, ta);
   renderKey(ta);
   renderSubs(ts);
+  if (PENDING.length) { await Promise.all(PENDING.splice(0)); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); }
   if (DEBUG) {
     const d = $('L-debug'); d.textContent = '';
     const tx = mk('text', { x: 20, y: 60, 'font-family': 'IBM Plex Mono', 'font-size': 34, fill: '#FFFF00' }, d);
@@ -1438,7 +1494,8 @@ async function init() {
   window.renderScript = ts => renderFrame(Math.round(ts / SPEED * FPS));
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };
   window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
-  renderFrame(0);
+  await Promise.all(['media/delord.jpg', 'media/lecun.jpg', 'assets/pin-fl.png', 'assets/pin-htt.png'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));
+  await renderFrame(0);
   window.REEL_READY = true;
 }
 init();

@@ -20,7 +20,11 @@
   Affaire à suivre… / Les autres dessins de Philippe Delord / vous attendent dans sa galerie, /
   sur LK Studio. / Et la galerie se visite aussi / en réalité virtuelle : / enfilez un casque, /
   et entrez dans le dessin.
-- **Montage CapCut (v3)** : le mode écran magenta dure de **0 à 4,15 s** (extinction télé à
+- **v5 — médias intégrés** : le clip IA du dessin remplace l'écran magenta et remplit le cadre
+  vidéo, le dessin original est dans le polaroid de la scène 2, la photo de Yann LeCun dans
+  celui de la scène 5, le scroll du site dans la fenêtre navigateur de l'outro. Plus
+  d'incrustation à faire au montage.
+- **Montage CapCut (v3, avant intégration des médias)** : le mode écran magenta dure de **0 à 4,15 s** (extinction télé à
   3,96 s) → le clip Kling va sur la piste du dessous de 0 à 4,15 s.
 
 ## RENDU
