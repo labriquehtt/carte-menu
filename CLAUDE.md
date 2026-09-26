@@ -184,6 +184,17 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
   conseillée : plus courte, plus lisible). Rien d'autre n'est commencé pour cette vidéo.
 - `out/` et `media/` sont hors Git : dans une nouvelle session, redemander les fichiers.
 
+### Voix IA (essai en cours, 2026-09-26)
+
+L'utilisateur veut essayer une voix IA ElevenLabs à la place de la sienne (un peu robotisée mais
+agréable, fluide, dynamique). `voix_ia_texte.txt` : le texte à faire dire (sa version parlée,
+nettoyée ; ~1 850 caractères ≈ 0,18 $ par prise en eleven_v3). Les voix « professional » de la
+bibliothèque exigent l'abonnement Creator ; Voice Design marche. 3 voix conçues (media/voix_ia/,
+hors Git) jugées « trop IA slop » : l'utilisateur cherche lui-même sa voix dans ElevenLabs, puis
+donne son nom (→ `creative_list_voices`). Ensuite : générer le texte en une prise, le couper aux
+pauses, poser chaque paragraphe au début du passage correspondant de sa voix, refaire
+transcription / analyse / alignement / rendu. `robot_voix.py` : léger effet robot optionnel.
+
 ### Robot détective (source)
 
 Projet Claude Design "Robot détective — fiche personnage" :
