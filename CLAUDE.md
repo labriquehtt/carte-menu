@@ -194,13 +194,16 @@ ElevenLabs), modèle `eleven_v3`, flow https://elevenlabs.io/app/flows/OlxdPPc1G
 Compte **gratuit : 10 000 crédits/mois** (1 crédit ≈ 1 caractère ; les voix « Professional »
 exigent Creator ; estimer avant avec `estimate_only`). Sources dans `media/voix_ia/` (hors Git) :
 `prise_benjamin.mp3` (texte complet `voix_ia_texte.txt`, une prise), `meta_a.mp3` (reprise de
-« D'ailleurs… il a quitté Meta… », avalée dans la prise), `reve.mp3` (« C'est nous qui cherchons
-un sens… une autre façon de voir les choses ? » relu `[sleepy]`/`[sighs]`/`[whispers]` : le robot
-s'assoit, s'endort puis ouvre un œil).
+« D'ailleurs… il a quitté Meta… », avalée dans la prise), `reve.mp3` (relu `[sleepy]`/`[sighs]`/
+`[whispers]` ; seul le passage « [soupir] Alors au fond… une autre façon de voir les choses ? » sert :
+le robot s'endort puis ouvre un œil ; « C'est nous qui cherchons un sens » vient de la prise normale,
+l'intonation endormie y sonnait bizarre). **L'outro, dès « Passons… affaire à suivre » (100,78 s), est
+la vraie voix de l'utilisateur** (`media/voix/voix_capcut_propre.wav`, mêmes instants, sans retouche,
+même sonie que la voix IA : `MOI_GAIN`), à sa demande.
 1. `python3 place_voix_ia.py` → `media/voix_ia/voix.wav` : chaque paragraphe posé au début du passage
    correspondant de l'ancienne voix (liste `BLOCS`), pauses internes ramenées à 0,30 s et tempo ×1,07
-   (lecture plus dynamique), rêve à 0,50 s / ×1 et à son niveau naturel (3,5 dB plus doux),
-   compression + présence. La parole finit à 111,8 s.
+   (lecture plus dynamique), rêve à 0,50 s / ×1 et à son niveau naturel (≈2 LU plus doux),
+   compression + présence (voix IA seulement). La voix IA finit à 100,1 s.
 2. `VOIX_DIR=media/voix_ia` pour `transcrire_voix.py`, `analyse_voix.py`, `mix_voix.py` ;
    `VOIX_DIR=media/voix_ia VOIX_TEXTE=voix_ia.js node aligne_voix.js` (texte, instants fixés et
    synchro de la voix IA dans `voix_ia.js`). Sans ces variables, tout repart sur la voix enregistrée

@@ -112,9 +112,9 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  0:41.6  HOP       vers le caillou
  0:42.1  WOBBLE    le caillou gigote
  0:42.6  HOP       retour au centre
- 0:45.8  JUMP      TIRE depuis le haut : il saute s'accrocher
- 0:45.9  FALL      les objets tombent
- 0:46.2  PAPER     il tire la photo vers le bas
+ 0:45.9  JUMP      TIRE depuis le haut : il saute s'accrocher
+ 0:46.0  FALL      les objets tombent
+ 0:46.3  PAPER     il tire la photo vers le bas
  0:46.8  LAND      il lâche et atterrit
  1:10.0  SNAP      CLAQUE (assis)
  1:10.2  HOLO      le globe se dessine
@@ -126,19 +126,19 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  1:16.7  LAND      atterrit sous le cadre
  1:24.5  ZOOM_IN   zoom sur le toit
  1:25.7  DEZOOM    on ressort du zoom
- 1:31.1  DREAM     il s'endort, la bulle de rêve s'ouvre
- 1:31.4  DRIP      gouttes dans la bulle  (jusqu'à 1:37.0)
- 1:37.0  FADE      fondu au noir, "Hallucination"
- 1:37.8  CHIME     il ouvre un œil
- 1:41.1  POWER     la lumière revient (outro LK Studio)
- 1:41.3  JUMP      il saute à sa place
- 1:41.4  LAND      
- 1:43.0  SNAP      CLAQUE
- 1:43.1  POP       la fenêtre du site apparaît
- 1:48.4  SNAP      CLAQUE
- 1:48.5  POP       le casque VR apparaît dans sa main
- 1:49.6  VR        il enfile le casque
- 1:53.1  SWISH     il retire le casque
+ 1:30.4  DREAM     il s'endort, la bulle de rêve s'ouvre
+ 1:30.6  DRIP      gouttes dans la bulle  (jusqu'à 1:36.0)
+ 1:36.0  FADE      fondu au noir, "Hallucination"
+ 1:36.8  CHIME     il ouvre un œil
+ 1:40.8  POWER     la lumière revient (outro LK Studio)
+ 1:41.0  JUMP      il saute à sa place
+ 1:41.3  LAND      
+ 1:42.8  SNAP      CLAQUE
+ 1:42.9  POP       la fenêtre du site apparaît
+ 1:47.7  SNAP      CLAQUE
+ 1:47.8  POP       le casque VR apparaît dans sa main
+ 1:49.7  VR        il enfile le casque
+ 1:52.5  SWISH     il retire le casque
 
 Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
 à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.

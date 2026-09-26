@@ -22,10 +22,12 @@ const VOIX = [
   'Bref, revenons à ce dessin.', '*Hasard* ou non…', 'ce dessin fait partie', 'de ce que Philippe a nommé…', '*La Source*.',
   'Et *vous*…', `que voyez-vous couler de ce toit${NB}?`,
   'Parce que la machine,', 'elle, n’a rien voulu dire.', 'C’est nous qui cherchons *un sens*.',
-  'Alors au fond,', `qui est en train de *rêver*${NB}?`, [`La machine… ou *nous*${NB}?`, { 0: 94.91, 1: 95.06, 2: 96.11, 3: 96.3 }],
-  ['Est-ce une *hallucination*…', { 0: 97.03 }], 'ou simplement une autre façon', `de voir les choses${NB}?`,
-  'Affaire à suivre.', 'Les dessins de *Philippe Delord*', 'vous attendent dans sa *galerie*,', 'sur *LK Studio*.',
-  'Et la galerie se visite aussi', `en *réalité virtuelle*${NB}:`, 'enfilez un *casque*…', 'et entrez dans le *dessin*.',
+  'Alors au fond,', `qui est en train de *rêver*${NB}?`, [`La machine… ou *nous*${NB}?`, { 0: 93.95, 1: 94.1, 2: 95.13, 3: 95.3 }],
+  ['Est-ce une *hallucination*…', { 0: 96.02 }], 'ou simplement une autre façon', `de voir les choses${NB}?`,
+  // outro : la vraie voix de l'utilisateur (son enregistrement, mêmes instants que dans aligne_voix.js)
+  ['Passons… affaire à suivre.', { 0: 100.98, 1: 101.38, 2: 101.72, 3: 101.95 }], 'Les dessins de *Philippe Delord*', 'vous attendent dans sa *galerie*,', 'sur *LK Studio*.',
+  'Et la galerie se visite aussi', `en *réalité virtuelle*${NB}:`, ['vous avez juste à enfiler', { 0: 109.0, 1: 109.14, 2: 109.4, 3: 109.62, 4: 109.66 }], ['un *casque*,', { 0: 109.94, 1: 110.23 }], ['et vous pouvez rentrer', { 0: 110.46, 1: 110.68, 2: 110.83, 3: 111.02 }],
+  ['dans le *dessin*.', { 0: 111.34, 1: 111.51, 2: 111.62 }],
 ];
 const SYNC = [
   [6.9, 'et regardez'], [11.2, 'Ce dessin'], [15.1, 'un dessinateur'], [17.6, 'à utiliser'], [19.6, 'pour cette'],
@@ -39,7 +41,7 @@ const SYNC = [
   [116.8, 'Des IA qui'], [119.3, 'qu’un toit'], [122.1, 'Bref, revenons'], [124.5, 'de ce que Philippe'], [127.0, '*La Source*.'],
   [130.4, 'que voyez-vous'], [132.25, 'que voyez-vous', 2], [135.2, 'Parce que la'], [138.1, 'elle, n’a'], [140.5, 'C’est nous'],
   [145.5, 'Alors au fond'], [147.4, 'qui est en train'], [148.8, 'La machine… ou'], [151.3, 'Est-ce une'], [152.9, 'ou simplement'],
-  [160.1, 'Affaire à suivre'], [162.0, 'Les dessins'], [165.5, 'vous attendent'], [168.4, 'sur *LK'], [170.2, 'Et la galerie'],
-  [173.2, 'en *réalité'], [175.2, 'enfilez un'], [177.0, 'et entrez'],
+  [160.1, 'Passons… affaire', 1], [162.0, 'Les dessins'], [165.5, 'vous attendent'], [168.4, 'sur *LK'], [170.2, 'Et la galerie'],
+  [173.2, 'en *réalité'], [175.2, 'vous avez juste', 4], [177.0, 'et vous pouvez'],
 ];
 module.exports = { VOIX, SYNC };

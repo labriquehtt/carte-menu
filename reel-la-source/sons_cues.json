@@ -460,25 +460,25 @@
    "note": "retour au centre"
   },
   {
-   "t": 45.81,
+   "t": 45.86,
    "end": null,
    "id": "JUMP",
    "note": "TIRE depuis le haut : il saute s'accrocher"
   },
   {
-   "t": 45.91,
+   "t": 45.96,
    "end": null,
    "id": "FALL",
    "note": "les objets tombent"
   },
   {
-   "t": 46.22,
+   "t": 46.27,
    "end": null,
    "id": "PAPER",
    "note": "il tire la photo vers le bas"
   },
   {
-   "t": 46.77,
+   "t": 46.8,
    "end": null,
    "id": "LAND",
    "note": "il lâche et atterrit"
@@ -544,79 +544,79 @@
    "note": "on ressort du zoom"
   },
   {
-   "t": 91.08,
+   "t": 90.37,
    "end": null,
    "id": "DREAM",
    "note": "il s'endort, la bulle de rêve s'ouvre"
   },
   {
-   "t": 91.4,
-   "end": 96.98,
+   "t": 90.64,
+   "end": 95.97,
    "id": "DRIP",
    "note": "gouttes dans la bulle"
   },
   {
-   "t": 96.98,
+   "t": 95.97,
    "end": null,
    "id": "FADE",
    "note": "fondu au noir, \"Hallucination\""
   },
   {
-   "t": 97.77,
+   "t": 96.81,
    "end": null,
    "id": "CHIME",
    "note": "il ouvre un œil"
   },
   {
-   "t": 101.08,
+   "t": 100.8,
    "end": null,
    "id": "POWER",
    "note": "la lumière revient (outro LK Studio)"
   },
   {
-   "t": 101.25,
+   "t": 101.02,
    "end": null,
    "id": "JUMP",
    "note": "il saute à sa place"
   },
   {
-   "t": 101.43,
+   "t": 101.26,
    "end": null,
    "id": "LAND",
    "note": ""
   },
   {
-   "t": 102.99,
+   "t": 102.83,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 103.06,
+   "t": 102.9,
    "end": null,
    "id": "POP",
    "note": "la fenêtre du site apparaît"
   },
   {
-   "t": 108.36,
+   "t": 107.66,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 108.46,
+   "t": 107.77,
    "end": null,
    "id": "POP",
    "note": "le casque VR apparaît dans sa main"
   },
   {
-   "t": 109.57,
+   "t": 109.65,
    "end": null,
    "id": "VR",
    "note": "il enfile le casque"
   },
   {
-   "t": 113.11,
+   "t": 112.52,
    "end": null,
    "id": "SWISH",
    "note": "il retire le casque"
@@ -639,7 +639,7 @@
    "note": "\"donner vie = faire bouger\" : plus bondissant, pizzicati"
   },
   {
-   "t": 46.22,
+   "t": 46.27,
    "name": "Thème",
    "note": "Yann LeCun : trompette bouchée, plus sérieux et intrigant"
   },
@@ -669,27 +669,27 @@
    "note": "tout ralentit, la musique s'étire et s'éteint"
   },
   {
-   "t": 91.08,
+   "t": 90.37,
    "name": "SILENCE",
    "note": "le robot s'endort : silence complet"
   },
   {
-   "t": 92.37,
+   "t": 91.46,
    "name": "Rêve",
    "note": "\"Alors au fond, qui rêve…\" : vibraphone rêveur, très doux"
   },
   {
-   "t": 96.98,
+   "t": 95.97,
    "name": "Noir",
    "note": "\"Hallucination\" : fondu au noir, une seule note grave"
   },
   {
-   "t": 101.08,
+   "t": 100.8,
    "name": "Outro",
    "note": "fin LK Studio : le groove revient, chaleureux et entraînant"
   },
   {
-   "t": 113.89,
+   "t": 113.3,
    "name": "Fin",
    "note": "coup de chapeau : accord final (button)"
   }
