@@ -83,6 +83,8 @@ arrêt net), suspens avec ralenti de bande, silence, rêve, outro dont l'accord 
 et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/bruitages.wav
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
+**Livraison actuelle : vidéo avec les bruitages seuls** (`mix_sons.py --video …`), sans la musique
+ElevenLabs : une musique personnelle est ajoutée au montage. La musique ElevenLabs reste disponible.
 
 ### Miniature (couverture du reel)
 
