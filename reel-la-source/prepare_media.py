@@ -4,7 +4,7 @@
   python3 prepare_media.py --roof media/src/toit.mp4 --site media/src/site.mp4 --lecun media/src/lecun.webp
 
 - roof  : clip IA du dessin (3:2) → media/roof/NNNN.jpg à 30 fps ; sa 1re image entière
-          devient le dessin original de la scène 2 (media/delord.jpg)
+          devient le dessin original de la scène 2 (media/delord.jpg), son son media/roof.wav
 - site  : scroll du site LK Studio (16:9) → media/site/NNNN.jpg à 30 fps
 - lecun : photo portrait (4:5) → media/lecun.jpg, entière
 Écrit media/manifest.js, lu par index.html. Sans médias, la vidéo retombe sur les
@@ -52,6 +52,8 @@ def main():
         Image.open(first).convert('RGB').save(os.path.join(D, 'delord.jpg'), quality=92)   # dessin entier (3:2)
         os.remove(first)
         man['delord'] = True
+        subprocess.run([FF, '-v', 'error', '-y', '-i', a.roof, '-vn', '-ac', '2', '-ar', '44100',
+                        os.path.join(D, 'roof.wav')], check=True)   # son du clip (gros plan d'ouverture)
     if a.site:
         man['site'] = frames(a.site, 'site', 1040)
     if a.lecun:

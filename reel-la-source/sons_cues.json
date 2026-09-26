@@ -2,12 +2,6 @@
  "duration": 115.99999999999999,
  "sounds": [
   [
-   "AMBI",
-   "Ambiance nuit en ville (fond, en boucle)",
-   "quiet city at night seen from a rooftop, distant traffic hum, soft wind, calm and mysterious",
-   22
-  ],
-  [
    "TV_OFF",
    "Extinction vieille télé",
    "old CRT television switching off, high pitched electric zip collapsing into a tiny blip",
@@ -219,12 +213,6 @@
   ]
  ],
  "cues": [
-  {
-   "t": 0,
-   "end": 116,
-   "id": "AMBI",
-   "note": "toute la vidéo, volume bas (baisser pendant le gros plan)"
-  },
   {
    "t": 3.96,
    "end": null,
@@ -716,7 +704,7 @@
   {
    "t": 0,
    "name": "Intro",
-   "note": "gros plan sur l'écran : mystérieux, vibraphone + nappes, sans batterie"
+   "note": "gros plan sur l'écran : très discret (on y entend l'eau et le vent du clip), vibraphone + nappes, sans batterie"
   },
   {
    "t": 4.15,

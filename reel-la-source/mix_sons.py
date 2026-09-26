@@ -7,7 +7,9 @@
 Lit sons_cues.json (écrit par `node sons.js`, repères en temps vidéo) et les sons
 media/sfx/<ID>.mp3 (générés sur ElevenLabs, hors Git comme tout media/).
 Chaque son est recalé sur son attaque (silence de tête retiré) et ramené à son niveau
-(MIX) ; AMBI, PENCIL et DRIP sont bouclés sur leur plage.
+(MIX) ; PENCIL et DRIP sont bouclés sur leur plage. Pas d'ambiance de fond : la voix et la
+musique viennent au montage. Seul le gros plan d'ouverture garde le son d'origine du clip
+`roof` (media/roof.wav, extrait par prepare_media.py), coupé quand l'écran s'éteint.
 """
 import argparse
 import json
@@ -22,9 +24,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SR = 44100
 
 # niveau visé (dB) : crête d'énergie sur 100 ms pour les sons ponctuels, énergie moyenne
-# pour les nappes AMBI et PENCIL ; durée max (s), None = boucle sur [t, fin]
+# pour la nappe PENCIL et le son du clip ; durée max (s), None = boucle sur [t, fin]
 MIX = {
-    'AMBI': (-34, None), 'PENCIL': (-33, None), 'DRIP': (-24, None),
+    'PENCIL': (-33, None), 'DRIP': (-24, None),
     'TV_OFF': (-19, 1.2), 'DEZOOM': (-19, 1.4), 'BOOT': (-20, 1.2), 'CLINK': (-20, 1.2),
     'SNAP': (-17, 0.8), 'POP': (-19, 0.8), 'JUMP': (-20, 0.8), 'LAND_BIG': (-15, 1.0),
     'FALL': (-19, 1.2), 'LAND': (-18, 1.2), 'HOP': (-22, 0.6), 'PAPER': (-19, 1.2),
@@ -34,8 +36,9 @@ MIX = {
     'HOLO': (-19, 2.2), 'NEON': (-13, 2.4), 'DREAM': (-19, 2.2), 'FADE': (-14, 3.5),
     'CHIME': (-20, 1.2), 'POWER': (-19, 1.8), 'VR': (-18, 1.8), 'DING': (-18, 0.8), 'HAT': (-17, 1.2),
 }
-BEDS = {'AMBI', 'PENCIL'}
-LOOP_FADES = {'AMBI': (1.0, 1.5), 'PENCIL': (0.15, 0.3), 'DRIP': (0.5, 0.8)}   # fondu entrée, sortie (s)
+BEDS = {'PENCIL', 'ROOF'}
+ROOF_LEVEL = -21   # son du clip sur l'écran de la tête (eau, vent, feuilles)
+LOOP_FADES = {'PENCIL': (0.15, 0.3), 'DRIP': (0.5, 0.8)}   # fondu entrée, sortie (s)
 
 
 def load(path):
@@ -119,11 +122,20 @@ def main():
         else:
             clip = fade(s.copy(), 0.002, 0.06)
         clip = clip[:total - t0]
-        if sid == 'AMBI':   # plus bas sur le gros plan et pendant le fondu au noir
-            tt = (np.arange(len(clip)) + t0) / SR
-            env = np.interp(tt, [0, 3.9, 4.4, 95.0, 96.5, 99.8, 100.4], [-8, -8, 0, 0, -12, -12, 0])
-            clip *= db(env).astype(np.float32)[:, None]
         mix[t0:t0 + len(clip)] += clip
+
+    # gros plan d'ouverture : le clip garde son propre son jusqu'à l'extinction de l'écran
+    roof = os.path.join(os.path.dirname(a.sfx), 'roof.wav')
+    if os.path.exists(roof):
+        cue = {c['id']: c['t'] for c in reversed(data['cues'])}   # 1re occurrence
+        off, end = cue['TV_OFF'], cue['DEZOOM']
+        s = load(roof)[:int(end * SR)]
+        s *= db(ROOF_LEVEL - level(s, 'ROOF'))
+        tt = np.arange(len(s)) / SR
+        s *= np.interp(tt, [0, 0.15, off, end], [0, 1, 1, 0]).astype(np.float32)[:, None]
+        mix[:len(s)] += s
+    else:
+        missing.add('roof.wav')
 
     # quelques clics isolés (VR, TV_OFF) ne doivent pas dicter le volume de toute la piste :
     # on cale le 99,95e centile à -11 dBFS, puis on arrondit les crêtes au-delà de -8 dBFS

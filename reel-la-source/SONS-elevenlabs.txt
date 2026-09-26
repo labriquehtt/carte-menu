@@ -5,8 +5,6 @@ Vidéo : 1:56.0 · les repères sont en temps vidéo (m:ss.d)
 Colle le prompt (en anglais, ElevenLabs le comprend mieux) et règle la durée indiquée.
 Nomme chaque fichier avec son ID (ex. SNAP.mp3).
 
-[AMBI] Ambiance nuit en ville (fond, en boucle) — 22 s — utilisé 1×
-    quiet city at night seen from a rooftop, distant traffic hum, soft wind, calm and mysterious
 [TV_OFF] Extinction vieille télé — 1 s — utilisé 1×
     old CRT television switching off, high pitched electric zip collapsing into a tiny blip
 [DEZOOM] Dézoom caméra — 1.2 s — utilisé 3×
@@ -79,7 +77,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     short playful cartoon whistle, a friendly hat tip
 
 ═══ 2. PLACEMENT DANS LA VIDÉO ═══
- 0:00.0  AMBI      toute la vidéo, volume bas (baisser pendant le gros plan)  (jusqu'à 1:56.0)
  0:04.0  TV_OFF    l'écran de la tête s'éteint
  0:04.2  DEZOOM    dézoom vers le plan large
  0:04.2  BOOT      les yeux se rallument

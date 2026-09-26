@@ -64,12 +64,23 @@ exact en temps vidéo, hit-stops compris, via `window.videoTimeOf`), `MUSIQUE-su
 (brief musique Suno calé sur les temps forts et le silence) et `sons_cues.json`.
 À relancer après toute modification de la timeline.
 
-Bruitages : les 36 sons (`SOUNDS` de sons.js) ont été générés via le connecteur ElevenLabs
-(modèle `eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
+Bruitages : les 35 sons (`SOUNDS` de sons.js ; plus d'ambiance de fond, la voix et la musique
+doivent rester "pures") ont été générés via le connecteur ElevenLabs (modèle
+`eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
 https://elevenlabs.io/app/flows/LxzHYbIplS9K9SBhNABw) et rangés dans `media/sfx/<ID>.mp3`
 (hors Git). `python3 mix_sons.py` les pose aux repères de `sons_cues.json` → `out/bruitages.wav`
-(116 s, niveaux dans `MIX`, AMBI/PENCIL/DRIP en boucle) ; `--video … --out …` l'ajoute à
-une vidéo (AAC 96k, pour rester sous 30 Mo). Voix et musique Suno : au montage (CapCut).
+(116 s, niveaux dans `MIX`, PENCIL/DRIP en boucle). Le gros plan d'ouverture garde le son
+d'origine du clip `roof` (`media/roof.wav`, extrait par prepare_media.py), coupé quand l'écran
+s'éteint. `--video … --out …` ajoute la piste à une vidéo (AAC 96k, pour rester sous 30 Mo).
+
+Musique : 4 morceaux `eleven_music_v2` (même flow, D mineur, 92 BPM) dans
+`media/music/{GROOVE,SUSPENS,REVE,OUTRO}.mp3` (2 prises par morceau sur le flow, `_a` utilisées).
+`python3 mix_musique.py` les monte aux repères `music` de sons_cues.json → `out/musique.wav` :
+groove du dézoom à « La Source. » (étiré de ~3 % pour tenir, bégaiement 8-bit sur le glitch,
+arrêt net), suspens avec ralenti de bande, silence, rêve, outro dont l'accord final est détecté
+et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/bruitages.wav
+--video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
+(CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
 
 ### Commandes
 
@@ -79,6 +90,7 @@ cd reel-la-source
 node render.js --stills 5,14,22.2 --script --out out/stills --debug   # images de contrôle (timecodes du brief)
 node render.js --video out/la-source-1080x1920.mp4 --workers 4   # vidéo complète (~quelques min)
 node sons.js && python3 mix_sons.py --video out/la-source-1080x1920.mp4 --out out/la-source-bruitages.mp4   # piste bruitages
+python3 mix_musique.py --sfx out/bruitages.wav --video out/la-source-1080x1920.mp4 --out out/la-source-son.mp4   # musique + bruitages
 ```
 
 ### Robot détective (source)

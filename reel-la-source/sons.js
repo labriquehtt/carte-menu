@@ -9,7 +9,6 @@ try { pw = require('playwright'); } catch { pw = require('/opt/node22/lib/node_m
 
 // id, libellé, prompt ElevenLabs (anglais), durée conseillée (s)
 const SOUNDS = [
-  ['AMBI', 'Ambiance nuit en ville (fond, en boucle)', 'quiet city at night seen from a rooftop, distant traffic hum, soft wind, calm and mysterious', 22],
   ['TV_OFF', 'Extinction vieille télé', 'old CRT television switching off, high pitched electric zip collapsing into a tiny blip', 1],
   ['DEZOOM', 'Dézoom caméra', 'smooth cinematic camera pull back whoosh, airy and soft', 1.2],
   ['BOOT', 'Les yeux du robot se rallument', 'cute small robot powering on, soft electronic startup chirp', 1],
@@ -49,7 +48,6 @@ const SOUNDS = [
 
 // [temps script, id, note, fin (boucles, temps script)]
 const CUES = [
-  [0.0, 'AMBI', 'toute la vidéo, volume bas (baisser pendant le gros plan)', 184.44],
   [6.3, 'TV_OFF', "l'écran de la tête s'éteint"],
   [6.6, 'DEZOOM', 'dézoom vers le plan large'],
   [6.72, 'BOOT', 'les yeux se rallument'],
@@ -99,7 +97,7 @@ const CUES = [
 
 // repères musicaux (temps script) : la musique doit épouser ces moments
 const MUSIC = [
-  [0.0, 'Intro', 'gros plan sur l\'écran : mystérieux, vibraphone + nappes, sans batterie'],
+  [0.0, 'Intro', 'gros plan sur l\'écran : très discret (on y entend l\'eau et le vent du clip), vibraphone + nappes, sans batterie'],
   [6.6, 'Groove', 'le dézoom : contrebasse walking + balais, enquête espiègle'],
   [49.0, 'Variation', '"donner vie = faire bouger" : plus bondissant, pizzicati'],
   [75.1, 'Thème', 'Yann LeCun : trompette bouchée, plus sérieux et intrigant'],
