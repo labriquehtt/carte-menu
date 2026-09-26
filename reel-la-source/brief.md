@@ -1,18 +1,18 @@
 # REEL INSTAGRAM — "LA SOURCE" — brief de référence
 
-## MODIFICATIONS v2 (demandées après la première version)
-- **Sous-titres retirés de l'image** : ils seront faits au montage dans CapCut (voix et texte
-  adaptés à l'image). La section "SOUS-TITRES CINÉTIQUES" ci-dessous n'est plus appliquée ;
-  les timecodes des lignes restent utilisés pour animer la bouche du robot.
-- **Décor ajouté** : nuit de film noir de détective — ciel bleu nuit → sarcelle, lune verte
+## MODIFICATIONS (après les premières versions)
+- **v3 — vitesse** : la vidéo dure **100 s (1:40)** au lieu de 159 s. Toute la timeline
+  ci-dessous reste écrite dans ses timecodes d'origine ("temps script") et elle est lue
+  ×1,59 (`SPEED` dans reel.js) : débit de parole ~2,7 mots/s au lieu de 1,7. Temps vidéo =
+  temps script ÷ 1,59. Les hit-stops, l'idle, les clignements, la bouche et le décor restent
+  en temps réel.
+- **v3 — sous-titres** : remis à l'image comme base pour poser la voix au montage (même style
+  cinétique, mots-clés en vert), au nouveau rythme.
+- **v2 — décor** : nuit de film noir de détective — ciel bleu nuit → sarcelle, lune verte
   (rappel de #4DFF8F), lumière de store vénitien, skyline aux fenêtres ambrées, poussières en
   suspension. Aucune teinte violette/rose (sûr pour l'incrustation du magenta).
-- Le bas-droite de l'image est laissé libre pour les sous-titres CapCut.
-
-Source : prompt préparé avec Claude (conversation "Claude Interface"), version finale
-avec le MODE ÉCRAN (gros plan d'ouverture) et la nouvelle scène 1.
-Le robot officiel vient du projet Claude Design "Robot détective — fiche personnage"
-(https://claude.ai/artifact/Q9zcvFR359NL11zV4FWsZe) : planches Main, Expressions, ModeEcran.
+- **Montage CapCut (v3)** : le mode écran magenta dure de **0 à 4,15 s** (extinction télé à
+  3,96 s) → le clip Kling va sur la piste du dessous de 0 à 4,15 s.
 
 ## RENDU
 Vidéo 9:16, 1080×1920, 30 fps, durée exacte 159 s (2:39). Aucun audio :

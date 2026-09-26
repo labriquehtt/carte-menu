@@ -4,7 +4,12 @@
 (function () {
 'use strict';
 
-const W = 1080, H = 1920, FPS = 30, DURATION = 159;
+/* Vitesse : toute la timeline est écrite dans les timecodes du brief (159 s de "temps script").
+   La vidéo est lue SPEED fois plus vite : 159 s de script → 100 s de vidéo (débit de parole
+   normal, ~2,7 mots/s). Les hit-stops, l'idle, les clignements, la bouche et le décor restent
+   en temps réel. */
+const SCRIPT_DURATION = 159, SPEED = 159 / 100;
+const W = 1080, H = 1920, FPS = 30, DURATION = SCRIPT_DURATION / SPEED;
 const NS = 'http://www.w3.org/2000/svg';
 const GREEN = '#4DFF8F', INK = '#1B1620';
 const PI2 = Math.PI * 2, DEG = Math.PI / 180;
@@ -153,7 +158,7 @@ const arm = (side, t0, t1, pose, e = 'soft') => to('arm' + side, t0, t1, (side =
 function sqk(t, sy, e) { T('sy').key(t, sy, e); T('sx').key(t, 1 + (1 - sy) * 0.85, e); }
 
 const HS = [];                 // hit-stops [t, durée]
-const hitstop = (t, d) => HS.push([t, d]);
+const hitstop = (t, d) => HS.push([t, d * SPEED]);   // d en secondes réelles
 const SPARKS = [];
 const FACE_BASE = [], FACE_OVR = [];
 const face = (t, n) => FACE_BASE.push([t, n]);
@@ -612,7 +617,7 @@ function faceState(t) {
 
 /* ----- clignements (graine fixe, toutes les 3 à 5 s) ----- */
 const BLINKS = [];
-(function () { const R = rng(777); let t = 8.4; while (t < 160) { BLINKS.push(t); t += 3 + 2 * R(); } })();
+(function () { const R = rng(777); let t = 8.4 / SPEED; while (t < DURATION + 1) { BLINKS.push(t); t += 3 + 2 * R(); } })();   // temps réel
 function blinkAt(t) {
   let b = 1;
   for (const tb of BLINKS) {
@@ -627,7 +632,7 @@ function blinkAt(t) {
 let PHASE = null;
 function buildPhase() {
   const n = Math.ceil((DURATION + 2) * FPS) + 2; PHASE = new Float64Array(n);
-  for (let i = 1; i < n; i++) PHASE[i] = PHASE[i - 1] + T('speed').at((i - 1) / FPS) / FPS;
+  for (let i = 1; i < n; i++) PHASE[i] = PHASE[i - 1] + T('speed').at((i - 1) / FPS * SPEED) / FPS;   // indexé en temps réel
 }
 function phaseAt(t) {
   if (t <= 0) return t;
@@ -667,10 +672,10 @@ function followThrough(t, s) {
 /* ----- bouche : formes de parole pendant chaque ligne ----- */
 const SPEECH = [];
 function buildSpeech() {
-  VOICE.forEach((L, i) => {
-    const t0 = L.t0, t1 = Math.min(L.t1, L.te) - 0.12;
+  SUBS.forEach((L, i) => {
+    const t0 = L.t0 / SPEED, t1 = Math.min(L.t1, L.te) / SPEED - 0.1;   // temps réel
     const R = rng(1000 + i); const seq = []; let t = t0 + 0.04, last = '';
-    const sleepy = t0 >= 145.5;
+    const sleepy = L.t0 >= 145.5;
     const pool = sleepy ? ['ferm', 'mi', 'ferm', 'mi'] : ['mi', 'mi', 'ouv', 'ouv', 'o', 'ferm', 'mi', 'ouv'];
     while (t < t1) {
       let sh; do { sh = pool[Math.floor(R() * pool.length)]; } while (sh === last);
@@ -716,22 +721,23 @@ function buildHitstops() {
   HS.sort((a, b) => a[0] - b[0]);
   HSR = [];
   for (const [h, d] of HS) {
-    let lo = h, hi = h + 0.6;
+    let lo = h, hi = h + 0.6 * SPEED;
     for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (warpWith(HSR, m) < h) lo = m; else hi = m; }
     HSR.push([hi, d]);
   }
 }
 const warp = t => warpWith(HSR, t);
-function robotTime(t, ta) {
-  if ((t >= DRAW[0] && t <= DRAW[1]) || (t >= PIX[0] && t <= PIX[1])) return Math.floor(ta * 12 + 1e-6) / 12;
+// effets dessin/pixel : le robot bouge à 12 images par seconde RÉELLE
+function robotTime(ts, ta) {
+  if ((ts >= DRAW[0] && ts <= DRAW[1]) || (ts >= PIX[0] && ts <= PIX[1])) return Math.floor(ta * 12 / SPEED + 1e-6) * SPEED / 12;
   return ta;
 }
 
-function renderRobot(t, ta) {
-  const rt = robotTime(t, ta);
+function renderRobot(t, ts, ta) {
+  const rt = robotTime(ts, ta), rr = rt / SPEED;
   const v = n => T(n).at(rt);
   const x = v('x'), y = v('y'), s = v('s'), rot = v('rot'), sx = v('sx'), sy = v('sy'), amp = v('float'), sit = v('sit');
-  const ph = phaseAt(rt), cyc = ((ph / 2.6) % 1 + 1) % 1, k6 = amp / 6;
+  const ph = phaseAt(rr), cyc = ((ph / 2.6) % 1 + 1) % 1, k6 = amp / 6;
   const lift = amp * (1 - Math.cos(PI2 * cyc)) * (s / S0);
   attr(RB.root, 'transform', `translate(${r3(x)} ${r3(y - lift)}) rotate(${r3(rot)}) scale(${r3(s * sx)} ${r3(s * sy)}) translate(0 -166)`);
   if (sit > 0.001) attr(RB.body, 'transform', `translate(0 ${r3(166 + 14 * sit)}) scale(1 ${r3(1 - 0.08 * sit)}) translate(0 -166)`);
@@ -760,7 +766,7 @@ function renderRobot(t, ta) {
 
   const cross = clamp((rt - fs.tc) / 0.1);
   const lid = v('lid'), eR = v('eR'), rOpen = v('rOpen');
-  const mouth = fo > 0.5 ? mouthAt(rt) : null;
+  const mouth = fo > 0.5 ? mouthAt(rr) : null;
   for (const n in RB.faces) {
     const F = RB.faces[n];
     let op = 0;
@@ -768,7 +774,7 @@ function renderRobot(t, ta) {
     else if (n === fs.prev && cross < 1) op = 1 - cross;
     if (op <= 0.001) { vis(F.g, false); continue; }
     vis(F.g, true); attr(F.g, 'opacity', op);
-    const b = (NO_BLINK.has(n) ? 1 : blinkAt(rt)) * lid;
+    const b = (NO_BLINK.has(n) ? 1 : blinkAt(rr)) * lid;
     attr(F.eL, 'transform', `translate(${F.cL[0]} ${F.cL[1]}) scale(1 ${r3(b)}) translate(${-F.cL[0]} ${-F.cL[1]})`);
     attr(F.eR, 'transform', `translate(${F.cR[0]} ${F.cR[1]}) scale(${r3(eR)} ${r3(eR * b)}) translate(${-F.cR[0]} ${-F.cR[1]})`);
     if (F.open) {
@@ -819,7 +825,7 @@ function renderRobot(t, ta) {
   if (qm > 0.01) attr(RB.qmark, 'transform', `translate(-128 -232) scale(${r3(qm)}) rotate(-8) translate(128 232)`);
 
   // effets
-  const pb = pixBlock(t), da = drawAmt(t);
+  const pb = pixBlock(ts), da = drawAmt(ts);
   if (pb > 0) {
     const B = Math.max(1, Math.round(pb)), hb = Math.floor(B / 2);
     RB.fx.setAttribute('filter', 'url(#pixFx)');
@@ -834,71 +840,148 @@ function renderRobot(t, ta) {
   } else RB.fx.removeAttribute('filter');
 }
 
-/* ================= LIGNES DE VOIX (pour la bouche du robot) =================
-   Plus de sous-titres à l'image : ils seront faits au montage. Ces timecodes servent
-   uniquement à animer la bouche pendant que la voix parle. */
-const VOICE_RAW = [
-  [0.5, 3.5, 'On a demandé à une IA'],
-  [3.5, 6.9, 'de donner vie à ce dessin,'],
-  [6.9, 8.4, 'et regardez bien'],
-  [8.4, 11.2, 'ce qui se passe.'],
-  [11.2, 15.1, 'Ce dessin, c’est celui de Philippe Delord,'],
-  [15.1, 17.6, 'un dessinateur qui m’a autorisé'],
-  [17.6, 19.6, 'à utiliser son travail'],
-  [19.6, 21.9, 'pour cette vidéo.'],
-  [21.9, 24.3, 'La consigne était simple,'],
-  [24.3, 26.7, 'faire vivre la scène,'],
-  [26.7, 30.2, 'et pourtant il y a quelque chose'],
-  [30.2, 34.1, 'qui se met à couler du toit,'],
-  [34.1, 35.6, 'la maison s’efface'],
-  [35.6, 37.0, 'puis revient,'],
-  [37.0, 40.0, 'et honnêtement personne ne peut dire'],
-  [40.0, 42.4, 'si c’est du bois,'],
-  [42.4, 43.8, 'de l’eau'],
-  [43.8, 46.2, 'ou de la fumée,'],
-  [46.2, 49.0, 'pas même la machine.'],
-  [49.0, 51.9, 'Parce que pour une IA,'],
-  [51.9, 53.3, 'donner vie,'],
-  [53.3, 57.1, 'ça veut juste dire faire bouger.'],
-  [57.1, 60.0, 'Elle n’a jamais vu la vie,'],
-  [60.0, 63.5, 'elle a vu des millions de vidéos'],
-  [63.5, 66.9, 'où tout ce qui est vivant bouge,'],
-  [66.9, 68.9, 'alors elle fait bouger'],
-  [68.9, 71.3, 'tout ce qu’elle peut,'],
-  [71.3, 75.1, 'même ce qui n’était pas censé bouger.'],
-  [75.1, 78.1, 'Et c’est exactement ce que pointe'],
-  [78.1, 79.5, 'Yann LeCun,'],
-  [79.5, 80.9, 'un Français,'],
-  [80.9, 84.3, 'l’un des pionniers de l’IA moderne,'],
-  [84.3, 87.7, 'qui a reçu le prix Turing,'],
-  [87.7, 91.0, 'l’équivalent du Nobel en informatique.'],
-  [91.0, 93.0, 'Pour lui, ces modèles'],
-  [93.0, 96.4, 'ne font que prédire des pixels,'],
-  [96.4, 98.8, 'sans aucun monde derrière,'],
-  [98.8, 102.2, 'sans savoir ce qu’est un toit,'],
-  [102.2, 105.5, 'du bois ou de l’eau.'],
-  [105.5, 108.0, 'D’ailleurs, il a quitté Meta'],
-  [108.0, 111.5, 'et levé plus d’un milliard de dollars'],
-  [111.5, 113.4, 'pour construire l’inverse,'],
-  [113.4, 116.8, 'ce qu’on appelle les world models,'],
-  [116.8, 119.3, 'des IA qui comprendraient vraiment'],
-  [119.3, 122.1, 'comment le monde fonctionne.'],
-  [122.1, 124.5, 'Mais le plus troublant,'],
-  [124.5, 127.0, 'c’est que ce lieu s’appelle'],
-  [127.0, 129.0, 'La Source.'],
-  [129.0, 130.4, 'Alors vous,'],
-  [130.4, 132.4, 'qu’est-ce que vous voyez'],
-  [132.4, 135.2, 'couler de ce toit ?'],
-  [135.2, 138.1, 'Parce que la machine, elle,'],
-  [138.1, 140.5, 'n’a rien voulu dire,'],
-  [140.5, 143.5, 'c’est nous qui cherchons un sens.', 143.5],
-  [145.5, 147.4, 'Alors au fond,'],
-  [147.4, 148.8, 'qui rêve,'],
-  [148.8, 151.3, 'elle ou nous ?'],
-  [151.3, 152.9, 'Hallucination,'],
-  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 999],
+/* ================= SOUS-TITRES =================
+   Base pour poser la voix au montage. Timecodes en temps script (lus ×SPEED). */
+const Z = {
+  CU: { x: 540, y: 1500, w: 860 },
+  R: { x: 668, y: 1420, w: 590 },
+  L: { x: 400, y: 1420, w: 540 },
+  C: { x: 540, y: 1482, w: 860 },
+  R2: { x: 668, y: 1478, w: 590 },
+};
+const SUB_RAW = [
+  [0.5, 3.5, 'On a demandé à une *IA*', 'CU'],
+  [3.5, 6.9, 'de *donner vie* à ce dessin,', 'CU'],
+  [6.9, 8.4, 'et regardez bien', 'R'],
+  [8.4, 11.2, 'ce qui se passe.', 'R'],
+  [11.2, 15.1, 'Ce dessin, c’est celui de *Philippe Delord*,', 'L'],
+  [15.1, 17.6, 'un dessinateur qui m’a autorisé', 'L'],
+  [17.6, 19.6, 'à utiliser son travail', 'L'],
+  [19.6, 21.9, 'pour cette vidéo.', 'L'],
+  [21.9, 24.3, 'La consigne était simple,', 'R'],
+  [24.3, 26.7, 'faire vivre la scène,', 'R'],
+  [26.7, 30.2, 'et pourtant il y a quelque chose', 'R'],
+  [30.2, 34.1, 'qui se met à *couler* du toit,', 'R'],
+  [34.1, 35.6, 'la maison s’efface', 'R'],
+  [35.6, 37.0, 'puis revient,', 'R'],
+  [37.0, 40.0, 'et honnêtement personne ne peut dire', 'R'],
+  [40.0, 42.4, 'si c’est du *bois*,', 'R'],
+  [42.4, 43.8, 'de l’*eau*', 'R'],
+  [43.8, 46.2, 'ou de la *fumée*,', 'R'],
+  [46.2, 49.0, 'pas même la machine.', 'R'],
+  [49.0, 51.9, 'Parce que pour une IA,', 'C'],
+  [51.9, 53.3, 'donner vie,', 'C'],
+  [53.3, 57.1, 'ça veut juste dire *faire bouger*.', 'C'],
+  [57.1, 60.0, 'Elle n’a jamais vu *la vie*,', 'C'],
+  [60.0, 63.5, 'elle a vu des *millions* de vidéos', 'C'],
+  [63.5, 66.9, 'où tout ce qui est vivant bouge,', 'C'],
+  [66.9, 68.9, 'alors elle fait bouger', 'C'],
+  [68.9, 71.3, 'tout ce qu’elle peut,', 'C'],
+  [71.3, 75.1, 'même ce qui n’était pas censé bouger.', 'C'],
+  [75.1, 78.1, 'Et c’est exactement ce que pointe', 'R'],
+  [78.1, 79.5, '*Yann LeCun*,', 'R'],
+  [79.5, 80.9, 'un Français,', 'R'],
+  [80.9, 84.3, 'l’un des pionniers de l’IA moderne,', 'R'],
+  [84.3, 87.7, 'qui a reçu le *prix Turing*,', 'R'],
+  [87.7, 91.0, 'l’équivalent du Nobel en informatique.', 'R'],
+  [91.0, 93.0, 'Pour lui, ces modèles', 'R'],
+  [93.0, 96.4, 'ne font que prédire des *pixels*,', 'R'],
+  [96.4, 98.8, 'sans *aucun monde* derrière,', 'R'],
+  [98.8, 102.2, 'sans savoir ce qu’est un toit,', 'R'],
+  [102.2, 105.5, 'du bois ou de l’eau.', 'R'],
+  [105.5, 108.0, 'D’ailleurs, il a quitté Meta', 'R'],
+  [108.0, 111.5, 'et levé plus d’un *milliard* de dollars', 'R'],
+  [111.5, 113.4, 'pour construire l’inverse,', 'R'],
+  [113.4, 116.8, 'ce qu’on appelle les *world models*,', 'R'],
+  [116.8, 119.3, 'des IA qui comprendraient vraiment', 'R'],
+  [119.3, 122.1, 'comment le monde fonctionne.', 'R'],
+  [122.1, 124.5, 'Mais le plus troublant,', 'R'],
+  [124.5, 127.0, 'c’est que ce lieu s’appelle', 'R'],
+  [127.0, 129.0, '*La Source*.', 'R'],
+  [129.0, 130.4, 'Alors *vous*,', 'R'],
+  [130.4, 132.4, 'qu’est-ce que *vous* voyez', 'R'],
+  [132.4, 135.2, 'couler de ce toit ?', 'R'],
+  [135.2, 138.1, 'Parce que la machine, elle,', 'R'],
+  [138.1, 140.5, 'n’a rien voulu dire,', 'R'],
+  [140.5, 143.5, 'c’est nous qui cherchons *un sens*.', 'R', 143.5],
+  [145.5, 147.4, 'Alors au fond,', 'R2'],
+  [147.4, 148.8, '*qui rêve*,', 'R2'],
+  [148.8, 151.3, 'elle ou nous ?', 'R2'],
+  [151.3, 152.9, '*Hallucination*,', 'C'],
+  [152.9, 159.0, 'ou simplement une autre façon de voir ?', 'C', 999],
 ];
-const VOICE = VOICE_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], te: r[3] ?? (VOICE_RAW[i + 1] ? VOICE_RAW[i + 1][0] : 999) }));
+const SUBS = SUB_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_RAW[i + 1] ? SUB_RAW[i + 1][0] : 999) }));
+
+function parseWords(text) {
+  const out = []; let kw = false, cur = '', curKw = false;
+  for (const ch of text) {
+    if (ch === '*') { kw = !kw; if (kw) curKw = true; continue; }
+    if (ch === ' ') { if (cur) out.push({ t: cur, kw: curKw }); cur = ''; curKw = kw; continue; }
+    cur += ch; if (kw) curKw = true;
+  }
+  if (cur) out.push({ t: cur, kw: curKw });
+  return out;
+}
+function buildSubs() {
+  const layer = $('L-subs');
+  const meas = mk('text', { x: 0, y: -500, 'font-family': 'Fredoka', 'font-weight': 700 }, layer);
+  const FS = 60, KFS = 78, SP = 17;
+  SUBS.forEach((L, i) => {
+    const words = parseWords(L.text);
+    for (const w of words) { meas.setAttribute('font-size', w.kw ? KFS : FS); meas.textContent = w.t; w.w = meas.getComputedTextLength(); w.fs = w.kw ? KFS : FS; }
+    const Zn = Z[L.zone]; const rows = []; let row = [], rw = 0;
+    for (const w of words) {
+      const add = (row.length ? SP : 0) + w.w;
+      if (row.length && rw + add > Zn.w) { rows.push({ words: row, w: rw }); row = []; rw = 0; }
+      rw += (row.length ? SP : 0) + w.w; row.push(w);
+    }
+    if (row.length) rows.push({ words: row, w: rw });
+    rows.forEach(r => { r.h = Math.max(...r.words.map(w => w.fs)) * 1.12; });
+    const bh = rows.reduce((a, r) => a + r.h, 0);
+    const R = rng(90 + i * 7);
+    L.jx = (R() - 0.5) * 44; L.jy = (R() - 0.5) * 34; L.rot = (i % 2 ? 1 : -1) * (1.2 + R() * 1.8);
+    L.g = g(layer); vis(L.g, false);
+    let y = -bh / 2;
+    for (const r of rows) {
+      let x = -r.w / 2; const base = y + r.h * 0.8;
+      for (const w of r.words) {
+        w.g = g(L.g);
+        w.el = mk('text', { x: r3(x), y: r3(base), 'font-family': 'Fredoka', 'font-weight': 700, 'font-size': w.fs, fill: w.kw ? GREEN : '#FFFFFF', stroke: '#0A0A0F', 'stroke-width': 10, 'stroke-linejoin': 'round', 'paint-order': 'stroke fill' }, w.g);
+        w.el.textContent = w.t;
+        w.cx = x + w.w / 2; w.cy = base - w.fs * 0.34;
+        x += w.w + SP;
+      }
+      y += r.h;
+    }
+    L.words = words;
+    words.forEach((w, k) => { w.ta = L.t0 + (L.t1 - L.t0) * (k / words.length); });
+  });
+  meas.remove();
+}
+function renderSubs(t) {
+  for (const L of SUBS) {
+    if (t < L.t0 || t >= L.te) { vis(L.g, false); continue; }
+    vis(L.g, true);
+    const Zn = Z[L.zone];
+    const ex = clamp((t - (L.te - 0.15)) / 0.15);
+    attr(L.g, 'transform', `translate(${r3(Zn.x + L.jx)} ${r3(Zn.y + L.jy - 6 * E.qin(ex))}) rotate(${r3(L.rot)}) scale(${r3(1 - 0.04 * ex)})`);
+    attr(L.g, 'opacity', 1 - ex);
+    for (const w of L.words) {
+      const u = t - w.ta;
+      if (u < 0) { vis(w.g, false); continue; }
+      vis(w.g, true);
+      if (w.kw) {
+        const k = E.pop(clamp(u / 0.3));
+        attr(w.g, 'transform', `translate(${r3(w.cx)} ${r3(w.cy)}) scale(${r3(Math.max(0.001, k))}) translate(${r3(-w.cx)} ${r3(-w.cy)})`);
+        attr(w.g, 'opacity', clamp(u / 0.06));
+      } else {
+        const k = E.soft(clamp(u / 0.25));
+        attr(w.g, 'transform', `translate(0 ${r3(10 * (1 - k))})`);
+        attr(w.g, 'opacity', k);
+      }
+    }
+  }
+}
 
 /* ================= LA SOURCE (lettres) ================= */
 function buildSourceText() {
@@ -952,8 +1035,8 @@ function renderMosaic(ta) {
   attr(MOSAIC.g, 'opacity', 0.5 * a);
   MOSAIC.rows.forEach(r => { const off = ((r.off + (ta - 60) * r.speed) % 140 + 140) % 140 - 140; attr(r.g, 'transform', `translate(${r3(off)} 0)`); });
 }
-function renderPixGrid(t) {
-  const a = t >= PIX[0] && t <= PIX[1] + 0.3 ? Math.min(E.soft(clamp((t - PIX[0]) / 0.15)), 1 - E.soft(clamp((t - PIX[1]) / 0.3))) : 0;
+function renderPixGrid(t, ts) {
+  const a = ts >= PIX[0] && ts <= PIX[1] + 0.3 ? Math.min(E.soft(clamp((ts - PIX[0]) / 0.15)), 1 - E.soft(clamp((ts - PIX[1]) / 0.3))) : 0;
   vis(PIXGRID.g, a > 0.001); if (a <= 0.001) return;
   const step = Math.floor(t * 12);
   for (const c of PIXGRID.cells) {
@@ -1197,26 +1280,27 @@ function buildTimeline() {
 }
 
 /* ================= RENDU D'UNE IMAGE ================= */
-function renderWorld(t, ta) {
+function renderWorld(t, ts, ta) {
   const f = E.soft(clamp((ta - 151.3) / 1.0));
   attr($('bgFade'), 'opacity', 0.82 * f);
-  renderDecor(ta);
+  renderDecor(ta / SPEED);
   for (const id of ['L-world', 'L-back', 'L-front']) attr($(id), 'opacity', 1 - f);
   for (const e of ELS) e.apply(ta);
   for (const k in WIG) wiggle(WIG[k], ta);
-  renderMosaic(ta); renderPixGrid(t);
+  renderMosaic(ta); renderPixGrid(t, ts);
   renderSourceText(ta); renderBubble(ta);
 }
 let DEBUG = false;
 function renderFrame(i) {
-  const t = i / FPS, ta = warp(t);
-  renderWorld(t, ta);
-  renderRobot(t, ta);
+  const t = i / FPS, ts = t * SPEED, ta = warp(ts);
+  renderWorld(t, ts, ta);
+  renderRobot(t, ts, ta);
   renderKey(ta);
+  renderSubs(ts);
   if (DEBUG) {
     const d = $('L-debug'); d.textContent = '';
     const tx = mk('text', { x: 20, y: 60, 'font-family': 'IBM Plex Mono', 'font-size': 34, fill: '#FFFF00' }, d);
-    tx.textContent = `t=${t.toFixed(2)}  face=${faceState(robotTime(t, ta)).n}`;
+    tx.textContent = `t=${t.toFixed(2)}  script=${ts.toFixed(2)}  face=${faceState(robotTime(ts, ta)).n}`;
   }
 }
 
@@ -1233,13 +1317,15 @@ async function init() {
   buildFaces();
   buildHitstops();
   buildPhase();
+  buildSubs();
   buildSpeech();
   buildSourceText();
   await Promise.all(Array.from(document.images || []).map(im => im.decode ? im.decode().catch(() => {}) : null));
   window.renderFrame = renderFrame;
   window.renderAt = t => renderFrame(Math.round(t * FPS));
+  window.renderScript = ts => renderFrame(Math.round(ts / SPEED * FPS));
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };
-  window.REEL = { FPS, DURATION, frames: Math.round(DURATION * FPS) };
+  window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
   renderFrame(0);
   window.REEL_READY = true;
 }

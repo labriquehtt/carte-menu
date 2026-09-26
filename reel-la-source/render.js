@@ -1,5 +1,6 @@
 // Rendu image par image de index.html → MP4 H.264 1080×1920 30 fps.
-//   node render.js --stills 0.3,5,11 --out out/stills     (images de vérification)
+//   node render.js --stills 0.3,5,11 --out out/stills     (images de vérification, temps vidéo)
+//   node render.js --stills 22.2,95 --script --out ...    (mêmes images, timecodes du brief)
 //   node render.js --video out/la-source.mp4 --workers 4  (vidéo complète)
 const path = require('path');
 const fs = require('fs');
@@ -59,9 +60,10 @@ async function renderRange(browser, a, b, file, label) {
       const out = path.resolve(opt('out') || 'out/stills');
       fs.mkdirSync(out, { recursive: true });
       const page = await openPage(browser);
+      const fn = has('script') ? 'renderScript' : 'renderAt';   // --script : timecodes du brief
       for (const s of opt('stills').split(',')) {
         const t = parseFloat(s);
-        await page.evaluate(x => window.renderAt(x), t);
+        await page.evaluate(([f, x]) => window[f](x), [fn, t]);
         await page.screenshot({ path: path.join(out, `t${t.toFixed(2).padStart(6, '0')}.png`) });
       }
       console.log('stills →', out);
@@ -69,7 +71,9 @@ async function renderRange(browser, a, b, file, label) {
     if (opt('video')) {
       const file = path.resolve(opt('video'));
       fs.mkdirSync(path.dirname(file), { recursive: true });
-      const total = Math.round(159 * 30);
+      const probe = await openPage(browser);
+      const total = await probe.evaluate(() => window.REEL.frames);
+      await probe.close();
       const from = parseInt(opt('from') || '0', 10), to = parseInt(opt('to') || String(total), 10);
       const W = parseInt(opt('workers') || '4', 10);
       const tmp = fs.mkdtempSync(path.join(path.dirname(file), '.seg-'));
