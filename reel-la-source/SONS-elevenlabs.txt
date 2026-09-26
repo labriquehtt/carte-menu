@@ -1,0 +1,166 @@
+LA SOURCE — sons à faire sur ElevenLabs (Sound Effects)
+Vidéo : 1:56.0 · les repères sont en temps vidéo (m:ss.d)
+
+═══ 1. BANQUE DE SONS — générer chaque son UNE fois, puis le réutiliser ═══
+Colle le prompt (en anglais, ElevenLabs le comprend mieux) et règle la durée indiquée.
+Nomme chaque fichier avec son ID (ex. SNAP.mp3).
+
+[AMBI] Ambiance nuit en ville (fond, en boucle) — 22 s — utilisé 1×
+    quiet city at night seen from a rooftop, distant traffic hum, soft wind, calm and mysterious
+[TV_OFF] Extinction vieille télé — 1 s — utilisé 1×
+    old CRT television switching off, high pitched electric zip collapsing into a tiny blip
+[DEZOOM] Dézoom caméra — 1.2 s — utilisé 3×
+    smooth cinematic camera pull back whoosh, airy and soft
+[BOOT] Les yeux du robot se rallument — 1 s — utilisé 1×
+    cute small robot powering on, soft electronic startup chirp
+[CLINK] Loupe qui retombe — 1 s — utilisé 1×
+    small brass magnifying glass dropping into place with a light metallic clink and tiny bounce
+[SNAP] Claquement de doigts — 0.8 s — utilisé 10×
+    crisp cartoon finger snap with a tiny magical sparkle shimmer, dry and close
+[POP] Un cadre apparaît — 0.6 s — utilisé 7×
+    playful cartoon pop with a short bright whoosh, an image popping into view
+[JUMP] Saut — 0.7 s — utilisé 6×
+    quick springy cartoon jump whoosh going up
+[LAND_BIG] Atterrissage lourd sur un cadre — 0.8 s — utilisé 4×
+    punchy cartoon landing thud of a small metal robot on a wooden board, with a clank
+[FALL] Le cadre tombe — 1 s — utilisé 5×
+    object falling fast downward, descending cartoon whistle whoosh
+[LAND] Atterrissage + antenne qui vibre — 1 s — utilisé 6×
+    small robot landing thud followed by a springy antenna wobble boing
+[HOP] Petit saut — 0.5 s — utilisé 7×
+    tiny springy cartoon hop, light boing
+[PAPER] On tire un grand papier — 1 s — utilisé 2×
+    large sheet of paper yanked quickly and sliding across a table, swoosh
+[STUMBLE] Il trébuche — 1 s — utilisé 1×
+    cartoon stumble, quick tiptoe steps and a little wobble
+[PENCIL] Effet dessin (crayon) — 4 s — utilisé 2×
+    fast pencil scribbling on paper, continuous
+[SWISH] Geste rapide — 0.5 s — utilisé 2×
+    quick light swish of a small object raised in the air
+[ZOOM_IN] Zoom sur le toit — 1 s — utilisé 2×
+    fast cinematic zoom in whoosh, rising swoosh with a soft impact at the end
+[GLINT] Reflet de la loupe — 0.6 s — utilisé 1×
+    bright tiny glint ding, light reflecting on a magnifying glass
+[QUESTION] Point d'interrogation — 0.6 s — utilisé 1×
+    curious cartoon question pop, little rising boing
+[WOOD] Icône bois — 0.5 s — utilisé 1×
+    single wooden plank knock
+[DROP] Icône eau — 0.5 s — utilisé 1×
+    single water drop plop
+[SMOKE] Icône fumée — 0.8 s — utilisé 1×
+    soft puff of smoke
+[WOBBLE] Objet qui gigote — 2 s — utilisé 3×
+    rubbery cartoon wobble, jelly boing, an object wiggling unnaturally
+[DATA] Mosaïque de vidéos — 3 s — utilisé 1×
+    digital data whoosh, many video thumbnails flickering by, soft glitch texture
+[GLITCH] Robot qui se pixelise — 2.2 s — utilisé 1×
+    8-bit retro digital glitch, pixelated crunch and bleeps
+[UNGLITCH] Retour à la normale — 0.6 s — utilisé 1×
+    short reverse digital glitch resolving into a clean tone
+[HOLO] Globe filaire qui se dessine — 2 s — utilisé 1×
+    sci-fi hologram drawing itself line by line, electric tracing shimmer
+[NEON] "LA SOURCE" s'écrit — 2 s — utilisé 1×
+    deep cinematic impact hit followed by a neon sign buzzing to life and a marker writing quickly
+[DREAM] Bulle de rêve — 2 s — utilisé 1×
+    soft magical dream bubble opening, gentle chimes and airy shimmer
+[DRIP] Gouttes dans le rêve (boucle) — 6 s — utilisé 1×
+    slow gentle water drips, soft and dreamy, distant
+[FADE] Fondu au noir — 3 s — utilisé 1×
+    deep cinematic low boom fading into silence
+[CHIME] Un œil s'ouvre — 1 s — utilisé 1×
+    tiny soft electronic chime, a robot eye slowly opening
+[POWER] La lumière revient — 1.5 s — utilisé 1×
+    lights turning back on, soft electrical hum rising, city waking up
+[VR] Il enfile le casque VR — 1.5 s — utilisé 1×
+    VR headset clicking on, futuristic whoosh into a virtual world
+[DING] Carton final — 0.6 s — utilisé 1×
+    bright cheerful interface notification ding
+[HAT] Coup de chapeau — 1 s — utilisé 1×
+    short playful cartoon whistle, a friendly hat tip
+
+═══ 2. PLACEMENT DANS LA VIDÉO ═══
+ 0:00.0  AMBI      toute la vidéo, volume bas (baisser pendant le gros plan)  (jusqu'à 1:56.0)
+ 0:04.0  TV_OFF    l'écran de la tête s'éteint
+ 0:04.2  DEZOOM    dézoom vers le plan large
+ 0:04.2  BOOT      les yeux se rallument
+ 0:04.4  CLINK     la loupe retombe devant l'œil
+ 0:04.8  SNAP      CLAQUE
+ 0:04.9  POP       le cadre vidéo apparaît
+ 0:06.7  JUMP      ÉCRASE : saut
+ 0:06.9  LAND_BIG  atterrit sur le cadre (hit-stop)
+ 0:07.1  FALL      le cadre tombe
+ 0:07.2  PENCIL    effet dessin sur le robot (volume bas)  (jusqu'à 0:12.3)
+ 0:07.4  LAND      atterrit à droite
+ 0:07.5  PAPER     TIRE : il tire le dessin
+ 0:07.7  POP       le dessin arrive en place
+ 0:07.8  STUMBLE   il trébuche en arrière
+ 0:13.4  JUMP      ÉCRASE : saut
+ 0:13.6  LAND_BIG  atterrit sur le dessin
+ 0:13.8  FALL      le dessin tombe
+ 0:13.8  SNAP      CLAQUE en plein vol
+ 0:13.8  POP       le cadre vidéo revient
+ 0:14.0  LAND      atterrit sous le cadre
+ 0:16.8  SWISH     il lève la loupe
+ 0:18.8  ZOOM_IN   zoom sur le toit qui coule
+ 0:19.0  GLINT     pose "examine un indice"
+ 0:21.4  DEZOOM    on ressort du zoom
+ 0:21.5  HOP       petit recul surpris
+ 0:22.5  QUESTION  il se gratte la tête, "?"
+ 0:25.2  SNAP      CLAQUE
+ 0:25.3  WOOD      icône planche
+ 0:26.7  SNAP      CLAQUE
+ 0:26.8  DROP      icône goutte
+ 0:27.6  SNAP      CLAQUE
+ 0:27.6  SMOKE     icône fumée
+ 0:30.4  JUMP      ÉCRASE : saut
+ 0:30.7  LAND_BIG  atterrit sur le cadre
+ 0:30.9  FALL      le cadre et les icônes tombent
+ 0:31.0  SNAP      CLAQUE en plein vol
+ 0:31.1  POP       arbre, maison, caillou apparaissent
+ 0:31.2  LAND      atterrit au centre
+ 0:33.5  HOP       vers l'arbre
+ 0:34.0  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
+ 0:34.4  HOP       vers la maison
+ 0:34.7  HOP       
+ 0:35.2  WOBBLE    la maison gigote
+ 0:35.6  HOP       retour au centre
+ 0:37.7  DATA      la mosaïque de vidéos défile
+ 0:44.8  HOP       vers le caillou
+ 0:45.3  WOBBLE    le caillou gigote
+ 0:45.8  HOP       retour au centre
+ 0:46.8  JUMP      TIRE depuis le haut : il saute s'accrocher
+ 0:46.9  FALL      les objets tombent
+ 0:47.2  PAPER     il tire la photo vers le bas
+ 0:47.8  LAND      il lâche et atterrit
+ 0:58.5  GLITCH    le robot se pixelise
+ 1:00.6  UNGLITCH  retour net
+ 1:11.3  SNAP      CLAQUE (assis)
+ 1:11.4  HOLO      le globe se dessine
+ 1:16.4  JUMP      ÉCRASE : saut
+ 1:16.6  LAND_BIG  atterrit sur la carte
+ 1:16.8  FALL      carte, photo et globe tombent
+ 1:16.8  SNAP      CLAQUE en plein vol
+ 1:16.9  POP       le cadre vidéo revient
+ 1:17.0  LAND      atterrit sous le cadre
+ 1:19.9  NEON      "La Source." : hit-stop + LA SOURCE s'écrit
+ 1:23.2  ZOOM_IN   zoom sur le toit
+ 1:25.0  DEZOOM    on ressort du zoom
+ 1:30.3  DREAM     il s'endort, la bulle de rêve s'ouvre
+ 1:30.6  DRIP      gouttes dans la bulle  (jusqu'à 1:35.2)
+ 1:35.2  FADE      fondu au noir, "Hallucination"
+ 1:35.6  CHIME     il ouvre un œil
+ 1:40.0  POWER     la lumière revient (outro LK Studio)
+ 1:40.3  JUMP      il saute à sa place
+ 1:40.6  LAND      
+ 1:41.9  SNAP      CLAQUE
+ 1:42.0  POP       la fenêtre du site apparaît
+ 1:48.9  SNAP      CLAQUE
+ 1:49.0  POP       le casque VR apparaît dans sa main
+ 1:50.3  VR        il enfile le casque
+ 1:51.6  PENCIL    "entrez dans le dessin" : effet dessin  (jusqu'à 1:53.3)
+ 1:53.4  SWISH     il retire le casque
+ 1:53.7  DING      carton l-k-studio.com
+ 1:54.2  HAT       coup de chapeau
+
+Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
+à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.

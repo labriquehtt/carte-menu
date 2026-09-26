@@ -1527,6 +1527,8 @@ async function init() {
   window.renderFrame = renderFrame;
   window.renderAt = t => renderFrame(Math.round(t * FPS));
   window.renderScript = ts => renderFrame(Math.round(ts / SPEED * FPS));
+  // temps vidéo (s) où un événement de la timeline (temps script) apparaît, hit-stops compris
+  window.videoTimeOf = ts => { let lo = 0, hi = DURATION + 1; for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (warp(m * SPEED) < ts) lo = m; else hi = m; } return hi; };
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };
   window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
   await Promise.all(['media/delord.jpg', 'media/lecun.jpg', 'assets/pin-fl.png', 'assets/pin-htt.png'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));

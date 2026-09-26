@@ -1,0 +1,51 @@
+LA SOURCE — musique sur mesure avec Suno
+Vidéo : 1:56.0 · repères en temps vidéo (m:ss.d)
+
+═══ RÉGLAGES SUNO (mode Custom, Instrumental activé) ═══
+Titre : La Source
+Style of Music (à coller tel quel) :
+    cinematic noir detective jazz, upright bass, brushed drums, muted trumpet, vibraphone, mysterious and playful, 92 BPM, D minor, instrumental
+
+Lyrics (seulement des balises de structure, aucune parole) :
+    [Intro: mysterious vibraphone and soft pads, no drums]
+    [Verse: walking upright bass and brushed drums enter, playful investigation]
+    [Verse 2: bouncy, playful pizzicato accents]
+    [Chorus: muted trumpet melody, serious and intriguing]
+    [Break: short 8-bit glitch stutter]
+    [Build: tension rising]
+    [Verse 3: groove returns, restrained]
+    [Stop: full stop on a big hit]
+    [Breakdown: slowing down, fading out]
+    [Silence]
+    [Bridge: dreamy vibraphone, very soft, slow]
+    [Interlude: single deep low note]
+    [Outro: warm groove returns, upbeat]
+    [End: final button hit]
+
+═══ LA MUSIQUE DOIT ÉPOUSER CES MOMENTS ═══
+ 0:00.0  Intro      gros plan sur l'écran : mystérieux, vibraphone + nappes, sans batterie
+ 0:04.2  Groove     le dézoom : contrebasse walking + balais, enquête espiègle
+ 0:30.9  Variation  "donner vie = faire bouger" : plus bondissant, pizzicati
+ 0:47.2  Thème      Yann LeCun : trompette bouchée, plus sérieux et intrigant
+ 0:58.5  Glitch     "prédire des pixels" : 2 s de bégaiement 8-bit, puis reprise
+ 1:11.3  Montée     les world models : tension qui monte
+ 1:16.8  Retour     "Revenons à ce jardin" : on retrouve le groove, en retenue
+ 1:19.9  STOP       "La Source." : arrêt net sur un gros impact, puis presque rien
+ 1:26.9  Ralenti    tout ralentit, la musique s'étire et s'éteint
+ 1:30.3  SILENCE    le robot s'endort : silence complet
+ 1:31.5  Rêve       "Alors au fond, qui rêve…" : vibraphone rêveur, très doux
+ 1:35.2  Noir       "Hallucination" : fondu au noir, une seule note grave
+ 1:40.0  Outro      fin LK Studio : le groove revient, chaleureux et entraînant
+ 1:54.2  Fin        coup de chapeau : accord final (button)
+
+═══ MÉTHODE ═══
+Suno respecte la structure mais pas les secondes exactes : c'est normal.
+1. Génère plusieurs versions (2 par essai) et garde celle dont l’ambiance colle le mieux.
+2. Dans CapCut, cale le début à 0:00 et fais tomber un gros temps fort pile sur 1:19.9 ("La Source.").
+3. Coupe en fondu vers 1:26.9 et laisse le silence de 1:30.3 à 1:31.5.
+4. Place un passage calme de la musique (ou une 2e génération "dreamy vibraphone, slow, soft") de 1:31.5 à 1:40.0.
+5. Relance le groove à 1:40.0 et aligne l'accord final sur 1:54.2 (coup de chapeau).
+6. Baisse la musique d'environ 12 dB sous la voix (ducking automatique de CapCut).
+
+Si tu préfères, envoie-moi la musique Suno et les bruitages : je fais les coupes, le
+silence et le calage à l'image près, et je te rends la vidéo avec la bande-son mixée.

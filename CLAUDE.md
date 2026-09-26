@@ -57,6 +57,13 @@ en coordonnées scène).
 `SCRIPT-teleprompteur.txt` est généré depuis `SUB_RAW` (repères m:ss en temps vidéo) :
 le régénérer après toute modification du texte.
 
+### Son (fait au montage)
+
+`node sons.js` régénère `SONS-elevenlabs.txt` (banque de bruitages ElevenLabs + placement
+exact en temps vidéo, hit-stops compris, via `window.videoTimeOf`), `MUSIQUE-suno.txt`
+(brief musique Suno calé sur les temps forts et le silence) et `out/cues.json`.
+À relancer après toute modification de la timeline.
+
 ### Commandes
 
 ```bash
