@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>PARANO-IA — bande-annonce</title>
+<style>
+@font-face{font-family:'Fredoka';font-weight:700;src:url(assets/Fredoka-700.woff2) format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:700;src:url(assets/SpaceGrotesk-700.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-weight:500;src:url(assets/IBMPlexMono-500.woff2) format('woff2')}
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+#stage{display:block}
+</style>
+</head>
+<body>
+<svg id="stage" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+<filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+<feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="4" result="a"/>
+<feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/>
+<feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="a"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="bloom" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="22"/></filter>
+<filter id="b1" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.2"/></filter>
+<filter id="b3" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3"/></filter>
+<filter id="b6" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="b12" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter>
+<filter id="b24" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+<filter id="shadowSoft" x="-30%" y="-30%" width="160%" height="170%">
+<feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+</filter>
+<filter id="textShadow" x="-20%" y="-40%" width="140%" height="180%">
+<feDropShadow dx="0" dy="8" stdDeviation="0" flood-color="#000" flood-opacity="0.85"/>
+</filter>
+<!-- robot passé au crayon : niveaux de gris éclaircis, hachures, trait qui tremble (graine changée à 12 i/s) -->
+<filter id="sketchFx" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+<feColorMatrix type="saturate" values="0" result="g"/>
+<feComponentTransfer in="g" result="t"><feFuncR type="table" tableValues="0.18 0.62 0.86 0.95"/><feFuncG type="table" tableValues="0.17 0.6 0.84 0.93"/><feFuncB type="table" tableValues="0.16 0.55 0.78 0.86"/></feComponentTransfer>
+<feTurbulence id="skHatch" type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="1" seed="3" result="h"/>
+<feColorMatrix in="h" type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.24  0 0 0 0 0.22  -2.2 0 0 0 1.25" result="hl"/>
+<feComposite in="hl" in2="SourceAlpha" operator="in" result="hin"/>
+<feComponentTransfer in="hin" result="hin2"><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+<feMerge result="m"><feMergeNode in="t"/><feMergeNode in="hin2"/></feMerge>
+<feTurbulence id="skTurb" type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="1" result="n"/>
+<feDisplacementMap in="m" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<!-- monde dessiné : trait qui tremble (stop motion) -->
+<filter id="boilFx" filterUnits="userSpaceOnUse" x="-200" y="0" width="1480" height="1920">
+<feTurbulence id="boilTurb" type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="1" result="n"/>
+<feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<!-- grain de pellicule, plein cadre -->
+<filter id="grainFx" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920">
+<feTurbulence id="grainTurb" type="fractalNoise" baseFrequency="0.8" numOctaves="1" seed="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 -0.35"/>
+</filter>
+<!-- aberration chromatique (glitch, titre) -->
+<filter id="rgbSplit" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+<feOffset id="rgbR" in="SourceGraphic" dx="-6" dy="0" result="r0"/>
+<feColorMatrix in="r0" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+<feOffset id="rgbB" in="SourceGraphic" dx="6" dy="0" result="b0"/>
+<feColorMatrix in="b0" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
+<feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="gg"/>
+<feComposite in="r" in2="gg" operator="arithmetic" k2="1" k3="1" result="rg"/>
+<feComposite in="rg" in2="b" operator="arithmetic" k2="1" k3="1"/>
+</filter>
+<radialGradient id="vignette" gradientUnits="userSpaceOnUse" cx="540" cy="960" r="1150">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+</radialGradient>
+<radialGradient id="dot" ><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+
+<!-- ====== ROBOT DÉTECTIVE — pièces officielles (copiées de reel-la-source/index.html, sans les pins) ====== -->
+<!-- #rb-coat découpé en deux : les pieds (dessinés en premier, comme dans l'original) puis le trench -->
+<g id="rb-feet">
+<rect x="-58" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+<rect x="18" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+</g>
+<g id="rb-coat-body">
+<rect x="-16" y="-12" width="32" height="30" fill="#8E97A3" stroke="#1B1620" stroke-width="5"></rect>
+<path d="M -66 24 Q -76 90 -88 150 Q 0 166 88 150 Q 76 90 66 24 Q 0 6 -66 24 Z" fill="#C8A97E" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -20 16 L 0 58 L 20 16 Z" fill="#A9B3BE" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<circle cx="0" cy="32" r="5" fill="#4DFF8F"></circle>
+<path d="M -46 22 L -4 88 L -20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M 46 22 L 4 88 L 20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M 4 88 L 6 154" fill="none" stroke="#1B1620" stroke-width="3"></path>
+<path d="M -81 96 Q 0 110 81 96 L 83 116 Q 0 130 -83 116 Z" fill="#8C6A45" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<rect x="-14" y="100" width="28" height="23" rx="5" fill="none" stroke="#D4A64A" stroke-width="5"></rect>
+<path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#1B1620" stroke-width="16" stroke-linecap="round"></path>
+<path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#8C6A45" stroke-width="9" stroke-linecap="round"></path>
+<path d="M -66 132 L -36 134" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+<path d="M 40 134 L 68 132" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -66 24 L -60 -10 L -24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+<path d="M 66 24 L 60 -10 L 24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+</g>
+
+<g id="rb-head">
+<circle cx="-110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<circle cx="110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<rect x="-105" y="-178" width="210" height="172" rx="50" fill="#C9D1D9" stroke="#1B1620" stroke-width="6"></rect>
+<path d="M -90 -128 Q -90 -160 -64 -168" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round"></path>
+<rect x="-87" y="-152" width="174" height="116" rx="26" fill="#15161C" stroke="#1B1620" stroke-width="4"></rect>
+<path d="M -72 -124 Q -72 -140 -58 -142" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="4" stroke-linecap="round"></path>
+<rect x="-22" y="-29" width="44" height="15" rx="4" fill="#A9B3BE" stroke="#1B1620" stroke-width="3"></rect>
+<circle cx="-15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="-88" cy="-24" r="4" fill="#8E97A3"></circle>
+<circle cx="88" cy="-24" r="4" fill="#8E97A3"></circle>
+</g>
+
+<g id="loupe">
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#1B1620" stroke-width="15" stroke-linecap="round"></path>
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#D4A64A" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="30" cy="-96" r="31" fill="#B8FFD6" fill-opacity="0.16" stroke="#1B1620" stroke-width="14"></circle>
+<circle cx="30" cy="-96" r="31" fill="none" stroke="#D4A64A" stroke-width="7"></circle>
+<path d="M 13 -113 Q 21 -122 34 -121" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="4" stroke-linecap="round"></path>
+</g>
+
+<g id="rb-antenna">
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#1B1620" stroke-width="10" stroke-linecap="round"></path>
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#8E97A3" stroke-width="4" stroke-linecap="round"></path>
+<circle cx="42" cy="-288" r="10" fill="#4DFF8F" stroke="#1B1620" stroke-width="4"></circle>
+</g>
+
+<g id="rb-hat">
+<path d="M -128 -170 Q -130 -186 -80 -191 L 80 -191 Q 130 -186 128 -170 Q 0 -150 -128 -170 Z" fill="#4A3526" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -72 -186 Q -76 -240 -46 -254 Q -20 -244 0 -250 Q 20 -244 46 -254 Q 76 -240 72 -186 Q 0 -178 -72 -186 Z" fill="#5E4330" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -14 -246 Q 0 -228 14 -246" fill="none" stroke="#3A281C" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -56 -226 Q -54 -244 -40 -249" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -73 -207 Q 0 -199 73 -207 L 72 -187 Q 0 -179 -72 -187 Z" fill="#231812" stroke="#1B1620" stroke-width="3"></path>
+</g>
+
+</defs>
+<g id="root"></g>
+</svg>
+<script src="core.js"></script>
+<script src="moped.js"></script>
+<script src="w_city.js"></script>
+<script src="w_cyber.js"></script>
+<script src="w_draw.js"></script>
+<script src="w_corp.js"></script>
+<script src="w_candy.js"></script>
+<script src="w_apoc.js"></script>
+<script src="w_lineup.js"></script>
+<script src="w_title.js"></script>
+<script src="seams.js"></script>
+<script src="trailer.js"></script>
+</body>
+</html>

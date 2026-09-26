@@ -1,0 +1,58 @@
+<!-- #rb-coat découpé en deux : les pieds (dessinés en premier, comme dans l'original) puis le trench -->
+<g id="rb-feet">
+<rect x="-58" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+<rect x="18" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+</g>
+<g id="rb-coat-body">
+<rect x="-16" y="-12" width="32" height="30" fill="#8E97A3" stroke="#1B1620" stroke-width="5"></rect>
+<path d="M -66 24 Q -76 90 -88 150 Q 0 166 88 150 Q 76 90 66 24 Q 0 6 -66 24 Z" fill="#C8A97E" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -20 16 L 0 58 L 20 16 Z" fill="#A9B3BE" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<circle cx="0" cy="32" r="5" fill="#4DFF8F"></circle>
+<path d="M -46 22 L -4 88 L -20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M 46 22 L 4 88 L 20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M 4 88 L 6 154" fill="none" stroke="#1B1620" stroke-width="3"></path>
+<path d="M -81 96 Q 0 110 81 96 L 83 116 Q 0 130 -83 116 Z" fill="#8C6A45" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+<rect x="-14" y="100" width="28" height="23" rx="5" fill="none" stroke="#D4A64A" stroke-width="5"></rect>
+<path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#1B1620" stroke-width="16" stroke-linecap="round"></path>
+<path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#8C6A45" stroke-width="9" stroke-linecap="round"></path>
+<path d="M -66 132 L -36 134" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+<path d="M 40 134 L 68 132" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -66 24 L -60 -10 L -24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+<path d="M 66 24 L 60 -10 L 24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+</g>
+
+<g id="rb-head">
+<circle cx="-110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<circle cx="110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<rect x="-105" y="-178" width="210" height="172" rx="50" fill="#C9D1D9" stroke="#1B1620" stroke-width="6"></rect>
+<path d="M -90 -128 Q -90 -160 -64 -168" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round"></path>
+<rect x="-87" y="-152" width="174" height="116" rx="26" fill="#15161C" stroke="#1B1620" stroke-width="4"></rect>
+<path d="M -72 -124 Q -72 -140 -58 -142" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="4" stroke-linecap="round"></path>
+<rect x="-22" y="-29" width="44" height="15" rx="4" fill="#A9B3BE" stroke="#1B1620" stroke-width="3"></rect>
+<circle cx="-15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="-88" cy="-24" r="4" fill="#8E97A3"></circle>
+<circle cx="88" cy="-24" r="4" fill="#8E97A3"></circle>
+</g>
+
+<g id="loupe">
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#1B1620" stroke-width="15" stroke-linecap="round"></path>
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#D4A64A" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="30" cy="-96" r="31" fill="#B8FFD6" fill-opacity="0.16" stroke="#1B1620" stroke-width="14"></circle>
+<circle cx="30" cy="-96" r="31" fill="none" stroke="#D4A64A" stroke-width="7"></circle>
+<path d="M 13 -113 Q 21 -122 34 -121" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="4" stroke-linecap="round"></path>
+</g>
+
+<g id="rb-antenna">
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#1B1620" stroke-width="10" stroke-linecap="round"></path>
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#8E97A3" stroke-width="4" stroke-linecap="round"></path>
+<circle cx="42" cy="-288" r="10" fill="#4DFF8F" stroke="#1B1620" stroke-width="4"></circle>
+</g>
+
+<g id="rb-hat">
+<path d="M -128 -170 Q -130 -186 -80 -191 L 80 -191 Q 130 -186 128 -170 Q 0 -150 -128 -170 Z" fill="#4A3526" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -72 -186 Q -76 -240 -46 -254 Q -20 -244 0 -250 Q 20 -244 46 -254 Q 76 -240 72 -186 Q 0 -178 -72 -186 Z" fill="#5E4330" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -14 -246 Q 0 -228 14 -246" fill="none" stroke="#3A281C" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -56 -226 Q -54 -244 -40 -249" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -73 -207 Q 0 -199 73 -207 L 72 -187 Q 0 -179 -72 -187 Z" fill="#231812" stroke="#1B1620" stroke-width="3"></path>
+</g>

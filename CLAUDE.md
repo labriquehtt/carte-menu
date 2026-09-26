@@ -8,6 +8,35 @@ ancien projet, à ignorer.
 
 ---
 
+## 🎞️ Bande-annonce « PARANO-IA » — `parano-ia/` (projet en cours)
+
+Teaser du compte Instagram PARANO-IA : 14 s, 1080×1920, 30 i/s, sans voix, tout en animation par code
+(même moteur que le reel : SVG rendu image par image dans Chromium). Le robot détective officiel
+(pièces copiées de `reel-la-source/index.html` dans `robot_defs.svg`, sans les pins) traverse en
+mobylette, **toujours de gauche à droite**, un plan-séquence de mondes liés à l'IA. La vidéo d'inspiration
+de l'utilisateur (lancement « Claude Opus 5.5 ») ne sert **que pour le rythme, les transitions rapides et le
+son** : décors voulus « open world », riches, jamais de fonds blancs ni de chiffres.
+- Musique calée à 118 BPM (`BEAT`, `beat(k)`) : `TD` = drop (la mobylette démarre, 1,53 s). Chaque monde
+  défile lentement puis la caméra « fouette » sur un temps fort ; le robot franchit la couture et prend le
+  style du monde suivant (moitié avant d'abord : deux pilotes découpés par la couture).
+- Mondes (`w_*.js`, parallaxe 5-6 couches) : ville au crépuscule (caméras de surveillance qui suivent le
+  robot, habitants, tram) · cyberpunk (deepfakes, cadenas, drones) · dessin au crayon (robot passé au crayon,
+  main à 6 doigts, bras qui dessine la route) · campus corporate (méca « OpenIA » qui croque le petit visage
+  jaune à la Hugging Face) · monde tout rose (smoothie, cookie « ACCEPTER LES COOKIES ? OUI / OUI ») ·
+  apocalypse. Puis `w_lineup.js` (ChatGPT, Gemini, Claude, DeepSeek en suspects) et `w_title.js`
+  (iris depuis la loupe, « PARANO-IA », « L'IA SOUS ENQUÊTE », bouton S'ABONNER cliqué, coup de chapeau).
+  Coutures décorées dans `seams.js` ; textes courts par monde (`S.caps` de trailer.js).
+- Emblèmes des IA : évocations (nœud, étincelle, baleine, astérisque), jamais les logos exacts.
+- `node render.js --stills 3.5,7.6 --out …` (images) ; `node render.js --video out/parano-ia-brut.mp4
+  --workers 4 --sub 4` (flou de bougé : moyenne de 4 sous-images par image, obturateur 180°).
+- `python3 son.py --video out/parano-ia-brut.mp4 --out out/PARANO-IA-bande-annonce.mp4` : GROOVE (drop à
+  56,98 s calé sur `TD`) coupé net sur le titre + accord final d'OUTRO + sons synthétisés (montée,
+  sub-basses, whooshes gauche→droite, impacts, moteur, braaam, croc, déclics) + bruitages de `media/sfx`
+  du reel. -14 LUFS. Crédits ElevenLabs épuisés (une musique dédiée de 15 s coûtait 225 crédits : refusée).
+  Higgsfield : 0 crédit.
+
+---
+
 ## 🎬 Reel "LA SOURCE" — `reel-la-source/`
 
 Vidéo 9:16, 1080×1920, 30 fps, **116 s** (dont l'outro LK Studio / Galerie Delord de 100 à 116 s), sans audio au rendu (voix + musique enregistrées dans
