@@ -43,6 +43,20 @@ image par image dans Chromium puis encodée en H.264.
   de l'outro, lue ×1,66 (`SITE_RATE`) pour tenir dans les 14 s.
 - `renderFrame` est asynchrone : il attend le chargement des images des clips.
 
+### Zone de sécurité (Reels / TikTok / Shorts)
+
+Toute l'action est dessinée en coordonnées "scène" 1080×1920 puis réduite à 80 % et
+centrée (`SAFE` dans reel.js, groupe `#safe` dans index.html) ; le décor reste plein cadre.
+Écran réel visible : ~9 % rognés de chaque côté (téléphones allongés), ~220 px en haut,
+~420 px en bas, colonne de boutons à droite (x > 950, y 1050–1500). Les éléments qui
+arrivent "depuis le bord" utilisent `SCENE_LEFT/RIGHT/TOP/BOTTOM` (bords réels de l'écran
+en coordonnées scène).
+
+### Script voix
+
+`SCRIPT-teleprompteur.txt` est généré depuis `SUB_RAW` (repères m:ss en temps vidéo) :
+le régénérer après toute modification du texte.
+
 ### Commandes
 
 ```bash
@@ -68,7 +82,7 @@ Ne jamais redessiner le robot : réutiliser les `<g id="rb-…">` de `index.html
 - Le robot ne recouvre jamais l'intérieur d'un cadre affiché ; les cadres n'entrent/sortent
   que par CLAQUE, TIRE ou ÉCRASE.
 - Les hit-stops sont donnés en secondes réelles (`hitstop(t, d)` convertit).
-- Décor sans violet ni rose : l'incrustation chromatique s'applique à toute la piste.
+- Décor sans violet ni rose (au cas où l'on revienne à l'incrustation du magenta).
 - Tout l'aléatoire vient de graines fixes : le rendu est reproductible image par image.
 - `renderFrame(i)` ne dépend d'aucun état précédent → rendu parallèle par segments.
 

@@ -104,6 +104,15 @@ function hash(n) {
   return (x >>> 0) / 4294967296;
 }
 
+/* ================= ZONE DE SÉCURITÉ (Reels / TikTok / Shorts) =================
+   Sur les téléphones allongés, l'appli zoome la vidéo 9:16 (≈ 9 % coupés de chaque côté)
+   et ses boutons couvrent le haut (~220 px), le bas (~420 px) et le bord droit. Toute
+   l'action (coordonnées "scène" 1080×1920 ci-dessous) est donc réduite à 80 % et centrée
+   entre ces zones ; le décor de nuit, lui, reste plein cadre. */
+const SAFE = { k: 0.8, ox: (1080 - 1080 * 0.8) / 2, oy: 110 };
+const SCENE_LEFT = -SAFE.ox / SAFE.k, SCENE_RIGHT = (W - SAFE.ox) / SAFE.k;   // bords réels de l'écran
+const SCENE_TOP = -SAFE.oy / SAFE.k, SCENE_BOTTOM = (H - SAFE.oy) / SAFE.k;   // en coordonnées scène
+
 /* ================= CONSTANTES DE MISE EN SCÈNE ================= */
 const S0 = 0.92;                 // robot ≈ 24 % de la largeur (≈ 245 px)
 const FLOOR = 1595, BLX = 190;   // "bas à gauche", sous le cadre
@@ -229,7 +238,7 @@ class El {
     const s = this.s.at(t), o = this.o.at(t);
     if (s <= 0.0005 || o <= 0.002) { vis(this.node, false); return; }
     const tx = this.tx.at(t), ty = this.ty.at(t), r = this.r.at(t);
-    if (this.top + ty > H + 20) { vis(this.node, false); return; }
+    if (this.top + ty > SCENE_BOTTOM + 20) { vis(this.node, false); return; }
     vis(this.node, true);
     attr(this.node, 'transform', `translate(${r3(this.cx + tx)} ${r3(this.cy + ty)}) rotate(${r3(r)}) scale(${r3(s)}) translate(${-this.cx} ${-this.cy})`);
     attr(this.node, 'opacity', o);
@@ -242,7 +251,7 @@ class El {
   }
 }
 
-const fallDist = e => Math.max(1500, H + 40 - e.top);
+const fallDist = e => Math.max(1500, SCENE_BOTTOM + 40 - e.top);
 
 function claque(t, els, o = {}) {
   arm('R', t - 0.25, t - 0.03, 'snapReady', 'soft');
@@ -412,10 +421,12 @@ const P2 = { x: 90, y: 480, w: 900, h: 600 };   // dessin original (3:2)
 const P5 = { x: 70, y: 330, w: 400, h: 500 };   // Yann LeCun (4:5)
 /* TIRE de la scène 2 : tourné de 20°, seul le coin bas-gauche dépasse du bord droit,
    à portée de main du robot (1035, 1444). */
+const P2_CORNER = [SCENE_RIGHT - 45, 1444];      // coin visible, à portée de main du robot
+const BRX = P2_CORNER[0] - 146;                    // où il atterrit pour attraper le coin
 const P2_PEEK = (() => {
   const a = 20 * DEG, hw = P2.w / 2, hh = P2.h / 2;
   const cx = -hw * Math.cos(a) - hh * Math.sin(a), cy = -hw * Math.sin(a) + hh * Math.cos(a);
-  return [1035 - cx - (P2.x + hw), 1444 - cy - (P2.y + hh)];
+  return [P2_CORNER[0] - cx - (P2.x + hw), P2_CORNER[1] - cy - (P2.y + hh)];
 })();
 const DOODLES = { g: null, items: [] };
 const WIG = {};
@@ -1003,14 +1014,14 @@ const SUB_RAW = [
   [105.5, 108.0, 'D’ailleurs, il a quitté Meta', 'R'],
   [108.0, 111.5, 'et levé plus d’un *milliard* de dollars', 'R'],
   [111.5, 113.4, 'pour construire l’inverse,', 'R'],
-  [113.4, 116.8, 'ce qu’on appelle les *world models*,', 'R'],
-  [116.8, 119.3, 'des IA qui comprendraient vraiment', 'R'],
-  [119.3, 122.1, 'comment le monde fonctionne.', 'R'],
-  [122.1, 124.5, 'Mais le plus troublant,', 'R'],
-  [124.5, 127.0, 'c’est que ce lieu s’appelle', 'R'],
+  [113.4, 116.8, 'ce qu’on appelle les *world models* :', 'R'],
+  [116.8, 119.3, 'des IA qui sauraient', 'R'],
+  [119.3, 122.1, 'qu’un toit ne *coule pas*.', 'R'],
+  [122.1, 124.5, 'Revenons à ce jardin.', 'R'],
+  [124.5, 127.0, 'Philippe Delord l’a baptisé', 'R'],
   [127.0, 129.0, '*La Source*.', 'R'],
-  [129.0, 130.4, 'Alors *vous*,', 'R'],
-  [130.4, 132.4, 'qu’est-ce que *vous* voyez', 'R'],
+  [129.0, 130.4, '*Hasard* ?', 'R'],
+  [130.4, 132.4, 'Et *vous*, que voyez-vous', 'R'],
   [132.4, 135.2, 'couler de ce toit ?', 'R'],
   [135.2, 138.1, 'Parce que la machine, elle,', 'R'],
   [138.1, 140.5, 'n’a rien voulu dire,', 'R'],
@@ -1216,7 +1227,7 @@ function buildTimeline() {
 
   /* ---------- SCÈNE 2 · 11.2–21.9 ---------- */
   face(10.6, 'neutre');
-  ecrase(10.6, VIDEO, [], 300, VID.y, [889, FLOOR]);
+  ecrase(10.6, VIDEO, [], 300, VID.y, [BRX, FLOOR]);
   // 11.2 le coin du polaroid dépasse du bord droit
   POL2.tx.key(11.2, P2_PEEK[0] + 200, 'step'); POL2.tx.key(11.55, P2_PEEK[0], 'soft');
   arm('R', 11.72, 11.88, 'reach');
@@ -1224,7 +1235,7 @@ function buildTimeline() {
   const tp = 11.9;      // [TIRE]
   to('rot', tp - 0.04, tp + 0.12, -12); crouch(tp - 0.04, tp - 0.035, 1);
   to('sx', tp - 0.03, tp + 0.1, 1.15); to('sy', tp - 0.03, tp + 0.1, 0.9);
-  to('x', tp, tp + 0.3, 845);
+  to('x', tp, tp + 0.3, BRX - 44);
   arm('R', tp, tp + 0.08, 'pull');
   const p2l = Math.hypot(P2_PEEK[0], P2_PEEK[1]);   // overshoot de 20 px dans le sens du glissement
   eto(POL2.tx, tp, tp + 0.38, -P2_PEEK[0] / p2l * 20); POL2.tx.key(tp + 0.5, 0, 'soft');
@@ -1233,7 +1244,7 @@ function buildTimeline() {
   arm('R', tp + 0.12, tp + 0.42, 'down');
   to('sx', tp + 0.28, tp + 0.42, 1); to('sy', tp + 0.28, tp + 0.42, 1);
   const tb = tp + 0.5;  // il trébuche en arrière, se rattrape, remet son chapeau
-  hop(tb, 815, 0.24, 24);
+  hop(tb, 800, 0.34, 44);   // il trébuche assez loin pour sortir de la colonne de boutons de l'appli
   to('rot', tb, tb + 0.12, -15); to('rot', tb + 0.24, tb + 0.55, 0, 'pop');
   to('hatTilt', tb + 0.02, tb + 0.16, -14, 'pop');
   arm('L', tb, tb + 0.14, 'balance'); arm('R', tb, tb + 0.14, 'balance');
@@ -1324,7 +1335,7 @@ function buildTimeline() {
   const cornerLocal = [P5.x, P5.y + P5.h];
   const rP = -25 * DEG, cvec = [-P5.w / 2, P5.h / 2];
   const cr = [cvec[0] * Math.cos(rP) - cvec[1] * Math.sin(rP), cvec[0] * Math.sin(rP) + cvec[1] * Math.cos(rP)];
-  const peek = [330, 150];                       // seul un coin dépasse du bord haut
+  const peek = [330, SCENE_TOP + 150];            // seul un coin dépasse du bord haut de l'écran
   const c0 = [peek[0] - cr[0], peek[1] - cr[1]];
   const p5c = [P5.x + P5.w / 2, P5.y + P5.h / 2];
   POL5.tx.key(0, c0[0] - p5c[0], 'step'); POL5.ty.key(0, c0[1] - p5c[1] - 260, 'step'); POL5.r.key(0, -25, 'step');
@@ -1500,6 +1511,7 @@ async function init() {
   await document.fonts.load('700 58px "Space Grotesk"');
   await document.fonts.load('500 30px "IBM Plex Mono"');
   await document.fonts.ready;
+  attr($('safe'), 'transform', `translate(${r3(SAFE.ox)} ${SAFE.oy}) scale(${SAFE.k})`);
   buildDecor();
   buildWorld();
   buildRobot();

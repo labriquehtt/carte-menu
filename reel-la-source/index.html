@@ -172,12 +172,16 @@ html,body{margin:0;padding:0;background:#0A0A0F;overflow:hidden}
 <rect id="bgRect" x="0" y="0" width="1080" height="1920" fill="url(#skyGrad)"></rect>
 <g id="L-decor"></g>
 <rect id="bgFade" x="0" y="0" width="1080" height="1920" fill="#000000" opacity="0"></rect>
+<!-- zone de sécurité Reels / TikTok / Shorts : toute l'action est réduite et centrée,
+     le décor reste plein cadre (transform posé par reel.js, SAFE) -->
+<g id="safe">
 <g id="L-back"></g>
 <g id="L-world"></g>
 <g id="L-robot"></g>
 <g id="L-front"></g>
 <g id="L-key"></g>
 <g id="L-subs" filter="url(#subShadow)"></g>
+</g>
 <g id="L-debug"></g>
 </svg>
 <script src="media/manifest.js"></script>

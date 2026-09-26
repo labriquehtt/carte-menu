@@ -24,6 +24,13 @@
   vidéo, le dessin original est dans le polaroid de la scène 2, la photo de Yann LeCun dans
   celui de la scène 5, le scroll du site dans la fenêtre navigateur de l'outro. Plus
   d'incrustation à faire au montage.
+- **v6 — cadres, zoom, zone de sécurité, transition** : cadres photo ajustés au format des
+  images (dessin 3:2, LeCun 4:5) ; zoom sur l'écoulement du toit (scènes 3 et 6) ; toute
+  l'action réduite à 80 % et centrée dans la zone visible de Reels/TikTok/Shorts ; nouvelle
+  transition world models → jardin : « ce qu'on appelle les world models : / des IA qui
+  sauraient / qu'un toit ne coule pas. / Revenons à ce jardin. / Philippe Delord l'a baptisé /
+  La Source. / Hasard ? / Et vous, que voyez-vous / couler de ce toit ? » (script complet :
+  SCRIPT-teleprompteur.txt).
 - **Montage CapCut (v3, avant intégration des médias)** : le mode écran magenta dure de **0 à 4,15 s** (extinction télé à
   3,96 s) → le clip Kling va sur la piste du dessous de 0 à 4,15 s.
 
