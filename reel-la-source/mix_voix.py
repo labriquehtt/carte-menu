@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bande-son finale : la piste enregistrée dans CapCut (voix + musique) avec les bruitages dessous.
+"""Bande-son finale : la voix enregistrée dans CapCut (sans musique) avec les bruitages dessous.
 
   python3 mix_voix.py --video out/LA-SOURCE-reel-final-v5.mp4 --out out/LA-SOURCE-reel-voix.mp4
 
@@ -20,7 +20,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--voice', default=os.path.join(HERE, 'media', 'voix', 'voix.wav'))
+    seule = os.path.join(HERE, 'media', 'voix', 'voix_seule.wav')   # sans musique (separe_voix.py)
+    ap.add_argument('--voice', default=seule if os.path.exists(seule) else os.path.join(HERE, 'media', 'voix', 'voix.wav'))
     ap.add_argument('--sfx', default=os.path.join(HERE, 'out', 'bruitages.wav'))
     ap.add_argument('--sfx-gain', type=float, default=-6)
     ap.add_argument('--wav', default=os.path.join(HERE, 'out', 'bande-son-voix.wav'))

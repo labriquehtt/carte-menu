@@ -89,8 +89,8 @@ avec sa voix seule + bruitages** (`mix_voix.py`), sans musique (ni ElevenLabs ni
 ### Voix enregistrée → sous-titres, synchro labiale et rythme calés sur la voix
 
 L'utilisateur enregistre sa voix sur la vidéo dans CapCut mobile et envoie l'export (même durée,
-calé à 0:00) — **idéalement sans musique** (la séparation voix/musique automatique, modèle UVR
-de sherpa-onnx, échoue par endroits). `media/voix/` (hors Git) : `capcut.mov`, `voix.wav`
+calé à 0:00) — idéalement sans musique ; sinon `separe_voix.py` (Spleeter 2 stems de sherpa-onnx,
+appliqué seulement là où il y a de la musique ; le modèle UVR, lui, perd la voix par endroits). `media/voix/` (hors Git) : `capcut.mov`, `voix.wav`
 (ou `voix_seule.wav`, prioritaire), `voix16k.wav`, `asr.json`, `onsets.json`.
 1. `transcrire_voix.py` : reconnaissance française sherpa-onnx (zipformer fr, releases GitHub —
    Hugging Face est bloqué) → mots + instants ; `--beam --from/--to` pour un passage douteux ;

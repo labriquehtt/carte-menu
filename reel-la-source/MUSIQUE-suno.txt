@@ -34,7 +34,7 @@ Lyrics (seulement des balises de structure, aucune parole) :
  1:27.2  Ralenti    tout ralentit, la musique s'étire et s'éteint
  1:30.2  SILENCE    le robot s'endort : silence complet
  1:31.3  Rêve       "Alors au fond, qui rêve…" : vibraphone rêveur, très doux
- 1:36.1  Noir       "Hallucination" : fondu au noir, une seule note grave
+ 1:36.3  Noir       "Hallucination" : fondu au noir, une seule note grave
  1:40.8  Outro      fin LK Studio : le groove revient, chaleureux et entraînant
  1:53.3  Fin        coup de chapeau : accord final (button)
 

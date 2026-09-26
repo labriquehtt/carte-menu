@@ -526,7 +526,7 @@
    "note": "le robot se pixelise"
   },
   {
-   "t": 59.86,
+   "t": 59.85,
    "end": null,
    "id": "UNGLITCH",
    "note": "retour net"
@@ -580,7 +580,7 @@
    "note": "atterrit sous le cadre"
   },
   {
-   "t": 84.39,
+   "t": 84.46,
    "end": null,
    "id": "ZOOM_IN",
    "note": "zoom sur le toit"
@@ -592,25 +592,25 @@
    "note": "on ressort du zoom"
   },
   {
-   "t": 90.18,
+   "t": 90.17,
    "end": null,
    "id": "DREAM",
    "note": "il s'endort, la bulle de rêve s'ouvre"
   },
   {
-   "t": 90.46,
-   "end": 96.14,
+   "t": 90.45,
+   "end": 96.28,
    "id": "DRIP",
    "note": "gouttes dans la bulle"
   },
   {
-   "t": 96.14,
+   "t": 96.28,
    "end": null,
    "id": "FADE",
    "note": "fondu au noir, \"Hallucination\""
   },
   {
-   "t": 96.82,
+   "t": 96.9,
    "end": null,
    "id": "CHIME",
    "note": "il ouvre un œil"
@@ -725,7 +725,7 @@
    "note": "\"Revenons à ce jardin\" : on retrouve le groove, en retenue"
   },
   {
-   "t": 81.78,
+   "t": 81.79,
    "name": "STOP",
    "note": "\"La Source.\" : arrêt net sur un gros impact, puis presque rien"
   },
@@ -735,17 +735,17 @@
    "note": "tout ralentit, la musique s'étire et s'éteint"
   },
   {
-   "t": 90.18,
+   "t": 90.17,
    "name": "SILENCE",
    "note": "le robot s'endort : silence complet"
   },
   {
-   "t": 91.3,
+   "t": 91.28,
    "name": "Rêve",
    "note": "\"Alors au fond, qui rêve…\" : vibraphone rêveur, très doux"
   },
   {
-   "t": 96.14,
+   "t": 96.28,
    "name": "Noir",
    "note": "\"Hallucination\" : fondu au noir, une seule note grave"
   },

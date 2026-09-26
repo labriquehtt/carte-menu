@@ -137,12 +137,12 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  1:16.3  SNAP      CLAQUE en plein vol
  1:16.3  POP       le cadre vidéo revient
  1:16.4  LAND      atterrit sous le cadre
- 1:24.4  ZOOM_IN   zoom sur le toit
+ 1:24.5  ZOOM_IN   zoom sur le toit
  1:25.6  DEZOOM    on ressort du zoom
  1:30.2  DREAM     il s'endort, la bulle de rêve s'ouvre
- 1:30.5  DRIP      gouttes dans la bulle  (jusqu'à 1:36.1)
- 1:36.1  FADE      fondu au noir, "Hallucination"
- 1:36.8  CHIME     il ouvre un œil
+ 1:30.5  DRIP      gouttes dans la bulle  (jusqu'à 1:36.3)
+ 1:36.3  FADE      fondu au noir, "Hallucination"
+ 1:36.9  CHIME     il ouvre un œil
  1:40.8  POWER     la lumière revient (outro LK Studio)
  1:41.0  JUMP      il saute à sa place
  1:41.3  LAND      
