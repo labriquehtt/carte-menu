@@ -10,9 +10,9 @@ ancien projet, à ignorer.
 
 ## 🎬 Reel "LA SOURCE" — `reel-la-source/`
 
-Vidéo 9:16, 1080×1920, 30 fps, **116 s** (dont l'outro LK Studio / Galerie Delord de 100 à 116 s), sans audio (voix, musique, bruitages ajoutés au
-montage dans CapCut) et **sans sous-titres à l'image** (`SHOW_SUBS = false` : ils sont faits dans
-CapCut par détection de la voix ; `SUB_RAW` reste le texte de référence et anime la bouche du robot).
+Vidéo 9:16, 1080×1920, 30 fps, **116 s** (dont l'outro LK Studio / Galerie Delord de 100 à 116 s), sans audio au rendu (voix + musique enregistrées dans
+CapCut, bruitages ElevenLabs, mixés ensuite). Sous-titres à l'image **calés sur la voix réelle**
+(voir « Voix enregistrée » plus bas) ; `SUB_RAW` reste le texte du script (téléprompteur).
 La timeline est écrite dans les timecodes du brief (159 s de "temps script") et lue ×1,59
 (`SPEED`) ; temps vidéo = temps script ÷ 1,59. Tout est généré par code : une page SVG animée par keyframes, rendue
 image par image dans Chromium puis encodée en H.264.
@@ -83,8 +83,24 @@ arrêt net), suspens avec ralenti de bande, silence, rêve, outro dont l'accord 
 et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/bruitages.wav
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
-**Livraison actuelle : vidéo avec les bruitages seuls** (`mix_sons.py --video …`), sans la musique
-ElevenLabs : une musique personnelle est ajoutée au montage. La musique ElevenLabs reste disponible.
+**Livraison actuelle : sous-titres calés sur la voix + piste CapCut de l'utilisateur (voix et sa
+propre musique) + bruitages** (`mix_voix.py`). La musique ElevenLabs n'est plus utilisée.
+
+### Voix enregistrée → sous-titres au mot près
+
+L'utilisateur enregistre sa voix (et sa musique) sur la vidéo dans CapCut mobile et envoie
+l'export (même durée, calé à 0:00). `media/voix/` (hors Git) : `capcut.mov`, `voix.wav`,
+`voix16k.wav`, `asr.json`.
+1. `transcrire_voix.py` : reconnaissance vocale française (sherpa-onnx, modèle zipformer fr
+   téléchargé depuis les releases GitHub — Hugging Face est bloqué) → mots + instants.
+   `--from/--to --beam` pour réécouter un passage douteux.
+2. `aligne_voix.js` : `VOIX` = ce qui a **vraiment** été dit (improvisations comprises, mots-clés
+   en *étoiles*), découpé en morceaux courts ; alignement lettre par lettre sur la reconnaissance ;
+   `[texte, { rang: instant }]` pour fixer un mot mal entendu. → `voix_subs.js`
+   (`window.VOICE_SUBS`, chargé avant reel.js) : chaque mot apparaît à l'instant où il est dit,
+   la bouche du robot suit, la zone d'affichage suit la scène.
+3. `mix_voix.py` : voix ramenée à -16 LUFS + bruitages 6 dB dessous → `out/bande-son-voix.wav`,
+   puis ajoutée à la vidéo encodée.
 
 ### Miniature (couverture du reel)
 
@@ -105,6 +121,7 @@ node render.js --video out/la-source-1080x1920.mp4 --workers 4   # vidéo compl�
 node sons.js && python3 mix_sons.py --video out/la-source-1080x1920.mp4 --out out/la-source-bruitages.mp4   # piste bruitages
 python3 mix_musique.py --sfx out/bruitages.wav --video out/la-source-1080x1920.mp4 --out out/la-source-son.mp4   # musique + bruitages
 node miniature.js --word HALLUCINATION   # miniature du reel
+node aligne_voix.js && python3 mix_voix.py --video out/LA-SOURCE-reel-final-v5.mp4 --out out/LA-SOURCE-reel-voix.mp4   # voix + sous-titres
 ```
 
 ### Robot détective (source)

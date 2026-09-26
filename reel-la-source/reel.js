@@ -789,7 +789,7 @@ function buildSpeech() {
   SUBS.forEach((L, i) => {
     const t0 = L.t0 / SPEED, t1 = Math.min(L.t1, L.te) / SPEED - 0.1;   // temps réel
     const R = rng(1000 + i); const seq = []; let t = t0 + 0.04, last = '';
-    const sleepy = L.t0 >= 145.5 && L.t0 < 159;
+    const mid = (L.t0 + Math.min(L.te, L.t1 + 1)) / 2, sleepy = mid >= 145.5 && mid < 159;
     const pool = sleepy ? ['ferm', 'mi', 'ferm', 'mi'] : ['mi', 'mi', 'ouv', 'ouv', 'o', 'ferm', 'mi', 'ouv'];
     while (t < t1) {
       let sh; do { sh = pool[Math.floor(R() * pool.length)]; } while (sh === last);
@@ -1041,10 +1041,12 @@ const SUB_RAW = [
   [175.2, 177.0, 'enfilez un *casque*,', 'R'],
   [177.0, 180.2, 'et entrez dans le *dessin*.', 'R', 180.4],
 ];
-// Sous-titres à l'image désactivés : ils sont faits au montage (CapCut, détection de la voix).
-// SUB_RAW reste la référence du texte : il anime la bouche du robot et donne le téléprompteur.
-const SHOW_SUBS = false;
-const SUBS = SUB_RAW.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_RAW[i + 1] ? SUB_RAW[i + 1][0] : 999) }));
+// Sous-titres : calés sur la voix enregistrée quand voix_subs.js existe (aligne_voix.js : ce qui a
+// vraiment été dit, chaque mot à son instant), sinon SUB_RAW (le script, qui donne aussi le
+// téléprompteur). Ils animent aussi la bouche du robot.
+const SHOW_SUBS = true;
+const SUB_SRC = window.VOICE_SUBS || SUB_RAW;
+const SUBS = SUB_SRC.map((r, i) => ({ t0: r[0], t1: r[1], text: r[2], zone: r[3], te: r[4] ?? (SUB_SRC[i + 1] ? SUB_SRC[i + 1][0] : 999), wt: r[5] }));
 
 function parseWords(text) {
   const out = []; let kw = false, cur = '', curKw = false;
@@ -1088,7 +1090,7 @@ function buildSubs() {
       y += r.h;
     }
     L.words = words;
-    words.forEach((w, k) => { w.ta = L.t0 + (L.t1 - L.t0) * (k / words.length); });
+    words.forEach((w, k) => { w.ta = L.wt && L.wt.length === words.length ? L.wt[k] : L.t0 + (L.t1 - L.t0) * (k / words.length); });
   });
   meas.remove();
 }
