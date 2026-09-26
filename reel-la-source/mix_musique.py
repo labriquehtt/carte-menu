@@ -107,6 +107,7 @@ def button_time(a):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--src', default=os.path.join(HERE, 'media', 'music'))
+    ap.add_argument('--bpm', type=float, default=BPM)
     ap.add_argument('--wav', default=os.path.join(HERE, 'out', 'musique.wav'))
     ap.add_argument('--sfx')
     ap.add_argument('--video')
@@ -117,7 +118,7 @@ def main():
     M = {m['name']: m['t'] for m in data['music']}
     cue = {c['id']: c['t'] for c in reversed(data['cues'])}   # 1re occurrence de chaque son
     total = int(round(data['duration'] * SR))
-    beat = 60 / BPM
+    beat = 60 / a.bpm
     mix = np.zeros((total, 2), dtype=np.float32)
 
     # GROOVE : du dézoom à l'arrêt net sur « La Source. »

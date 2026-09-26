@@ -26,16 +26,28 @@ def main():
     ap.add_argument('--voice', default=next(f for f in cands if os.path.exists(f)))
     ap.add_argument('--sfx', default=os.path.join(HERE, 'out', 'bruitages.wav'))
     ap.add_argument('--sfx-gain', type=float, default=-8)
+    ap.add_argument('--music', help='musique de fond (out/musique.wav, mix_musique.py)')
+    ap.add_argument('--music-gain', type=float, default=-10)
     ap.add_argument('--wav', default=os.path.join(HERE, 'out', 'bande-son-voix.wav'))
     ap.add_argument('--video')
     ap.add_argument('--out')
     a = ap.parse_args()
     # bruitages bas, et qui s'effacent encore quand la voix parle (compression déclenchée par la voix)
-    graph = (f'[0:a]highpass=f=70,loudnorm=I=-16:TP=-2:LRA=11,aresample=44100,asplit=2[v][vk];'
-             f'[1:a]volume={a.sfx_gain}dB[s0];'
-             f'[s0][vk]sidechaincompress=threshold=0.08:ratio=3:attack=10:release=300[s];'
-             f'[v][s]amix=inputs=2:normalize=0:duration=longest,alimiter=limit=0.891:level=false[o]')
-    subprocess.run([FF, '-v', 'error', '-y', '-i', a.voice, '-i', a.sfx, '-filter_complex', graph,
+    ins = ['-i', a.voice, '-i', a.sfx]
+    if a.music:   # musique de fond : basse, et qui s'efface elle aussi sous la voix
+        ins += ['-i', a.music]
+        graph = (f'[0:a]highpass=f=70,loudnorm=I=-16:TP=-2:LRA=11,aresample=44100,asplit=3[v][vk][vm];'
+                 f'[1:a]volume={a.sfx_gain}dB[s0];'
+                 f'[s0][vk]sidechaincompress=threshold=0.08:ratio=3:attack=10:release=300[s];'
+                 f'[2:a]volume={a.music_gain}dB[m0];'
+                 f'[m0][vm]sidechaincompress=threshold=0.05:ratio=3:attack=20:release=500[m];'
+                 f'[v][s][m]amix=inputs=3:normalize=0:duration=longest,alimiter=limit=0.891:level=false[o]')
+    else:
+        graph = (f'[0:a]highpass=f=70,loudnorm=I=-16:TP=-2:LRA=11,aresample=44100,asplit=2[v][vk];'
+                 f'[1:a]volume={a.sfx_gain}dB[s0];'
+                 f'[s0][vk]sidechaincompress=threshold=0.08:ratio=3:attack=10:release=300[s];'
+                 f'[v][s]amix=inputs=2:normalize=0:duration=longest,alimiter=limit=0.891:level=false[o]')
+    subprocess.run([FF, '-v', 'error', '-y', *ins, '-filter_complex', graph,
                     '-map', '[o]', '-ac', '2', '-ar', '44100', a.wav], check=True)
     print('bande-son :', a.wav)
     if a.video and a.out:
