@@ -7,6 +7,8 @@
   ffmpeg -i export.mov -vn -ac 1 -ar 16000 media/voix/voix16k.wav
   python3 transcrire_voix.py --model sherpa-onnx-streaming-zipformer-fr-2023-04-14
   python3 transcrire_voix.py --model … --from 60.8 --to 66.2 --beam    # réécouter un passage douteux
+  python3 transcrire_voix.py --whisper sherpa-onnx-whisper-turbo       # texte fidèle (Whisper large-v3-turbo,
+      même dépôt GitHub : sherpa-onnx-whisper-turbo.tar.bz2), par tranches entre les silences
 
 Ensuite `node aligne_voix.js` cale le texte de VOIX (ce qui a vraiment été dit) sur ces instants.
 """
@@ -28,7 +30,10 @@ def main():
     ap.add_argument('--from', dest='t0', type=float)
     ap.add_argument('--to', dest='t1', type=float)
     ap.add_argument('--beam', action='store_true')
+    ap.add_argument('--whisper')
     a = ap.parse_args()
+    if a.whisper:
+        return whisper(a)
     M = a.model.rstrip('/') + '/'
     rec = sherpa_onnx.OnlineRecognizer.from_transducer(
         tokens=M + 'tokens.txt', encoder=M + 'encoder-epoch-29-avg-9-with-averaged-model.int8.onnx',
@@ -54,6 +59,28 @@ def main():
     if a.t0 is None:
         with open(os.path.join(HERE, 'media', 'voix', 'asr.json'), 'w') as f:
             json.dump({'text': r.text, 'tokens': list(r.tokens), 'ts': list(r.timestamps)}, f, ensure_ascii=False)
+
+
+def whisper(a):
+    """Texte seul (Whisper ne donne pas d'instants fiables ici) : sert à corriger VOIX."""
+    W = a.whisper.rstrip('/') + '/'
+    rec = sherpa_onnx.OfflineRecognizer.from_whisper(
+        encoder=W + 'turbo-encoder.int8.onnx', decoder=W + 'turbo-decoder.int8.onnx',
+        tokens=W + 'turbo-tokens.txt', language='fr', task='transcribe', num_threads=4)
+    w = wave.open(a.wav)
+    x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
+    asr = json.load(open(os.path.join(HERE, 'media', 'voix', 'asr.json')))
+    starts = [t for tok, t in zip(asr['tokens'], asr['ts']) if tok.startswith(' ')]
+    cuts = [0.0]
+    for p, q in zip(starts, starts[1:]):
+        if q - p >= 0.9 and (p + q) / 2 - cuts[-1] >= 4:
+            cuts.append((p + 0.3 + q) / 2)
+    cuts.append(len(x) / 16000)
+    for c0, c1 in zip(cuts, cuts[1:]):
+        s = rec.create_stream()
+        s.accept_waveform(16000, x[int(c0 * 16000):int(c1 * 16000)])
+        rec.decode_stream(s)
+        print(f'{c0:6.2f}-{c1:6.2f}: {s.result.text.strip()}')
 
 
 if __name__ == '__main__':

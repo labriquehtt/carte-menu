@@ -746,7 +746,7 @@ function blinkAt(t) {
 let PHASE = null;
 function buildPhase() {
   const n = Math.ceil((DURATION + 2) * FPS) + 2; PHASE = new Float64Array(n);
-  for (let i = 1; i < n; i++) PHASE[i] = PHASE[i - 1] + T('speed').at((i - 1) / FPS * SPEED) / FPS;   // indexé en temps réel
+  for (let i = 1; i < n; i++) PHASE[i] = PHASE[i - 1] + T('speed').at(scriptAt((i - 1) / FPS)) / FPS;   // indexé en temps réel
 }
 function phaseAt(t) {
   if (t <= 0) return t;
@@ -799,6 +799,15 @@ function buildSpeech() {
     SPEECH.push({ t0, t1, seq });
   });
 }
+// bouche calée sur la voix enregistrée (voix_bouche.js, analyse_voix.py) : une lettre par image
+const VM = window.VOICE_MOUTH || null;
+const VMC = { f: 'ferm', m: 'mi', u: 'ouv', o: 'o' };
+function voiceMouth(t, face) {
+  const c = VM[Math.min(VM.length - 1, Math.round(t * FPS))];
+  const sh = VMC[c] || null;
+  if (sh && (face === 'endormi' || face === 'eveil')) return sh === 'ferm' ? 'ferm' : 'mi';   // il marmonne en dormant
+  return sh;
+}
 function mouthAt(t) {
   for (const S of SPEECH) {
     if (t < S.t0 || t >= S.t1) continue;
@@ -845,6 +854,69 @@ function buildHitstops() {
   }
 }
 const warp = t => warpWith(HSR, t);
+
+/* ----- la voix enregistrée pilote le temps de l'animation -----
+   VOICE_ANCHORS (voix_subs.js, aligne_voix.js) : [temps vidéo, temps script] où une ligne du
+   script est effectivement dite. Entre deux points, l'animation accélère ou ralentit ; si la voix
+   prend plus de temps que prévu (une pause), elle attend à l'instant calme le plus tardif du
+   passage (aucune piste en mouvement) : le robot respire, cligne et parle en temps réel pendant
+   ce temps, les clips continuent. Sans voix : temps script = temps vidéo × SPEED. */
+let VMAP = null;
+function busyScript() {
+  const iv = [];
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const addTrack = tr => {
+    const k = tr.k.slice().sort((a, b) => a.t - b.t);
+    // un vrai mouvement : moins de 4 s et pas un simple saut de valeur (les longues dérives
+    // se font hors champ ou imperceptiblement)
+    for (let i = 0; i + 1 < k.length; i++) {
+      const a = k[i], b = k[i + 1];
+      if (b.e !== 'step' && b.t - a.t <= 4 && !same(a.v, b.v)) iv.push([a.t, b.t]);
+    }
+    for (const sg of tr.segs) iv.push([sg.t0, sg.t1]);
+  };
+  for (const n in TR) if (n !== 'speed') addTrack(TR[n]);
+  for (const e of ELS) [e.tx, e.ty, e.r, e.s, e.o].forEach(addTrack);
+  for (const [h, d] of HSR) iv.push([h, h + d + 0.3]);
+  iv.push([6.3, 6.6], [PIX[0], PIX[1] + 0.3], [127.05, 128.4], [BUB_T, BUB_T + 0.9], ...DRAWS);
+  iv.sort((a, b) => a[0] - b[0]);
+  const out = [];
+  for (const [a, b] of iv) { const e = b + 0.5; if (out.length && a <= out[out.length - 1][1]) out[out.length - 1][1] = Math.max(out[out.length - 1][1], e); else out.push([a, e]); }
+  return out;
+}
+function buildVoiceMap() {
+  const A = window.VOICE_ANCHORS; if (!A) return;
+  const busy = busyScript();
+  const quiet = x => !busy.some(([a, b]) => x > a && x < b);
+  const M = [[0, 0]];
+  for (const [v1, s1] of A.slice(1).concat([[DURATION, SCRIPT_DURATION]])) {
+    const [v0, s0] = M[M.length - 1];
+    if (v1 <= v0 + 0.05 || s1 <= s0) continue;
+    const extra = (v1 - v0) - (s1 - s0) / SPEED;
+    let h = null;
+    if (extra > 0.12) for (let x = s1 - 0.04; x > s0 + 0.04; x -= 0.02) if (quiet(x)) { h = x; break; }
+    if (h !== null) { M.push([v0 + (h - s0) / SPEED, h]); M.push([v1 - (s1 - h) / SPEED, h]); }
+    M.push([v1, s1]);
+  }
+  VMAP = M;
+}
+const scriptAt = t => {
+  if (!VMAP) return t * SPEED;
+  const M = VMAP; if (t >= M[M.length - 1][0]) return Math.min(SCRIPT_DURATION, M[M.length - 1][1] + (t - M[M.length - 1][0]) * SPEED);
+  let lo = 0, hi = M.length - 1;
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (M[m][0] <= t) lo = m; else hi = m; }
+  const [a, sa] = M[lo], [b, sb] = M[hi];
+  return sa + (sb - sa) * (t - a) / (b - a);
+};
+// premier instant vidéo où le temps script atteint s
+const videoAt = s => {
+  if (!VMAP) return s / SPEED;
+  const M = VMAP; if (s >= M[M.length - 1][1]) return M[M.length - 1][0] + (s - M[M.length - 1][1]) / SPEED;
+  for (let i = 1; i < M.length; i++) if (M[i][1] >= s) { const [a, sa] = M[i - 1], [b, sb] = M[i]; return sb === sa ? a : a + (b - a) * (s - sa) / (sb - sa); }
+  return s / SPEED;
+};
+// temps « réel » du robot et des clips : avance avec la vidéo, s'arrête pendant les hit-stops
+let RR = 0;
 // effets dessin/pixel : le robot bouge à 12 images par seconde RÉELLE
 function robotTime(ts, ta) {
   if (inDraw(ts) || (ts >= PIX[0] && ts <= PIX[1])) return Math.floor(ta * 12 / SPEED + 1e-6) * SPEED / 12;
@@ -852,7 +924,7 @@ function robotTime(ts, ta) {
 }
 
 function renderRobot(t, ts, ta) {
-  const rt = robotTime(ts, ta), rr = rt / SPEED;
+  const rt = robotTime(ts, ta), rr = rt === ta ? RR : Math.floor(RR * 12 + 1e-6) / 12;
   const v = n => T(n).at(rt);
   const x = v('x'), y = v('y'), s = v('s'), rot = v('rot'), sx = v('sx'), sy = v('sy'), amp = v('float'), sit = v('sit');
   const ph = phaseAt(rr), cyc = ((ph / 2.6) % 1 + 1) % 1, k6 = amp / 6;
@@ -884,7 +956,7 @@ function renderRobot(t, ts, ta) {
 
   const cross = clamp((rt - fs.tc) / 0.1);
   const lid = v('lid'), eR = v('eR'), rOpen = v('rOpen');
-  const mouth = fo > 0.5 ? mouthAt(rr) : null;
+  const mouth = fo > 0.5 ? (VM ? voiceMouth(t, faceState(rt).n) : mouthAt(rr)) : null;
   for (const n in RB.faces) {
     const F = RB.faces[n];
     let op = 0;
@@ -1065,6 +1137,10 @@ function buildSubs() {
   SUBS.forEach((L, i) => {
     const words = parseWords(L.text);
     for (const w of words) { meas.setAttribute('font-size', w.kw ? KFS : FS); meas.textContent = w.t; w.w = meas.getComputedTextLength(); w.fs = w.kw ? KFS : FS; }
+    if (L.zone === 'auto') {
+      const sm = scriptAt((L.t0 + L.te) / 2 / SPEED);
+      L.zone = SUB_RAW[0][3]; for (const r of SUB_RAW) if (r[0] <= sm + 0.3) L.zone = r[3];
+    }
     const Zn = Z[L.zone]; const rows = []; let row = [], rw = 0;
     for (const w of words) {
       const add = (row.length ? SP : 0) + w.w;
@@ -1154,11 +1230,12 @@ function renderBubble(ta) {
   const pc = (el, t0, cx, cy) => { const k = E.pop(clamp((ta - t0) / 0.35)); vis(el, k > 0.001); attr(el, 'transform', `translate(${cx} ${cy}) scale(${r3(Math.max(0.001, k))}) translate(${-cx} ${-cy})`); };
   pc(BUBBLE.c1, BUB_T, 300, 1250); pc(BUBBLE.c2, BUB_T + 0.15, 345, 1214);
   const k = E.pop(clamp((ta - BUB_T - 0.3) / 0.45));
-  const pulse = ta > BUB_T + 0.75 ? 1 + 0.035 * Math.sin(PI2 * (ta - BUB_T - 0.75) / 2.4) : 1;
+  const bt = (RR - videoAt(BUB_T)) * SPEED;
+  const pulse = bt > 0.75 ? 1 + 0.035 * Math.sin(PI2 * (bt - 0.75) / 2.4) : 1;
   vis(BUBBLE.cloud, k > 0.001);
   attr(BUBBLE.cloud, 'transform', `translate(420 1250) scale(${r3(Math.max(0.001, k * pulse))}) translate(-420 -1250)`);
   BUBBLE.drips.forEach((d, i) => {
-    const x = 530 + i * 22, u = ((ta - BUB_T) * 0.55 + i * 0.33) % 1;
+    const x = 530 + i * 22, u = ((Math.max(0, bt) * 0.55 + i * 0.33) % 1 + 1) % 1;
     attr(d, 'x1', x); attr(d, 'x2', x); attr(d, 'y1', 1206 + (i === 1 ? -10 : 0) + u * 8); attr(d, 'y2', 1212 + (i === 1 ? -10 : 0) + u * 30);
     attr(d, 'opacity', Math.sin(Math.PI * u));
   });
@@ -1169,7 +1246,8 @@ function renderMosaic(ta) {
   const a = Math.min(E.soft(clamp((ta - 60.0) / 0.6)), 1 - E.soft(clamp((ta - 68.9) / 0.8)));
   vis(MOSAIC.g, a > 0.001); if (a <= 0.001) return;
   attr(MOSAIC.g, 'opacity', 0.5 * a);
-  MOSAIC.rows.forEach(r => { const off = ((r.off + (ta - 60) * r.speed) % 140 + 140) % 140 - 140; attr(r.g, 'transform', `translate(${r3(off)} 0)`); });
+  const mt = (RR - videoAt(60)) * SPEED;
+  MOSAIC.rows.forEach(r => { const off = ((r.off + mt * r.speed) % 140 + 140) % 140 - 140; attr(r.g, 'transform', `translate(${r3(off)} 0)`); });
 }
 function renderPixGrid(t, ts) {
   const a = ts >= PIX[0] && ts <= PIX[1] + 0.3 ? Math.min(E.soft(clamp((ts - PIX[0]) / 0.15)), 1 - E.soft(clamp((ts - PIX[1]) / 0.3))) : 0;
@@ -1196,7 +1274,7 @@ function renderKey(ta) {
     sy = lerp(1, 0.012, E.qin(clamp((ta - 6.3) / 0.15)));
     if (ta >= 6.45) sx = lerp(1, 0, E.qin(clamp((ta - 6.45) / 0.15)));
   }
-  if (SCREEN_PL) playRoof(SCREEN_PL, ta / SPEED);
+  if (SCREEN_PL) playRoof(SCREEN_PL, RR);
   if (sx === 1 && sy === 1) KEY.removeAttribute('transform');
   else attr(KEY, 'transform', `translate(540 760) scale(${r3(sx)} ${r3(sy)}) translate(-540 -760)`);
 }
@@ -1476,19 +1554,19 @@ function buildTimeline() {
 function renderWorld(t, ts, ta) {
   const f = Math.min(E.soft(clamp((ta - 151.3) / 1.0)), 1 - E.soft(clamp((ta - 159.0) / 1.0)));
   attr($('bgFade'), 'opacity', 0.82 * f);
-  renderDecor(ta / SPEED);
+  renderDecor(RR);
   for (const id of ['L-world', 'L-back', 'L-front']) attr($(id), 'opacity', 1 - f);
   for (const e of ELS) e.apply(ta);
   for (const k in WIG) wiggle(WIG[k], ta);
   renderMosaic(ta); renderPixGrid(t, ts);
   if (VIDEO_PL && isShown(VIDEO_PL.g)) {
     let a0 = VIDEO_APPEAR[0]; for (const a of VIDEO_APPEAR) if (ta >= a) a0 = a;
-    playRoof(VIDEO_PL, (ta - a0) / SPEED);
+    playRoof(VIDEO_PL, RR - videoAt(a0));
     const [z, px, py] = T('vz').at(ta);   // zoom : le point (px, py) du clip vient au centre du cadre
     if (z > 1.0005) attr(VIDEO_PL.z, 'transform', `translate(540 780) scale(${r3(z)}) translate(${r3(-px)} ${r3(-py)})`);
     else VIDEO_PL.z.removeAttribute('transform');
   }
-  if (SITE_PL && isShown(SITE_PL.g)) setHref(SITE_PL.main, clipSrc('site', Math.max(0, (ta - 162.05) / SPEED * SITE_RATE)));
+  if (SITE_PL && isShown(SITE_PL.g)) setHref(SITE_PL.main, clipSrc('site', Math.max(0, (RR - videoAt(162.05)) * SITE_RATE)));
   renderSourceText(ta); renderBubble(ta);
   const dOn = ta >= 177.4 && ta < 180.8; vis(DOODLES.g, dOn);
   if (dOn) {
@@ -1498,11 +1576,12 @@ function renderWorld(t, ts, ta) {
 }
 let DEBUG = false;
 async function renderFrame(i) {
-  const t = i / FPS, ts = t * SPEED, ta = warp(ts);
+  const t = i / FPS, ts = scriptAt(t), ta = warp(ts);
+  RR = t - (videoAt(ts) - videoAt(ta));
   renderWorld(t, ts, ta);
   renderRobot(t, ts, ta);
   renderKey(ta);
-  if (SHOW_SUBS) renderSubs(ts);
+  if (SHOW_SUBS) renderSubs(window.VOICE_SUBS ? t * SPEED : ts);
   if (PENDING.length) { await Promise.all(PENDING.splice(0)); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); }
   if (DEBUG) {
     const d = $('L-debug'); d.textContent = '';
@@ -1524,6 +1603,7 @@ async function init() {
   buildTimeline();
   buildFaces();
   buildHitstops();
+  buildVoiceMap();
   buildPhase();
   if (SHOW_SUBS) buildSubs(); else vis($('L-subs'), false);
   buildSpeech();
@@ -1533,10 +1613,11 @@ async function init() {
   window.renderAt = t => renderFrame(Math.round(t * FPS));
   window.renderScript = ts => renderFrame(Math.round(ts / SPEED * FPS));
   // temps vidéo (s) où un événement de la timeline (temps script) apparaît, hit-stops compris
-  window.videoTimeOf = ts => { let lo = 0, hi = DURATION + 1; for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (warp(m * SPEED) < ts) lo = m; else hi = m; } return hi; };
+  window.videoTimeOf = ts => { let lo = 0, hi = DURATION + 1; for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (warp(scriptAt(m)) < ts) lo = m; else hi = m; } return hi; };
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };
   window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
-  window.REEL_KIT = { RB, $, g, mk, markup, attr, vis, GREEN, INK };   // pour miniature.js
+  window.REEL_KIT = { RB, $, g, mk, markup, attr, vis, GREEN, INK, VMAP, scriptAt, videoAt };
+  // pour miniature.js
   await Promise.all(['media/delord.jpg', 'media/lecun.jpg', 'assets/pin-fl.png', 'assets/pin-htt.png'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));
   await renderFrame(0);
   window.REEL_READY = true;

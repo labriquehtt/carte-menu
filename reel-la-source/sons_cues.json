@@ -208,73 +208,73 @@
  ],
  "cues": [
   {
-   "t": 3.96,
+   "t": 4.4,
    "end": null,
    "id": "TV_OFF",
    "note": "l'écran de la tête s'éteint"
   },
   {
-   "t": 4.15,
+   "t": 4.59,
    "end": null,
    "id": "DEZOOM",
    "note": "dézoom vers le plan large"
   },
   {
-   "t": 4.23,
+   "t": 4.67,
    "end": null,
    "id": "BOOT",
    "note": "les yeux se rallument"
   },
   {
-   "t": 4.37,
+   "t": 4.81,
    "end": null,
    "id": "CLINK",
    "note": "la loupe retombe devant l'œil"
   },
   {
-   "t": 4.78,
+   "t": 5.14,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 4.89,
+   "t": 5.23,
    "end": null,
    "id": "POP",
    "note": "le cadre vidéo apparaît"
   },
   {
-   "t": 6.67,
+   "t": 6.69,
    "end": null,
    "id": "JUMP",
    "note": "ÉCRASE : saut"
   },
   {
-   "t": 6.92,
+   "t": 6.9,
    "end": null,
    "id": "LAND_BIG",
    "note": "atterrit sur le cadre (hit-stop)"
   },
   {
-   "t": 7.1,
+   "t": 7.06,
    "end": null,
    "id": "FALL",
    "note": "le cadre tombe"
   },
   {
-   "t": 7.15,
-   "end": 12.33,
+   "t": 7.12,
+   "end": 12.38,
    "id": "PENCIL",
    "note": "effet dessin sur le robot (volume bas)"
   },
   {
-   "t": 7.36,
+   "t": 7.33,
    "end": null,
    "id": "LAND",
    "note": "atterrit à droite"
   },
   {
-   "t": 7.48,
+   "t": 7.46,
    "end": null,
    "id": "PAPER",
    "note": "TIRE : il tire le dessin"
@@ -292,397 +292,397 @@
    "note": "il trébuche en arrière"
   },
   {
-   "t": 13.4,
+   "t": 13.19,
    "end": null,
    "id": "JUMP",
    "note": "ÉCRASE : saut"
   },
   {
-   "t": 13.6,
+   "t": 13.35,
    "end": null,
    "id": "LAND_BIG",
    "note": "atterrit sur le dessin"
   },
   {
-   "t": 13.76,
+   "t": 13.47,
    "end": null,
    "id": "FALL",
    "note": "le dessin tombe"
   },
   {
-   "t": 13.81,
+   "t": 13.51,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE en plein vol"
   },
   {
-   "t": 13.85,
+   "t": 13.53,
    "end": null,
    "id": "POP",
    "note": "le cadre vidéo revient"
   },
   {
-   "t": 13.97,
+   "t": 13.62,
    "end": null,
    "id": "LAND",
    "note": "atterrit sous le cadre"
   },
   {
-   "t": 16.79,
+   "t": 16.31,
    "end": null,
    "id": "SWISH",
    "note": "il lève la loupe"
   },
   {
-   "t": 18.81,
+   "t": 17.69,
    "end": null,
    "id": "ZOOM_IN",
    "note": "zoom sur le toit qui coule"
   },
   {
-   "t": 19.03,
+   "t": 17.84,
    "end": null,
    "id": "GLINT",
    "note": "pose \"examine un indice\""
   },
   {
-   "t": 21.45,
+   "t": 19.55,
    "end": null,
    "id": "DEZOOM",
    "note": "on ressort du zoom"
   },
   {
-   "t": 21.5,
+   "t": 19.6,
    "end": null,
    "id": "HOP",
    "note": "petit recul surpris"
   },
   {
-   "t": 22.48,
+   "t": 20.82,
    "end": null,
    "id": "QUESTION",
    "note": "il se gratte la tête, \"?\""
   },
   {
-   "t": 25.16,
+   "t": 25.49,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 25.26,
+   "t": 25.59,
    "end": null,
    "id": "WOOD",
    "note": "icône planche"
   },
   {
-   "t": 26.67,
+   "t": 26.91,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 26.77,
+   "t": 27.02,
    "end": null,
    "id": "DROP",
    "note": "icône goutte"
   },
   {
-   "t": 27.55,
+   "t": 27.83,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 27.65,
+   "t": 27.91,
    "end": null,
    "id": "SMOKE",
    "note": "icône fumée"
   },
   {
-   "t": 30.44,
+   "t": 30.55,
    "end": null,
    "id": "JUMP",
    "note": "ÉCRASE : saut"
   },
   {
-   "t": 30.69,
+   "t": 30.8,
    "end": null,
    "id": "LAND_BIG",
    "note": "atterrit sur le cadre"
   },
   {
-   "t": 30.87,
+   "t": 30.96,
    "end": null,
    "id": "FALL",
    "note": "le cadre et les icônes tombent"
   },
   {
-   "t": 31.01,
+   "t": 31.04,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE en plein vol"
   },
   {
-   "t": 31.11,
+   "t": 31.1,
    "end": null,
    "id": "POP",
    "note": "arbre, maison, caillou apparaissent"
   },
   {
-   "t": 31.17,
+   "t": 31.14,
    "end": null,
    "id": "LAND",
    "note": "atterrit au centre"
   },
   {
-   "t": 33.52,
+   "t": 32.53,
    "end": null,
    "id": "HOP",
    "note": "vers l'arbre"
   },
   {
-   "t": 33.96,
+   "t": 32.95,
    "end": null,
    "id": "WOBBLE",
    "note": "il touche l'arbre (hit-stop) : l'arbre gigote"
   },
   {
-   "t": 34.4,
+   "t": 33.36,
    "end": null,
    "id": "HOP",
    "note": "vers la maison"
   },
   {
-   "t": 34.67,
+   "t": 33.61,
    "end": null,
    "id": "HOP",
    "note": ""
   },
   {
-   "t": 35.22,
+   "t": 34.14,
    "end": null,
    "id": "WOBBLE",
    "note": "la maison gigote"
   },
   {
-   "t": 35.6,
+   "t": 34.49,
    "end": null,
    "id": "HOP",
    "note": "retour au centre"
   },
   {
-   "t": 37.74,
+   "t": 36.32,
    "end": null,
    "id": "DATA",
    "note": "la mosaïque de vidéos défile"
   },
   {
-   "t": 44.84,
+   "t": 41.78,
    "end": null,
    "id": "HOP",
    "note": "vers le caillou"
   },
   {
-   "t": 45.28,
+   "t": 42.22,
    "end": null,
    "id": "WOBBLE",
    "note": "le caillou gigote"
   },
   {
-   "t": 45.79,
+   "t": 42.72,
    "end": null,
    "id": "HOP",
    "note": "retour au centre"
   },
   {
-   "t": 46.82,
+   "t": 45.87,
    "end": null,
    "id": "JUMP",
    "note": "TIRE depuis le haut : il saute s'accrocher"
   },
   {
-   "t": 46.92,
+   "t": 45.97,
    "end": null,
    "id": "FALL",
    "note": "les objets tombent"
   },
   {
-   "t": 47.23,
+   "t": 46.28,
    "end": null,
    "id": "PAPER",
    "note": "il tire la photo vers le bas"
   },
   {
-   "t": 47.81,
+   "t": 46.77,
    "end": null,
    "id": "LAND",
    "note": "il lâche et atterrit"
   },
   {
-   "t": 58.49,
+   "t": 58.11,
    "end": null,
    "id": "GLITCH",
    "note": "le robot se pixelise"
   },
   {
-   "t": 60.63,
+   "t": 59.86,
    "end": null,
    "id": "UNGLITCH",
    "note": "retour net"
   },
   {
-   "t": 71.32,
+   "t": 69.5,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE (assis)"
   },
   {
-   "t": 71.43,
+   "t": 69.59,
    "end": null,
    "id": "HOLO",
    "note": "le globe se dessine"
   },
   {
-   "t": 76.42,
+   "t": 75.85,
    "end": null,
    "id": "JUMP",
    "note": "ÉCRASE : saut"
   },
   {
-   "t": 76.62,
+   "t": 76.05,
    "end": null,
    "id": "LAND_BIG",
    "note": "atterrit sur la carte"
   },
   {
-   "t": 76.78,
+   "t": 76.22,
    "end": null,
    "id": "FALL",
    "note": "carte, photo et globe tombent"
   },
   {
-   "t": 76.83,
+   "t": 76.27,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE en plein vol"
   },
   {
-   "t": 76.87,
+   "t": 76.3,
    "end": null,
    "id": "POP",
    "note": "le cadre vidéo revient"
   },
   {
-   "t": 76.99,
+   "t": 76.42,
    "end": null,
    "id": "LAND",
    "note": "atterrit sous le cadre"
   },
   {
-   "t": 83.18,
+   "t": 84.39,
    "end": null,
    "id": "ZOOM_IN",
    "note": "zoom sur le toit"
   },
   {
-   "t": 85.03,
+   "t": 85.59,
    "end": null,
    "id": "DEZOOM",
    "note": "on ressort du zoom"
   },
   {
-   "t": 90.25,
+   "t": 90.18,
    "end": null,
    "id": "DREAM",
    "note": "il s'endort, la bulle de rêve s'ouvre"
   },
   {
-   "t": 90.57,
-   "end": 95.16,
+   "t": 90.46,
+   "end": 96.14,
    "id": "DRIP",
    "note": "gouttes dans la bulle"
   },
   {
-   "t": 95.16,
+   "t": 96.14,
    "end": null,
    "id": "FADE",
    "note": "fondu au noir, \"Hallucination\""
   },
   {
-   "t": 95.6,
+   "t": 96.82,
    "end": null,
    "id": "CHIME",
    "note": "il ouvre un œil"
   },
   {
-   "t": 100,
+   "t": 100.78,
    "end": null,
    "id": "POWER",
    "note": "la lumière revient (outro LK Studio)"
   },
   {
-   "t": 100.28,
+   "t": 101,
    "end": null,
    "id": "JUMP",
    "note": "il saute à sa place"
   },
   {
-   "t": 100.6,
+   "t": 101.25,
    "end": null,
    "id": "LAND",
    "note": ""
   },
   {
-   "t": 101.89,
+   "t": 102.83,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 101.99,
+   "t": 102.9,
    "end": null,
    "id": "POP",
    "note": "la fenêtre du site apparaît"
   },
   {
-   "t": 108.93,
+   "t": 107.66,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 109.04,
+   "t": 107.77,
    "end": null,
    "id": "POP",
    "note": "le casque VR apparaît dans sa main"
   },
   {
-   "t": 110.25,
+   "t": 109.66,
    "end": null,
    "id": "VR",
    "note": "il enfile le casque"
   },
   {
-   "t": 111.57,
-   "end": 113.33,
+   "t": 110.68,
+   "end": 112.44,
    "id": "PENCIL",
    "note": "\"entrez dans le dessin\" : effet dessin"
   },
   {
-   "t": 113.43,
+   "t": 112.54,
    "end": null,
    "id": "SWISH",
    "note": "il retire le casque"
   },
   {
-   "t": 113.65,
+   "t": 112.76,
    "end": null,
    "id": "DING",
    "note": "carton l-k-studio.com"
   },
   {
-   "t": 114.21,
+   "t": 113.32,
    "end": null,
    "id": "HAT",
    "note": "coup de chapeau"
@@ -695,67 +695,67 @@
    "note": "gros plan sur l'écran : très discret (on y entend l'eau et le vent du clip), vibraphone + nappes, sans batterie"
   },
   {
-   "t": 4.15,
+   "t": 4.59,
    "name": "Groove",
    "note": "le dézoom : contrebasse walking + balais, enquête espiègle"
   },
   {
-   "t": 30.89,
+   "t": 30.97,
    "name": "Variation",
    "note": "\"donner vie = faire bouger\" : plus bondissant, pizzicati"
   },
   {
-   "t": 47.23,
+   "t": 46.28,
    "name": "Thème",
    "note": "Yann LeCun : trompette bouchée, plus sérieux et intrigant"
   },
   {
-   "t": 58.49,
+   "t": 58.11,
    "name": "Glitch",
    "note": "\"prédire des pixels\" : 2 s de bégaiement 8-bit, puis reprise"
   },
   {
-   "t": 71.32,
+   "t": 69.5,
    "name": "Montée",
    "note": "les world models : tension qui monte"
   },
   {
-   "t": 76.83,
+   "t": 76.27,
    "name": "Retour",
    "note": "\"Revenons à ce jardin\" : on retrouve le groove, en retenue"
   },
   {
-   "t": 79.87,
+   "t": 81.78,
    "name": "STOP",
    "note": "\"La Source.\" : arrêt net sur un gros impact, puis presque rien"
   },
   {
-   "t": 86.86,
+   "t": 87.15,
    "name": "Ralenti",
    "note": "tout ralentit, la musique s'étire et s'éteint"
   },
   {
-   "t": 90.25,
+   "t": 90.18,
    "name": "SILENCE",
    "note": "le robot s'endort : silence complet"
   },
   {
-   "t": 91.51,
+   "t": 91.3,
    "name": "Rêve",
    "note": "\"Alors au fond, qui rêve…\" : vibraphone rêveur, très doux"
   },
   {
-   "t": 95.16,
+   "t": 96.14,
    "name": "Noir",
    "note": "\"Hallucination\" : fondu au noir, une seule note grave"
   },
   {
-   "t": 100,
+   "t": 100.78,
    "name": "Outro",
    "note": "fin LK Studio : le groove revient, chaleureux et entraînant"
   },
   {
-   "t": 114.21,
+   "t": 113.32,
    "name": "Fin",
    "note": "coup de chapeau : accord final (button)"
   }

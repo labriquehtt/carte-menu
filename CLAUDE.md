@@ -83,24 +83,31 @@ arrêt net), suspens avec ralenti de bande, silence, rêve, outro dont l'accord 
 et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/bruitages.wav
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
-**Livraison actuelle : sous-titres calés sur la voix + piste CapCut de l'utilisateur (voix et sa
-propre musique) + bruitages** (`mix_voix.py`). La musique ElevenLabs n'est plus utilisée.
+**Livraison actuelle : vidéo recalée sur la voix de l'utilisateur (rythme, sous-titres, bouche),
+avec sa voix seule + bruitages** (`mix_voix.py`), sans musique (ni ElevenLabs ni la sienne).
 
-### Voix enregistrée → sous-titres au mot près
+### Voix enregistrée → sous-titres, synchro labiale et rythme calés sur la voix
 
-L'utilisateur enregistre sa voix (et sa musique) sur la vidéo dans CapCut mobile et envoie
-l'export (même durée, calé à 0:00). `media/voix/` (hors Git) : `capcut.mov`, `voix.wav`,
-`voix16k.wav`, `asr.json`.
-1. `transcrire_voix.py` : reconnaissance vocale française (sherpa-onnx, modèle zipformer fr
-   téléchargé depuis les releases GitHub — Hugging Face est bloqué) → mots + instants.
-   `--from/--to --beam` pour réécouter un passage douteux.
-2. `aligne_voix.js` : `VOIX` = ce qui a **vraiment** été dit (improvisations comprises, mots-clés
-   en *étoiles*), découpé en morceaux courts ; alignement lettre par lettre sur la reconnaissance ;
-   `[texte, { rang: instant }]` pour fixer un mot mal entendu. → `voix_subs.js`
-   (`window.VOICE_SUBS`, chargé avant reel.js) : chaque mot apparaît à l'instant où il est dit,
-   la bouche du robot suit, la zone d'affichage suit la scène.
-3. `mix_voix.py` : voix ramenée à -16 LUFS + bruitages 6 dB dessous → `out/bande-son-voix.wav`,
-   puis ajoutée à la vidéo encodée.
+L'utilisateur enregistre sa voix sur la vidéo dans CapCut mobile et envoie l'export (même durée,
+calé à 0:00) — **idéalement sans musique** (la séparation voix/musique automatique, modèle UVR
+de sherpa-onnx, échoue par endroits). `media/voix/` (hors Git) : `capcut.mov`, `voix.wav`
+(ou `voix_seule.wav`, prioritaire), `voix16k.wav`, `asr.json`, `onsets.json`.
+1. `transcrire_voix.py` : reconnaissance française sherpa-onnx (zipformer fr, releases GitHub —
+   Hugging Face est bloqué) → mots + instants ; `--beam --from/--to` pour un passage douteux ;
+   `--whisper` (Whisper turbo) pour le texte fidèle. **Écrire ce qui est dit**, pas le script.
+2. `analyse_voix.py` : `voix_bouche.js` (forme de bouche par image, pendant les mots, d'après
+   l'énergie et la brillance de la voix) + `onsets.json` (attaques des syllabes).
+3. `aligne_voix.js` : `VOIX` (texte dit, *mots-clés*, morceaux courts, `[texte, {rang: instant}]`
+   pour fixer un mot mal entendu) aligné lettre par lettre, chaque mot recalé sur son attaque ;
+   `SYNC` = [temps script d'une ligne de SUB_RAW, début du passage dit correspondant]. Écrit
+   `voix_subs.js` : `VOICE_SUBS` (zones 'auto') et `VOICE_ANCHORS`.
+4. reel.js : `buildVoiceMap` fait du temps vidéo → temps script une fonction par morceaux
+   (`scriptAt` / `videoAt`) : entre deux points l'animation accélère ou ralentit ; si la voix fait
+   une pause, l'animation **attend** au dernier instant calme du passage (aucune piste en
+   mouvement de moins de 4 s, hors hit-stops, néon, bulle, effets). Robot (idle, clignements,
+   bouche), décor et clips vivent en temps réel `RR` (= vidéo, figé pendant les hit-stops) : ils
+   continuent pendant les attentes. `node sons.js` + `mix_sons.py` recalent les bruitages.
+5. `mix_voix.py` : voix à -16 LUFS + bruitages 6 dB dessous, ajoutés à la vidéo encodée.
 
 ### Miniature (couverture du reel)
 

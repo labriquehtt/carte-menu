@@ -75,86 +75,86 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     short playful cartoon whistle, a friendly hat tip
 
 ═══ 2. PLACEMENT DANS LA VIDÉO ═══
- 0:04.0  TV_OFF    l'écran de la tête s'éteint
- 0:04.2  DEZOOM    dézoom vers le plan large
- 0:04.2  BOOT      les yeux se rallument
- 0:04.4  CLINK     la loupe retombe devant l'œil
- 0:04.8  SNAP      CLAQUE
- 0:04.9  POP       le cadre vidéo apparaît
+ 0:04.4  TV_OFF    l'écran de la tête s'éteint
+ 0:04.6  DEZOOM    dézoom vers le plan large
+ 0:04.7  BOOT      les yeux se rallument
+ 0:04.8  CLINK     la loupe retombe devant l'œil
+ 0:05.1  SNAP      CLAQUE
+ 0:05.2  POP       le cadre vidéo apparaît
  0:06.7  JUMP      ÉCRASE : saut
  0:06.9  LAND_BIG  atterrit sur le cadre (hit-stop)
  0:07.1  FALL      le cadre tombe
- 0:07.2  PENCIL    effet dessin sur le robot (volume bas)  (jusqu'à 0:12.3)
- 0:07.4  LAND      atterrit à droite
+ 0:07.1  PENCIL    effet dessin sur le robot (volume bas)  (jusqu'à 0:12.4)
+ 0:07.3  LAND      atterrit à droite
  0:07.5  PAPER     TIRE : il tire le dessin
  0:07.7  POP       le dessin arrive en place
  0:07.8  STUMBLE   il trébuche en arrière
- 0:13.4  JUMP      ÉCRASE : saut
- 0:13.6  LAND_BIG  atterrit sur le dessin
- 0:13.8  FALL      le dessin tombe
- 0:13.8  SNAP      CLAQUE en plein vol
- 0:13.8  POP       le cadre vidéo revient
- 0:14.0  LAND      atterrit sous le cadre
- 0:16.8  SWISH     il lève la loupe
- 0:18.8  ZOOM_IN   zoom sur le toit qui coule
- 0:19.0  GLINT     pose "examine un indice"
- 0:21.4  DEZOOM    on ressort du zoom
- 0:21.5  HOP       petit recul surpris
- 0:22.5  QUESTION  il se gratte la tête, "?"
- 0:25.2  SNAP      CLAQUE
- 0:25.3  WOOD      icône planche
- 0:26.7  SNAP      CLAQUE
- 0:26.8  DROP      icône goutte
- 0:27.6  SNAP      CLAQUE
- 0:27.6  SMOKE     icône fumée
- 0:30.4  JUMP      ÉCRASE : saut
- 0:30.7  LAND_BIG  atterrit sur le cadre
- 0:30.9  FALL      le cadre et les icônes tombent
+ 0:13.2  JUMP      ÉCRASE : saut
+ 0:13.3  LAND_BIG  atterrit sur le dessin
+ 0:13.5  FALL      le dessin tombe
+ 0:13.5  SNAP      CLAQUE en plein vol
+ 0:13.5  POP       le cadre vidéo revient
+ 0:13.6  LAND      atterrit sous le cadre
+ 0:16.3  SWISH     il lève la loupe
+ 0:17.7  ZOOM_IN   zoom sur le toit qui coule
+ 0:17.8  GLINT     pose "examine un indice"
+ 0:19.6  DEZOOM    on ressort du zoom
+ 0:19.6  HOP       petit recul surpris
+ 0:20.8  QUESTION  il se gratte la tête, "?"
+ 0:25.5  SNAP      CLAQUE
+ 0:25.6  WOOD      icône planche
+ 0:26.9  SNAP      CLAQUE
+ 0:27.0  DROP      icône goutte
+ 0:27.8  SNAP      CLAQUE
+ 0:27.9  SMOKE     icône fumée
+ 0:30.6  JUMP      ÉCRASE : saut
+ 0:30.8  LAND_BIG  atterrit sur le cadre
+ 0:31.0  FALL      le cadre et les icônes tombent
  0:31.0  SNAP      CLAQUE en plein vol
  0:31.1  POP       arbre, maison, caillou apparaissent
- 0:31.2  LAND      atterrit au centre
- 0:33.5  HOP       vers l'arbre
- 0:34.0  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
- 0:34.4  HOP       vers la maison
- 0:34.7  HOP       
- 0:35.2  WOBBLE    la maison gigote
- 0:35.6  HOP       retour au centre
- 0:37.7  DATA      la mosaïque de vidéos défile
- 0:44.8  HOP       vers le caillou
- 0:45.3  WOBBLE    le caillou gigote
- 0:45.8  HOP       retour au centre
- 0:46.8  JUMP      TIRE depuis le haut : il saute s'accrocher
- 0:46.9  FALL      les objets tombent
- 0:47.2  PAPER     il tire la photo vers le bas
- 0:47.8  LAND      il lâche et atterrit
- 0:58.5  GLITCH    le robot se pixelise
- 1:00.6  UNGLITCH  retour net
- 1:11.3  SNAP      CLAQUE (assis)
- 1:11.4  HOLO      le globe se dessine
- 1:16.4  JUMP      ÉCRASE : saut
- 1:16.6  LAND_BIG  atterrit sur la carte
- 1:16.8  FALL      carte, photo et globe tombent
- 1:16.8  SNAP      CLAQUE en plein vol
- 1:16.9  POP       le cadre vidéo revient
- 1:17.0  LAND      atterrit sous le cadre
- 1:23.2  ZOOM_IN   zoom sur le toit
- 1:25.0  DEZOOM    on ressort du zoom
- 1:30.3  DREAM     il s'endort, la bulle de rêve s'ouvre
- 1:30.6  DRIP      gouttes dans la bulle  (jusqu'à 1:35.2)
- 1:35.2  FADE      fondu au noir, "Hallucination"
- 1:35.6  CHIME     il ouvre un œil
- 1:40.0  POWER     la lumière revient (outro LK Studio)
- 1:40.3  JUMP      il saute à sa place
- 1:40.6  LAND      
- 1:41.9  SNAP      CLAQUE
- 1:42.0  POP       la fenêtre du site apparaît
- 1:48.9  SNAP      CLAQUE
- 1:49.0  POP       le casque VR apparaît dans sa main
- 1:50.3  VR        il enfile le casque
- 1:51.6  PENCIL    "entrez dans le dessin" : effet dessin  (jusqu'à 1:53.3)
- 1:53.4  SWISH     il retire le casque
- 1:53.7  DING      carton l-k-studio.com
- 1:54.2  HAT       coup de chapeau
+ 0:31.1  LAND      atterrit au centre
+ 0:32.5  HOP       vers l'arbre
+ 0:33.0  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
+ 0:33.4  HOP       vers la maison
+ 0:33.6  HOP       
+ 0:34.1  WOBBLE    la maison gigote
+ 0:34.5  HOP       retour au centre
+ 0:36.3  DATA      la mosaïque de vidéos défile
+ 0:41.8  HOP       vers le caillou
+ 0:42.2  WOBBLE    le caillou gigote
+ 0:42.7  HOP       retour au centre
+ 0:45.9  JUMP      TIRE depuis le haut : il saute s'accrocher
+ 0:46.0  FALL      les objets tombent
+ 0:46.3  PAPER     il tire la photo vers le bas
+ 0:46.8  LAND      il lâche et atterrit
+ 0:58.1  GLITCH    le robot se pixelise
+ 0:59.9  UNGLITCH  retour net
+ 1:09.5  SNAP      CLAQUE (assis)
+ 1:09.6  HOLO      le globe se dessine
+ 1:15.8  JUMP      ÉCRASE : saut
+ 1:16.0  LAND_BIG  atterrit sur la carte
+ 1:16.2  FALL      carte, photo et globe tombent
+ 1:16.3  SNAP      CLAQUE en plein vol
+ 1:16.3  POP       le cadre vidéo revient
+ 1:16.4  LAND      atterrit sous le cadre
+ 1:24.4  ZOOM_IN   zoom sur le toit
+ 1:25.6  DEZOOM    on ressort du zoom
+ 1:30.2  DREAM     il s'endort, la bulle de rêve s'ouvre
+ 1:30.5  DRIP      gouttes dans la bulle  (jusqu'à 1:36.1)
+ 1:36.1  FADE      fondu au noir, "Hallucination"
+ 1:36.8  CHIME     il ouvre un œil
+ 1:40.8  POWER     la lumière revient (outro LK Studio)
+ 1:41.0  JUMP      il saute à sa place
+ 1:41.3  LAND      
+ 1:42.8  SNAP      CLAQUE
+ 1:42.9  POP       la fenêtre du site apparaît
+ 1:47.7  SNAP      CLAQUE
+ 1:47.8  POP       le casque VR apparaît dans sa main
+ 1:49.7  VR        il enfile le casque
+ 1:50.7  PENCIL    "entrez dans le dessin" : effet dessin  (jusqu'à 1:52.4)
+ 1:52.5  SWISH     il retire le casque
+ 1:52.8  DING      carton l-k-studio.com
+ 1:53.3  HAT       coup de chapeau
 
 Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
 à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.
