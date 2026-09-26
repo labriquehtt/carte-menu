@@ -26,7 +26,8 @@ image par image dans Chromium puis encodée en H.264.
   (`buildTimeline`) + décor de nuit (`buildDecor`) + sous-titres (`SUB_RAW`, qui animent
   aussi la bouche du robot).
 - `render.js` : rendu (Playwright + ffmpeg de `imageio-ffmpeg`).
-- `assets/` : polices (Fredoka, Space Grotesk, IBM Plex Mono) et pins du chapeau.
+- `assets/` : polices (Fredoka, Space Grotesk, IBM Plex Mono) et pins du chapeau (`pin-fl.png`,
+  `pin-htt.png`, plus affichés : retirés du chapeau à la demande, seule modification du robot officiel).
 - `prepare_media.py` : prépare `media/` (clips en images à 30 fps, photos recadrées,
   `media/manifest.js`). **`media/` n'est pas dans Git** (dépôt public, droits d'auteur) :
   dans une nouvelle session, redemander les fichiers à l'utilisateur, puis

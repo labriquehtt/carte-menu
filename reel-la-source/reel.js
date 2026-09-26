@@ -1674,7 +1674,7 @@ async function init() {
   window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
   window.REEL_KIT = { RB, $, g, mk, markup, attr, vis, GREEN, INK, VMAP, scriptAt, videoAt };
   // pour miniature.js
-  await Promise.all(['media/delord.jpg', 'media/lecun.jpg', 'assets/pin-fl.png', 'assets/pin-htt.png'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));
+  await Promise.all(['media/delord.jpg', 'media/lecun.jpg'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));
   await renderFrame(0);
   window.REEL_READY = true;
 }
