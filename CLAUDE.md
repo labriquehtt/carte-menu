@@ -84,7 +84,14 @@ et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
 **Livraison actuelle : vidéo recalée sur la voix de l'utilisateur (rythme, sous-titres, bouche),
-avec sa voix seule + bruitages** (`mix_voix.py`), sans musique (ni ElevenLabs ni la sienne).
+avec sa voix + bruitages + nouvelle musique de fond « deep tech »** : 4 morceaux eleven_music_v2
+(techno mélodique profonde, IA/tech, 118 BPM, la mineur ; drone suspendu ; rêve éthéré ; outro)
+dans `media/music2/` (prises A ; le jazz de `media/music/` jugé « trop tuto YouTube »), montés par
+`mix_musique.py --src media/music2 --bpm 118 --wav out/musique2.wav` (groove étiré ~6 %, breakdown
+naturel autour de « prédire des pixels », drop sur « il a quitté Meta », outro qui démarre sur « Les
+dessins de Philippe Delord » pour que l'accord final tombe sur le coup de chapeau), puis
+`mix_voix.py --music out/musique2.wav --music-gain -8` : **musique très basse** (~18-23 dB sous la
+voix, effacée quand elle parle).
 
 ### Voix enregistrée → sous-titres, synchro labiale et rythme calés sur la voix
 

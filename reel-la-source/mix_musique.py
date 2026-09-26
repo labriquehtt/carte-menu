@@ -77,7 +77,7 @@ def usable_length(a):
     return (ok[-1] + 1) * w / SR
 
 
-def fit(a, need):
+def fit(a, need, bpm=BPM):
     """Étire légèrement le morceau (hauteur conservée) pour que son plein tienne `need` secondes."""
     u = usable_length(a)
     if u >= need:
@@ -86,7 +86,7 @@ def fit(a, need):
     out = subprocess.run([FF, '-v', 'error', '-f', 'f32le', '-ac', '2', '-ar', str(SR), '-i', '-',
                           '-af', f'atempo={k:.5f}', '-f', 'f32le', '-'],
                          input=a.astype('<f4').tobytes(), capture_output=True, check=True).stdout
-    print(f'groove : étiré de {(1 / k - 1) * 100:.1f} % ({BPM} → {BPM * k:.1f} BPM) pour tenir jusqu\'à l\'arrêt')
+    print(f'groove : étiré de {(1 / k - 1) * 100:.1f} % ({bpm:g} → {bpm * k:.1f} BPM) pour tenir jusqu\'à l\'arrêt')
     return np.frombuffer(out, dtype=np.float32).reshape(-1, 2).copy()
 
 
@@ -123,7 +123,7 @@ def main():
 
     # GROOVE : du dézoom à l'arrêt net sur « La Source. »
     g0, stop = M['Groove'], M['STOP']
-    g = fit(part(a.src, 'GROOVE'), stop - g0)[:int((stop - g0) * SR)].copy()
+    g = fit(part(a.src, 'GROOVE'), stop - g0, a.bpm)[:int((stop - g0) * SR)].copy()
     gl0, gl1 = int((M['Glitch'] - g0) * SR), int((cue['UNGLITCH'] - g0) * SR)
     g[gl0:gl1] = stutter(g[gl0:gl1].copy(), beat)
     g = fade(g, 0.25, 0.02)
@@ -147,13 +147,13 @@ def main():
     o0, fin, end = M['Outro'], M['Fin'], data['duration']
     o = part(a.src, 'OUTRO')
     bt = button_time(o)
-    start = fin - bt if bt is not None and fin - bt <= o0 + 0.5 else o0
+    start = fin - bt if bt is not None and fin - bt <= o0 + 2.0 else o0   # peut démarrer jusqu'à 2 s après la reprise
     if start < o0:
         o, start = o[int((o0 - start) * SR):], o0
     o = o[:int((end - start) * SR)].copy()
     o = envelope(o, start, end, [(start, 0), (start + 0.3, 1), (end - 1.2, 1), (end, 0)])
     put(mix, o, start)
-    print(f'outro : accord final posé à {fin:.2f} s' if bt is not None and fin - bt <= o0 + 0.5
+    print(f'outro : accord final posé à {fin:.2f} s' if bt is not None and fin - bt <= o0 + 2.0
           else f'outro : accord final non calé, morceau posé à {start:.2f} s')
 
     def write(x, path):
