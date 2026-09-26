@@ -177,7 +177,7 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
 
 ### État au 2026-09-26 (fin de session)
 
-- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA.mp4`** (voix IA « Benjamin », voir plus haut ;
+- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA-v2.mp4`** (voix IA « Benjamin » puis la vraie voix pour l'outro ;
   pins du chapeau retirés ; vidéo seule encodée : `out/LA-SOURCE-reel-ia-video.mp4`).
 - Version précédente, avec la voix de l'utilisateur (`out/LA-SOURCE-reel-final.mp4`) :
   sous-titres, bouche et rythme calés sur la voix, bruitages bas, musique « deep tech » très basse,
