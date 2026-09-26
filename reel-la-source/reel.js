@@ -1667,7 +1667,7 @@ async function init() {
   await Promise.all(Array.from(document.images || []).map(im => im.decode ? im.decode().catch(() => {}) : null));
   window.renderFrame = renderFrame;
   window.renderAt = t => renderFrame(Math.round(t * FPS));
-  window.renderScript = ts => renderFrame(Math.round(ts / SPEED * FPS));
+  window.renderScript = ts => renderFrame(Math.round(videoAt(ts) * FPS));   // temps script → image (rythme calé sur la voix)
   // temps vidéo (s) où un événement de la timeline (temps script) apparaît, hit-stops compris
   window.videoTimeOf = ts => { let lo = 0, hi = DURATION + 1; for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (warp(scriptAt(m)) < ts) lo = m; else hi = m; } return hi; };
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };

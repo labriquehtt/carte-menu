@@ -136,6 +136,13 @@ pour ne pas lire Ç/Ą), et le robot officiel en pose « examine un indice » (t
 `--pose`). Mot choisi : HALLUCINATION. Tout tient dans le recadrage 3:4 de la grille Instagram
 (y 240 → 1680). reel.js expose `window.REEL_KIT` (RB, mk, g…) pour ce script.
 
+Vidéo suivante (sujet : l'exponentialité de l'IA) : `node miniature.js --theme expo --word
+EXPONENTIALITÉ --face surpris` (variante `--word EXPONENTIEL`). Même décor et même vert, sans le
+dessin : un graphique néon où la courbe double à chaque pas (×2 … ×64, face à une droite
+« linéaire » en pointillés) et crève le haut du cadre ; les lettres du mot grandissent
+exponentiellement sur une ligne qui monte. `--face` impose une expression (œil droit agrandi).
+`window.renderScript(ts)` passe par la carte de la voix (`videoAt`), sinon la pose tombe à côté.
+
 ### Commandes
 
 ```bash
