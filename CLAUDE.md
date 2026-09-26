@@ -19,7 +19,8 @@ image par image dans Chromium puis encodée en H.264.
 
 - `brief.md` : **le brief complet** (timeline, sous-titres, gestes, règles). Source de vérité.
 - `index.html` : la scène 1080×1920 + les pièces officielles du robot (copiées à l'identique
-  de la fiche personnage Claude Design) + les filtres (effet dessin, effet pixel).
+  de la fiche personnage Claude Design) + les filtres (effet pixel ; l'effet dessin sur le robot
+  est retiré à la demande : `DRAWS = []` dans reel.js).
 - `reel.js` : moteur (pistes de keyframes, easings POP/SOFT/ANTICIPATION/CHUTE, hit-stops,
   follow-through) + rig du robot + gestes CLAQUE / TIRE / ÉCRASE + toute la timeline
   (`buildTimeline`) + décor de nuit (`buildDecor`) + sous-titres (`SUB_RAW`, qui animent
@@ -72,15 +73,15 @@ sifflet du coup de chapeau) ont été générés via le connecteur ElevenLabs (m
 `eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
 https://elevenlabs.io/app/flows/LxzHYbIplS9K9SBhNABw) et rangés dans `media/sfx/<ID>.mp3`
 (hors Git). `python3 mix_sons.py` les pose aux repères de `sons_cues.json` → `out/bruitages.wav`
-(116 s, niveaux dans `MIX`, PENCIL/DRIP en boucle). Le gros plan d'ouverture garde le son
+(116 s, niveaux dans `MIX`, DRIP en boucle ; les bruits de feutre PENCIL sont retirés). Le gros plan d'ouverture garde le son
 d'origine du clip `roof` (`media/roof.wav`, extrait par prepare_media.py), coupé quand l'écran
 s'éteint. `--video … --out …` ajoute la piste à une vidéo (AAC 96k, pour rester sous 30 Mo).
 
 Musique : 4 morceaux `eleven_music_v2` (même flow, D mineur, 92 BPM) dans
 `media/music/{GROOVE,SUSPENS,REVE,OUTRO}.mp3` (2 prises par morceau sur le flow, `_a` utilisées).
 `python3 mix_musique.py` les monte aux repères `music` de sons_cues.json → `out/musique.wav` :
-groove du dézoom à « La Source. » (étiré de ~3 % pour tenir, bégaiement 8-bit sur le glitch,
-arrêt net), suspens avec ralenti de bande, silence, rêve, outro dont l'accord final est détecté
+groove du dézoom à « La Source. » (étiré de ~3 % pour tenir, arrêt net ; bégaiement 8-bit sur le
+glitch seulement avec `--stutter`, jugé désagréable), suspens avec ralenti de bande, silence, rêve, outro dont l'accord final est détecté
 et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/bruitages.wav
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
@@ -154,7 +155,34 @@ node sons.js && python3 mix_sons.py --video out/la-source-1080x1920.mp4 --out ou
 python3 mix_musique.py --sfx out/bruitages.wav --video out/la-source-1080x1920.mp4 --out out/la-source-son.mp4   # musique + bruitages
 node miniature.js --word HALLUCINATION   # miniature du reel
 node aligne_voix.js && python3 mix_voix.py --video out/LA-SOURCE-reel-final-v5.mp4 --out out/LA-SOURCE-reel-voix.mp4   # voix + sous-titres
+node miniature.js --theme expo --word EXPONENTIALITÉ --face surpris   # miniature de la vidéo suivante
 ```
+
+Chaîne exacte de la **livraison finale** (`out/LA-SOURCE-reel-final.mp4`, 116 s, ~28 Mo) :
+
+```bash
+python3 analyse_voix.py && node aligne_voix.js                          # seulement si la voix change
+node render.js --video out/la-source-1080x1920.mp4 --workers 4          # ~16 min
+FF=$(python3 -c 'import imageio_ffmpeg as i; print(i.get_ffmpeg_exe())'); cd out
+X="-c:v libx264 -preset medium -b:v 1850k -maxrate 3500k -bufsize 7000k -pix_fmt yuv420p -colorspace bt709 -color_primaries bt709 -color_trc bt709"
+$FF -y -i la-source-1080x1920.mp4 $X -pass 1 -an -f mp4 /dev/null && \
+$FF -y -i la-source-1080x1920.mp4 $X -pass 2 -an -movflags +faststart LA-SOURCE-reel-final-v6.mp4; cd ..
+node sons.js && python3 mix_sons.py                                    # → out/bruitages.wav
+python3 mix_musique.py --src media/music2 --bpm 118 --wav out/musique2.wav
+python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOURCE-reel-final-v6.mp4 --out out/LA-SOURCE-reel-final.mp4
+```
+
+`render.js --video` peut s'arrêter sur « Target page … has been closed » (mémoire) : relancer.
+
+### État au 2026-09-26 (fin de session)
+
+- **Reel LA SOURCE : terminé et livré** (`out/LA-SOURCE-reel-final.mp4`) : voix de l'utilisateur,
+  sous-titres, bouche et rythme calés sur la voix, bruitages bas, musique « deep tech » très basse,
+  carte « World model ». Miniature : `out/miniature-hallucination.png`.
+- **Vidéo suivante** (l'exponentialité de l'IA, « ce n'est pas juste du ×2 ») : miniatures livrées
+  `out/miniature-exponentialite.png` (principale) et `out/miniature-exponentiel.png` (variante,
+  conseillée : plus courte, plus lisible). Rien d'autre n'est commencé pour cette vidéo.
+- `out/` et `media/` sont hors Git : dans une nouvelle session, redemander les fichiers.
 
 ### Robot détective (source)
 
