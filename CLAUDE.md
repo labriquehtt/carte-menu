@@ -82,6 +82,15 @@ et posé sur le coup de chapeau. Rien sous le gros plan d'ouverture. `--sfx out/
 --video … --out …` écrit aussi `out/bande-son.wav` et la vidéo complète. Voix : au montage
 (CapCut), en baissant la musique sous la voix. `MUSIQUE-suno.txt` reste une alternative Suno.
 
+### Miniature (couverture du reel)
+
+`node miniature.js [--word "MOT"]` → `out/miniature-<mot>.png/.jpg` (1080×1920) : décor de nuit,
+dessin de Delord dont le toit coule (image 150 du clip `roof`) dans un cadre vert penché, le mot
+en grand au milieu qui coule lui aussi (gouttes seulement sous des jambages, jamais sous C/A/O
+pour ne pas lire Ç/Ą), et le robot officiel en pose « examine un indice » (temps script 31.5,
+`--pose`). Mot choisi : HALLUCINATION. Tout tient dans le recadrage 3:4 de la grille Instagram
+(y 240 → 1680). reel.js expose `window.REEL_KIT` (RB, mk, g…) pour ce script.
+
 ### Commandes
 
 ```bash
@@ -91,6 +100,7 @@ node render.js --stills 5,14,22.2 --script --out out/stills --debug   # images d
 node render.js --video out/la-source-1080x1920.mp4 --workers 4   # vidéo complète (~quelques min)
 node sons.js && python3 mix_sons.py --video out/la-source-1080x1920.mp4 --out out/la-source-bruitages.mp4   # piste bruitages
 python3 mix_musique.py --sfx out/bruitages.wav --video out/la-source-1080x1920.mp4 --out out/la-source-son.mp4   # musique + bruitages
+node miniature.js --word HALLUCINATION   # miniature du reel
 ```
 
 ### Robot détective (source)

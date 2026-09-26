@@ -1531,6 +1531,7 @@ async function init() {
   window.videoTimeOf = ts => { let lo = 0, hi = DURATION + 1; for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; if (warp(m * SPEED) < ts) lo = m; else hi = m; } return hi; };
   window.setDebug = on => { DEBUG = on; if (!on) $('L-debug').textContent = ''; };
   window.REEL = { FPS, DURATION, SPEED, frames: Math.round(DURATION * FPS) };
+  window.REEL_KIT = { RB, $, g, mk, markup, attr, vis, GREEN, INK };   // pour miniature.js
   await Promise.all(['media/delord.jpg', 'media/lecun.jpg', 'assets/pin-fl.png', 'assets/pin-htt.png'].map(u => { const im = new Image(); im.src = u; return im.decode().catch(() => {}); }));
   await renderFrame(0);
   window.REEL_READY = true;
