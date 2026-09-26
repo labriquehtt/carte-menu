@@ -8,7 +8,7 @@ ancien projet, à ignorer.
 
 ---
 
-## 🎞️ Bande-annonce « PARANO-IA » — `parano-ia/` (projet en cours)
+## 🎞️ Bande-annonce « PARANO-IA » — `parano-ia/`
 
 Teaser du compte Instagram PARANO-IA : 14 s, 1080×1920, 30 i/s, sans voix, tout en animation par code
 (même moteur que le reel : SVG rendu image par image dans Chromium). Le robot détective officiel
@@ -34,6 +34,8 @@ son** : décors voulus « open world », riches, jamais de fonds blancs ni de ch
   sub-basses, whooshes gauche→droite, impacts, moteur, braaam, croc, déclics) + bruitages de `media/sfx`
   du reel. -14 LUFS. Crédits ElevenLabs épuisés (une musique dédiée de 15 s coûtait 225 crédits : refusée).
   Higgsfield : 0 crédit.
+- **Livrée v1 (2026-09-26)** : `out/PARANO-IA-bande-annonce.mp4` (14 s, ~23 Mo : x264 2 passes 13 Mb/s +
+  AAC 160k). Rendu complet ~22 min (4 workers, 4 sous-images).
 
 ---
 
