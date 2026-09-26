@@ -1,5 +1,5 @@
 // Feuilles audio : bruitages ElevenLabs (banque + placement exact) et brief musique Suno.
-//   node sons.js   →  SONS-elevenlabs.txt + MUSIQUE-suno.txt + out/cues.json
+//   node sons.js   →  SONS-elevenlabs.txt + MUSIQUE-suno.txt + sons_cues.json (lu par mix_sons.py)
 // Les repères sont en temps script (timecodes du brief) ; la page les convertit en temps
 // vidéo, hit-stops compris.
 const path = require('path');
@@ -149,8 +149,7 @@ const fmt = t => `${Math.floor(t / 60)}:${(t % 60).toFixed(1).padStart(4, '0')}`
   L.push('Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement');
   L.push("à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.");
   fs.writeFileSync(path.join(__dirname, 'SONS-elevenlabs.txt'), L.join('\n') + '\n');
-  fs.mkdirSync(path.join(__dirname, 'out'), { recursive: true });
-  fs.writeFileSync(path.join(__dirname, 'out', 'cues.json'), JSON.stringify({ duration: dur, sounds: SOUNDS, cues }, null, 1));
+  fs.writeFileSync(path.join(__dirname, 'sons_cues.json'), JSON.stringify({ duration: dur, sounds: SOUNDS, cues, music: MUSIC.map((m, i) => ({ t: +mtimes[i].toFixed(2), name: m[1], note: m[2] })) }, null, 1));
   // ---------- brief musique Suno ----------
   const M = [];
   const sec = i => fmt(mtimes[i]);

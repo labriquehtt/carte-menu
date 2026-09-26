@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-> Mis à jour le : 2026-09-24
+> Mis à jour le : 2026-09-26
 
 Ce dépôt sert désormais au **reel Instagram "LA SOURCE"** (motion design du robot détective),
 dans `reel-la-source/`. Les fichiers à la racine (cartes du restaurant LE NATIONAL) sont un
@@ -57,20 +57,28 @@ en coordonnées scène).
 `SCRIPT-teleprompteur.txt` est généré depuis `SUB_RAW` (repères m:ss en temps vidéo) :
 le régénérer après toute modification du texte.
 
-### Son (fait au montage)
+### Son
 
 `node sons.js` régénère `SONS-elevenlabs.txt` (banque de bruitages ElevenLabs + placement
 exact en temps vidéo, hit-stops compris, via `window.videoTimeOf`), `MUSIQUE-suno.txt`
-(brief musique Suno calé sur les temps forts et le silence) et `out/cues.json`.
+(brief musique Suno calé sur les temps forts et le silence) et `sons_cues.json`.
 À relancer après toute modification de la timeline.
+
+Bruitages : les 36 sons (`SOUNDS` de sons.js) ont été générés via le connecteur ElevenLabs
+(modèle `eleven_text_to_sound_v2`, flow "LA SOURCE — bruitages"
+https://elevenlabs.io/app/flows/LxzHYbIplS9K9SBhNABw) et rangés dans `media/sfx/<ID>.mp3`
+(hors Git). `python3 mix_sons.py` les pose aux repères de `sons_cues.json` → `out/bruitages.wav`
+(116 s, niveaux dans `MIX`, AMBI/PENCIL/DRIP en boucle) ; `--video … --out …` l'ajoute à
+une vidéo (AAC 96k, pour rester sous 30 Mo). Voix et musique Suno : au montage (CapCut).
 
 ### Commandes
 
 ```bash
-pip install imageio-ffmpeg pillow        # ffmpeg avec libx264 (une seule fois)
+pip install imageio-ffmpeg pillow numpy  # ffmpeg avec libx264 + mixage (une seule fois)
 cd reel-la-source
 node render.js --stills 5,14,22.2 --script --out out/stills --debug   # images de contrôle (timecodes du brief)
 node render.js --video out/la-source-1080x1920.mp4 --workers 4   # vidéo complète (~quelques min)
+node sons.js && python3 mix_sons.py --video out/la-source-1080x1920.mp4 --out out/la-source-bruitages.mp4   # piste bruitages
 ```
 
 ### Robot détective (source)
