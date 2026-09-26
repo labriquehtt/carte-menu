@@ -177,7 +177,9 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
 
 ### État au 2026-09-26 (fin de session)
 
-- **Reel LA SOURCE : terminé et livré** (`out/LA-SOURCE-reel-final.mp4`) : voix de l'utilisateur,
+- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA.mp4`** (voix IA « Benjamin », voir plus haut ;
+  pins du chapeau retirés ; vidéo seule encodée : `out/LA-SOURCE-reel-ia-video.mp4`).
+- Version précédente, avec la voix de l'utilisateur (`out/LA-SOURCE-reel-final.mp4`) :
   sous-titres, bouche et rythme calés sur la voix, bruitages bas, musique « deep tech » très basse,
   carte « World model ». Miniature : `out/miniature-hallucination.png`.
 - **Vidéo suivante** (l'exponentialité de l'IA, « ce n'est pas juste du ×2 ») : miniatures livrées
