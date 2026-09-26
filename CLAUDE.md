@@ -55,8 +55,10 @@ de l'écran** (« TROP MIGNONNES », etc. retirées à la demande : le décor su
   cloche du ring, « boïng » du ressort de l'oreille, coups, charge, explosion en éclats, foule. Plus montée,
   sub-basses, whooshes, impacts, moteur, braaam, croc, déclics + bruitages de `media/sfx` du reel. -14 LUFS.
   Crédits ElevenLabs épuisés (une musique dédiée de 15 s coûtait 225 crédits : refusée). Higgsfield : 0 crédit.
-- v1 (14 s) livrée le 2026-09-26 ; **v2** (combat, oreille qui pend, monde de la musique, sans phrases) :
-  `out/PARANO-IA-bande-annonce.mp4` (x264 2 passes + AAC 160k, sous 30 Mo).
+- v1 (14 s, `out/PARANO-IA-bande-annonce.mp4`) livrée le 2026-09-26 ; **v2 livrée le 2026-09-26** (combat,
+  oreille qui pend, monde de la musique, sans phrases) : `out/PARANO-IA-bande-annonce-v2.mp4` (21,1 s, 27 Mo :
+  vidéo `out/parano-ia-v2-video.mp4` en x264 2 passes 10 Mb/s, puis son.py qui ajoute l'AAC 160k).
+  Rendu complet ~37 min (4 workers, 4 sous-images).
 
 ---
 
