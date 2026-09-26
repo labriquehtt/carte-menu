@@ -9,8 +9,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// VOIX_DIR=media/voix_ia VOIX_TEXTE=voix_ia.js : même chose pour la voix IA (texte et synchro dans voix_ia.js)
+const DIR = path.join(__dirname, process.env.VOIX_DIR || path.join('media', 'voix'));
+const TEXTE = process.env.VOIX_TEXTE ? require(path.join(__dirname, process.env.VOIX_TEXTE)) : null;
 const NB = ' ';
-const VOIX = [
+const VOIX = TEXTE ? TEXTE.VOIX : [
   'On a demandé à une *IA*', 'de *donner vie* à ce dessin,', 'et regardez bien ce qui se passe.',
   'Et ce dessin, c’est celui', 'de *Philippe Delord*,', 'un dessinateur qui m’a autorisé', 'à utiliser son travail', 'pour cette vidéo.',
   'La consigne était simple,', 'faire vivre la scène,', 'et pourtant il y a quelque chose', 'qui se met à *couler* du toit,',
@@ -43,7 +46,7 @@ const SUB = new Function('return ' + src.slice(src.indexOf('[', a), src.indexOf(
 const SPEED = +src.match(/SPEED = ([\d.]+ \/ [\d.]+)/)[1].split('/').reduce((x, y) => x / y);
 
 // mots reconnus : un mot commence à chaque jeton précédé d'une espace
-const asr = JSON.parse(fs.readFileSync(path.join(__dirname, 'media', 'voix', 'asr.json'), 'utf8'));
+const asr = JSON.parse(fs.readFileSync(path.join(DIR, 'asr.json'), 'utf8'));
 const heard = [];
 asr.tokens.forEach((tok, i) => {
   if (tok.startsWith(' ') || !heard.length) heard.push({ w: tok.trim(), t: asr.ts[i] });
@@ -88,8 +91,8 @@ for (let i = 0; i < shown.length; i++) if (shown[i].t === undefined) {
 }
 // la reconnaissance donne l'instant d'un mot avec ~0,1-0,25 s de retard : on le recale sur la
 // dernière attaque du son (media/voix/onsets.json, analyse_voix.py) juste avant
-const ONS = fs.existsSync(path.join(__dirname, 'media', 'voix', 'onsets.json'))
-  ? JSON.parse(fs.readFileSync(path.join(__dirname, 'media', 'voix', 'onsets.json'), 'utf8')) : null;
+const ONS = fs.existsSync(path.join(DIR, 'onsets.json'))
+  ? JSON.parse(fs.readFileSync(path.join(DIR, 'onsets.json'), 'utf8')) : null;
 let prevT = -1;
 shown.forEach(s => {
   if (ONS && !s.guess && s.pin === undefined) {
@@ -116,7 +119,7 @@ const r2 = x => Math.round(x * 100) / 100;
 // Points de synchro : chaque action du script (temps script d'une ligne de SUB_RAW) tombe quand
 // la voix dit le passage correspondant. reel.js en tire la correspondance temps vidéo → temps
 // script (accélère, ralentit, ou attend à un moment calme pendant les pauses).
-const SYNC = [
+const SYNC = TEXTE ? TEXTE.SYNC : [
   [6.9, 'et regardez'], [11.2, 'Et ce dessin'], [15.1, 'un dessinateur'], [17.6, 'à utiliser'], [19.6, 'pour cette'],
   [21.9, 'La consigne'], [24.3, 'faire vivre'], [26.7, 'et pourtant'], [30.2, 'qui se met'], [34.1, 'la maison'],
   [35.6, 'puis revient'], [37.0, 'et honnêtement'], [40.0, 'si c’est'], [42.4, 'de l’*eau*'], [43.8, 'ou de la'],

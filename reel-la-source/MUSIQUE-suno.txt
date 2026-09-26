@@ -24,27 +24,27 @@ Lyrics (seulement des balises de structure, aucune parole) :
 
 ═══ LA MUSIQUE DOIT ÉPOUSER CES MOMENTS ═══
  0:00.0  Intro      gros plan sur l'écran : très discret (on y entend l'eau et le vent du clip), vibraphone + nappes, sans batterie
- 0:04.6  Groove     le dézoom : contrebasse walking + balais, enquête espiègle
- 0:31.0  Variation  "donner vie = faire bouger" : plus bondissant, pizzicati
- 0:46.3  Thème      Yann LeCun : trompette bouchée, plus sérieux et intrigant
- 0:58.1  Glitch     "prédire des pixels" : 2 s de bégaiement 8-bit, puis reprise
- 1:09.5  Montée     les world models : tension qui monte
- 1:16.3  Retour     "Revenons à ce jardin" : on retrouve le groove, en retenue
- 1:21.8  STOP       "La Source." : arrêt net sur un gros impact, puis presque rien
- 1:27.2  Ralenti    tout ralentit, la musique s'étire et s'éteint
- 1:30.2  SILENCE    le robot s'endort : silence complet
- 1:31.3  Rêve       "Alors au fond, qui rêve…" : vibraphone rêveur, très doux
- 1:36.3  Noir       "Hallucination" : fondu au noir, une seule note grave
- 1:40.8  Outro      fin LK Studio : le groove revient, chaleureux et entraînant
- 1:53.3  Fin        coup de chapeau : accord final (button)
+ 0:04.5  Groove     le dézoom : contrebasse walking + balais, enquête espiègle
+ 0:31.1  Variation  "donner vie = faire bouger" : plus bondissant, pizzicati
+ 0:46.2  Thème      Yann LeCun : trompette bouchée, plus sérieux et intrigant
+ 0:58.0  Glitch     "prédire des pixels" : 2 s de bégaiement 8-bit, puis reprise
+ 1:10.1  Montée     les world models : tension qui monte
+ 1:16.5  Retour     "Revenons à ce jardin" : on retrouve le groove, en retenue
+ 1:22.2  STOP       "La Source." : arrêt net sur un gros impact, puis presque rien
+ 1:27.0  Ralenti    tout ralentit, la musique s'étire et s'éteint
+ 1:31.1  SILENCE    le robot s'endort : silence complet
+ 1:32.4  Rêve       "Alors au fond, qui rêve…" : vibraphone rêveur, très doux
+ 1:37.0  Noir       "Hallucination" : fondu au noir, une seule note grave
+ 1:41.1  Outro      fin LK Studio : le groove revient, chaleureux et entraînant
+ 1:53.9  Fin        coup de chapeau : accord final (button)
 
 ═══ MÉTHODE ═══
 Suno respecte la structure mais pas les secondes exactes : c'est normal.
 1. Génère plusieurs versions (2 par essai) et garde celle dont l’ambiance colle le mieux.
-2. Dans CapCut, cale le début à 0:00 et fais tomber un gros temps fort pile sur 1:21.8 ("La Source.").
-3. Coupe en fondu vers 1:27.2 et laisse le silence de 1:30.2 à 1:31.3.
-4. Place un passage calme de la musique (ou une 2e génération "dreamy vibraphone, slow, soft") de 1:31.3 à 1:40.8.
-5. Relance le groove à 1:40.8 et aligne l'accord final sur 1:53.3 (coup de chapeau).
+2. Dans CapCut, cale le début à 0:00 et fais tomber un gros temps fort pile sur 1:22.2 ("La Source.").
+3. Coupe en fondu vers 1:27.0 et laisse le silence de 1:31.1 à 1:32.4.
+4. Place un passage calme de la musique (ou une 2e génération "dreamy vibraphone, slow, soft") de 1:32.4 à 1:41.1.
+5. Relance le groove à 1:41.1 et aligne l'accord final sur 1:53.9 (coup de chapeau).
 6. Baisse la musique d'environ 12 dB sous la voix (ducking automatique de CapCut).
 
 Si tu préfères, envoie-moi la musique Suno et les bruitages : je fais les coupes, le

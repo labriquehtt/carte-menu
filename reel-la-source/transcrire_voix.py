@@ -26,7 +26,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--model', required=True)
-    ap.add_argument('--wav', default=os.path.join(HERE, 'media', 'voix', 'voix16k.wav'))
+    V = os.path.join(HERE, os.environ.get('VOIX_DIR', os.path.join('media', 'voix')))   # VOIX_DIR=media/voix_ia : voix IA
+    ap.add_argument('--wav', default=os.path.join(V, 'voix16k.wav'))
     ap.add_argument('--from', dest='t0', type=float)
     ap.add_argument('--to', dest='t1', type=float)
     ap.add_argument('--beam', action='store_true')
@@ -57,7 +58,7 @@ def main():
     r = rec.get_result_all(s)
     print(r.text)
     if a.t0 is None:
-        with open(os.path.join(HERE, 'media', 'voix', 'asr.json'), 'w') as f:
+        with open(os.path.join(os.path.dirname(a.wav), 'asr.json'), 'w') as f:
             json.dump({'text': r.text, 'tokens': list(r.tokens), 'ts': list(r.timestamps)}, f, ensure_ascii=False)
 
 
@@ -69,7 +70,7 @@ def whisper(a):
         tokens=W + 'turbo-tokens.txt', language='fr', task='transcribe', num_threads=4)
     w = wave.open(a.wav)
     x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
-    asr = json.load(open(os.path.join(HERE, 'media', 'voix', 'asr.json')))
+    asr = json.load(open(os.path.join(os.path.dirname(a.wav), 'asr.json')))
     starts = [t for tok, t in zip(asr['tokens'], asr['ts']) if tok.startswith(' ')]
     cuts = [0.0]
     for p, q in zip(starts, starts[1:]):

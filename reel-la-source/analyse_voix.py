@@ -19,7 +19,7 @@ import numpy as np
 from mix_sons import SR, load
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = os.path.join(HERE, 'media', 'voix')
+V = os.path.join(HERE, os.environ.get('VOIX_DIR', os.path.join('media', 'voix')))   # VOIX_DIR=media/voix_ia : voix IA
 FPS = 30
 
 

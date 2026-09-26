@@ -65,80 +65,80 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     VR headset clicking on, futuristic whoosh into a virtual world
 
 ═══ 2. PLACEMENT DANS LA VIDÉO ═══
- 0:04.4  TV_OFF    l'écran de la tête s'éteint
- 0:04.6  DEZOOM    dézoom vers le plan large
- 0:04.7  BOOT      les yeux se rallument
- 0:04.8  CLINK     la loupe retombe devant l'œil
+ 0:04.3  TV_OFF    l'écran de la tête s'éteint
+ 0:04.5  DEZOOM    dézoom vers le plan large
+ 0:04.6  BOOT      les yeux se rallument
+ 0:04.7  CLINK     la loupe retombe devant l'œil
  0:05.1  SNAP      CLAQUE
  0:05.2  POP       le cadre vidéo apparaît
- 0:06.7  JUMP      ÉCRASE : saut
- 0:06.9  LAND_BIG  atterrit sur le cadre (hit-stop)
- 0:07.0  FALL      le cadre tombe
- 0:07.3  LAND      atterrit à droite
- 0:07.4  PAPER     TIRE : il tire le dessin
- 0:07.7  POP       le dessin arrive en place
- 0:07.8  STUMBLE   il trébuche en arrière
- 0:13.2  JUMP      ÉCRASE : saut
- 0:13.3  LAND_BIG  atterrit sur le dessin
- 0:13.5  FALL      le dessin tombe
- 0:13.5  SNAP      CLAQUE en plein vol
- 0:13.5  POP       le cadre vidéo revient
- 0:13.6  LAND      atterrit sous le cadre
- 0:16.3  SWISH     il lève la loupe
+ 0:06.8  JUMP      ÉCRASE : saut
+ 0:07.0  LAND_BIG  atterrit sur le cadre (hit-stop)
+ 0:07.2  FALL      le cadre tombe
+ 0:07.5  LAND      atterrit à droite
+ 0:07.6  PAPER     TIRE : il tire le dessin
+ 0:07.8  POP       le dessin arrive en place
+ 0:07.9  STUMBLE   il trébuche en arrière
+ 0:13.3  JUMP      ÉCRASE : saut
+ 0:13.5  LAND_BIG  atterrit sur le dessin
+ 0:13.6  FALL      le dessin tombe
+ 0:13.7  SNAP      CLAQUE en plein vol
+ 0:13.7  POP       le cadre vidéo revient
+ 0:13.8  LAND      atterrit sous le cadre
+ 0:16.2  SWISH     il lève la loupe
  0:17.7  ZOOM_IN   zoom sur le toit qui coule
- 0:17.8  GLINT     pose "examine un indice"
- 0:19.6  DEZOOM    on ressort du zoom
- 0:19.6  HOP       petit recul surpris
- 0:20.8  QUESTION  il se gratte la tête, "?"
- 0:25.5  SNAP      CLAQUE
- 0:25.6  WOOD      icône planche
- 0:26.9  SNAP      CLAQUE
- 0:27.0  DROP      icône goutte
- 0:27.8  SNAP      CLAQUE
- 0:27.9  SMOKE     icône fumée
- 0:30.6  JUMP      ÉCRASE : saut
- 0:30.8  LAND_BIG  atterrit sur le cadre
- 0:31.0  FALL      le cadre et les icônes tombent
- 0:31.0  SNAP      CLAQUE en plein vol
- 0:31.1  POP       arbre, maison, caillou apparaissent
- 0:31.1  LAND      atterrit au centre
- 0:32.5  HOP       vers l'arbre
- 0:33.0  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
- 0:33.4  HOP       vers la maison
- 0:33.6  HOP       
- 0:34.1  WOBBLE    la maison gigote
+ 0:17.9  GLINT     pose "examine un indice"
+ 0:19.3  DEZOOM    on ressort du zoom
+ 0:19.3  HOP       petit recul surpris
+ 0:20.9  QUESTION  il se gratte la tête, "?"
+ 0:26.0  SNAP      CLAQUE
+ 0:26.1  WOOD      icône planche
+ 0:27.1  SNAP      CLAQUE
+ 0:27.1  DROP      icône goutte
+ 0:27.6  SNAP      CLAQUE
+ 0:27.7  SMOKE     icône fumée
+ 0:30.7  JUMP      ÉCRASE : saut
+ 0:30.9  LAND_BIG  atterrit sur le cadre
+ 0:31.1  FALL      le cadre et les icônes tombent
+ 0:31.2  SNAP      CLAQUE en plein vol
+ 0:31.3  POP       arbre, maison, caillou apparaissent
+ 0:31.3  LAND      atterrit au centre
+ 0:32.8  HOP       vers l'arbre
+ 0:33.2  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
+ 0:33.5  HOP       vers la maison
+ 0:33.7  HOP       
+ 0:34.2  WOBBLE    la maison gigote
  0:34.5  HOP       retour au centre
- 0:36.3  DATA      la mosaïque de vidéos défile
- 0:41.8  HOP       vers le caillou
- 0:42.2  WOBBLE    le caillou gigote
- 0:42.7  HOP       retour au centre
- 0:45.9  JUMP      TIRE depuis le haut : il saute s'accrocher
- 0:46.0  FALL      les objets tombent
- 0:46.3  PAPER     il tire la photo vers le bas
+ 0:36.1  DATA      la mosaïque de vidéos défile
+ 0:41.6  HOP       vers le caillou
+ 0:42.1  WOBBLE    le caillou gigote
+ 0:42.6  HOP       retour au centre
+ 0:45.8  JUMP      TIRE depuis le haut : il saute s'accrocher
+ 0:45.9  FALL      les objets tombent
+ 0:46.2  PAPER     il tire la photo vers le bas
  0:46.8  LAND      il lâche et atterrit
- 1:09.5  SNAP      CLAQUE (assis)
- 1:09.6  HOLO      le globe se dessine
- 1:15.8  JUMP      ÉCRASE : saut
- 1:16.0  LAND_BIG  atterrit sur la carte
- 1:16.2  FALL      carte, photo et globe tombent
- 1:16.3  SNAP      CLAQUE en plein vol
- 1:16.3  POP       le cadre vidéo revient
- 1:16.4  LAND      atterrit sous le cadre
+ 1:10.0  SNAP      CLAQUE (assis)
+ 1:10.2  HOLO      le globe se dessine
+ 1:16.1  JUMP      ÉCRASE : saut
+ 1:16.3  LAND_BIG  atterrit sur la carte
+ 1:16.5  FALL      carte, photo et globe tombent
+ 1:16.5  SNAP      CLAQUE en plein vol
+ 1:16.5  POP       le cadre vidéo revient
+ 1:16.7  LAND      atterrit sous le cadre
  1:24.5  ZOOM_IN   zoom sur le toit
- 1:25.6  DEZOOM    on ressort du zoom
- 1:30.2  DREAM     il s'endort, la bulle de rêve s'ouvre
- 1:30.5  DRIP      gouttes dans la bulle  (jusqu'à 1:36.3)
- 1:36.3  FADE      fondu au noir, "Hallucination"
- 1:36.9  CHIME     il ouvre un œil
- 1:40.8  POWER     la lumière revient (outro LK Studio)
- 1:41.0  JUMP      il saute à sa place
- 1:41.3  LAND      
- 1:42.8  SNAP      CLAQUE
- 1:42.9  POP       la fenêtre du site apparaît
- 1:47.7  SNAP      CLAQUE
- 1:47.8  POP       le casque VR apparaît dans sa main
- 1:49.7  VR        il enfile le casque
- 1:52.5  SWISH     il retire le casque
+ 1:25.7  DEZOOM    on ressort du zoom
+ 1:31.1  DREAM     il s'endort, la bulle de rêve s'ouvre
+ 1:31.4  DRIP      gouttes dans la bulle  (jusqu'à 1:37.0)
+ 1:37.0  FADE      fondu au noir, "Hallucination"
+ 1:37.8  CHIME     il ouvre un œil
+ 1:41.1  POWER     la lumière revient (outro LK Studio)
+ 1:41.3  JUMP      il saute à sa place
+ 1:41.4  LAND      
+ 1:43.0  SNAP      CLAQUE
+ 1:43.1  POP       la fenêtre du site apparaît
+ 1:48.4  SNAP      CLAQUE
+ 1:48.5  POP       le casque VR apparaît dans sa main
+ 1:49.6  VR        il enfile le casque
+ 1:53.1  SWISH     il retire le casque
 
 Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
 à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.

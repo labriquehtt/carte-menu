@@ -22,7 +22,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 def main():
     ap = argparse.ArgumentParser()
     # voix sans musique : de préférence l'export CapCut refait sans musique, sinon la séparation
-    cands = [os.path.join(HERE, 'media', 'voix', f) for f in ('voix_capcut_propre.wav', 'voix_seule.wav', 'voix.wav')]
+    V = os.path.join(HERE, os.environ.get('VOIX_DIR', os.path.join('media', 'voix')))   # VOIX_DIR=media/voix_ia : voix IA
+    cands = [os.path.join(V, f) for f in ('voix_capcut_propre.wav', 'voix_seule.wav', 'voix.wav')]
     ap.add_argument('--voice', default=next(f for f in cands if os.path.exists(f)))
     ap.add_argument('--sfx', default=os.path.join(HERE, 'out', 'bruitages.wav'))
     ap.add_argument('--sfx-gain', type=float, default=-8)
