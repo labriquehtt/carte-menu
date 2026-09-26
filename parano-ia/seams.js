@@ -1,22 +1,27 @@
 // Les coutures entre les mondes (repère écran, sous le zoom de la caméra) :
-// 0 ville→cyber : bande de glitch · 1 cyber→dessin : trait de crayon · 2 dessin→corporate : page déchirée
-// 3 corporate→bonbons : vague de pâte rose · 4 bonbons→apocalypse : bord qui brûle
+// ville→cyber : bande de glitch · cyber→dessin : trait de crayon · dessin→musique : page déchirée
+// musique→corporate : mur d'égaliseur · corporate→bonbons : vague de pâte rose · bonbons→apocalypse : bord qui brûle
 'use strict';
 const SEAM_FX = [];
+const SEAM_KIND = { cyber: 'glitch', draw: 'pencil', music: 'paper', corp: 'eq', candy: 'goo', apoc: 'burn' };
 function buildSeams(parent) {
-  for (let i = 0; i < 5; i++) {
+  for (const s of SEAMS) {
     const gs = g(parent);
-    const F = { g: gs, parts: [] };
-    if (i === 0) {
+    const kind = SEAM_KIND[SEQ[s.i].name];
+    const F = { g: gs, kind };
+    if (kind === 'glitch') {
       F.band = [...Array(26)].map((_, k) => mk('rect', { fill: ['#FF2E88', '#19F0FF', '#FFFFFF', '#0B0620'][k % 4] }, gs));
-    } else if (i === 1) {
+    } else if (kind === 'pencil') {
       F.line = mk('path', { fill: 'none', stroke: '#34302B', 'stroke-width': 10, 'stroke-linecap': 'round' }, gs);
       F.line2 = mk('path', { fill: 'none', stroke: '#34302B', 'stroke-width': 4, 'stroke-linecap': 'round', opacity: 0.6 }, gs);
       F.crumbs = [...Array(14)].map(() => mk('circle', { fill: '#F2B8C8', stroke: '#34302B', 'stroke-width': 2 }, gs));
-    } else if (i === 2) {
+    } else if (kind === 'paper') {
       F.shadow = mk('path', { fill: '#000000', opacity: 0.25, filter: 'url(#b6)' }, gs);
       F.edge = mk('path', { fill: '#FBF7EC', stroke: '#CFC4AC', 'stroke-width': 3 }, gs);
-    } else if (i === 3) {
+    } else if (kind === 'eq') {
+      F.bars = [...Array(30)].map((_, k) => mk('rect', { rx: 8, fill: ['#FF7A3C', '#FFD23C', '#FF3C8E', '#3CE8FF'][k % 4], filter: 'url(#glow)' }, gs));
+      F.wave = mk('path', { fill: 'none', stroke: '#FFFFFF', 'stroke-width': 7, 'stroke-linejoin': 'round', filter: 'url(#neon)' }, gs);
+    } else if (kind === 'goo') {
       F.goo = mk('path', { fill: '#FF7EB9', stroke: INK, 'stroke-width': 6 }, gs);
       F.hi = mk('path', { fill: 'none', stroke: '#FFFFFF', 'stroke-width': 8, 'stroke-linecap': 'round', opacity: 0.6 }, gs);
       F.bub = [...Array(10)].map(() => mk('circle', { fill: '#FFC1E3', stroke: INK, 'stroke-width': 4 }, gs));
@@ -40,24 +45,33 @@ function updateSeams(t, cx) {
     const x = s.S - cx;
     const on = x > -160 && x < W + 160 && t < T_LINEUP;
     vis(F.g, on); if (!on) return;
-    if (i === 0) {   // glitch : tranches décalées, qui clignotent
+    if (F.kind === 'glitch') {   // glitch : tranches décalées, qui clignotent
       const fr = Math.floor(t * 30);
       F.band.forEach((r, k) => {
         const y = hash(k * 13 + fr) * 2000 - 40, h = 10 + hash(k * 7 + fr) * 90, w = 30 + hash(k * 3 + fr) * 140;
         attr(r, 'x', r2(x - w * (hash(k + fr * 3) < 0.5 ? 1 : 0))); attr(r, 'y', r2(y)); attr(r, 'width', r2(w)); attr(r, 'height', r2(h));
         attr(r, 'opacity', r2(0.5 + 0.5 * hash(k * 5 + fr)));
       });
-    } else if (i === 1) {   // trait de crayon épais + miettes de gomme
+    } else if (F.kind === 'pencil') {   // trait de crayon épais + miettes de gomme
       const q = Math.floor(t * 12);
       const pts = jag(x, 8, 40, 11 + q, 0);
       attr(F.line, 'd', polyD(pts)); attr(F.line2, 'd', polyD(jag(x + 10, 6, 50, 17 + q, 0)));
       F.crumbs.forEach((c, k) => { attr(c, 'cx', r2(x + 20 + hash(k * 3 + q) * 60)); attr(c, 'cy', r2(hash(k * 7) * 1900)); attr(c, 'r', r2(4 + hash(k) * 6)); });
-    } else if (i === 2) {   // bord de papier déchiré (côté gauche = page), ombre portée sur le monde suivant
+    } else if (F.kind === 'paper') {   // bord de papier déchiré (côté gauche = page), ombre portée sur le monde suivant
       const pts = jag(x + 10, 16, 22, 29, 0);
       const d = polyD(pts) + ` L ${r2(x - 60)} 2200 L ${r2(x - 60)} -300 Z`;
       attr(F.edge, 'd', d);
       attr(F.shadow, 'd', polyD(pts.map(([a, b]) => [a + 18, b])) + ` L ${r2(x - 40)} 2200 L ${r2(x - 40)} -300 Z`);
-    } else if (i === 3) {   // vague de pâte rose qui coule
+    } else if (F.kind === 'eq') {   // mur d'égaliseur : barres qui pulsent au tempo, onde blanche
+      const bp = Math.exp(-(((t - TD) % BEAT + BEAT) % BEAT) / 0.12);
+      F.bars.forEach((r, k) => {
+        const y = -120 + k * 72, len = 40 + (0.35 + 0.65 * hash(k * 3 + Math.floor(t * 15))) * (80 + 160 * bp);
+        attr(r, 'x', r2(x - len / 2)); attr(r, 'y', r2(y)); attr(r, 'width', r2(len)); attr(r, 'height', 52);
+      });
+      const pts = [];
+      for (let y = -300; y <= 2200; y += 24) pts.push([x + Math.sin(y * 0.05 + t * 30) * (18 + 40 * bp) * Math.sin(y * 0.006 + t * 3), y]);
+      attr(F.wave, 'd', polyD(pts));
+    } else if (F.kind === 'goo') {   // vague de pâte rose qui coule
       const pts = [];
       for (let y = -300; y <= 2200; y += 40) pts.push([x + Math.sin(y * 0.012 + t * 6) * 26 + Math.sin(y * 0.031 - t * 4) * 12, y]);
       attr(F.goo, 'd', polyD(pts) + ` L ${r2(x + 80)} 2200 L ${r2(x + 80)} -300 Z`);

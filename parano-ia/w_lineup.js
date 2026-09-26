@@ -47,7 +47,6 @@ LINEUP.build = function (root) {
   mk('rect', { x: 0, y: 1520, width: W, height: 400, fill: '#10181E' }, Lu.bg);
   Lu.sus = ['gpt', 'gem', 'cla', 'dsk'].map(k => { const s = suspect(Lu.g, k); vis(s, false); return s; });
   Lu.rob = makeRobot(Lu.g);
-  Lu.cap = makeCaption(Lu.g, ['ON', 'LES', 'A', 'TOUTES', '\n', "À", "L'ŒIL."], { size: 112, fill: GREEN, stroke: '#07140D', strokeW: 14 });
   Lu.flash = mk('rect', { x: 0, y: 0, width: W, height: H, fill: '#FFFFFF', opacity: 0 }, Lu.g);
   vis(Lu.g, false);
 };
@@ -55,7 +54,6 @@ LINEUP.update = function (t) {
   const Lu = LINEUP, t0 = T_LINEUP, t1 = T_TITLE;
   const on = t >= t0 && t < t1 + 0.35;
   vis(Lu.g, on); if (!on) return;
-  if (!Lu.laid) { Lu.cap.layout(); Lu.laid = true; }
   const half = BEAT / 2, k = Math.min(3, Math.floor((t - t0) / half)), local = t - t0 - k * half;
   Lu.sus.forEach((s, i) => {
     vis(s, i === k);
@@ -64,6 +62,5 @@ LINEUP.update = function (t) {
   attr(Lu.flash, 'opacity', r2(Math.max(0, 1 - local / 0.09) * 0.85));
   // le détective, loupe à l'œil, au premier plan à gauche
   const lift = E.out(clamp((t - t0) / 0.2));
-  poseRobot(Lu.rob, { x: 250, y: lerp(1900, 1420, lift), s: 1.35, rot: -4, face: k % 2 ? 'sceptique' : 'curieux', blink: 1, look: [14, -4], arms: ARMS.loupe, loupe: true, headRot: 4 });
-  updateCaption(Lu.cap, t, t0 + 0.05, t1 - 0.02, 540, 400, { stagger: 0.04, from: 1.5 });
+  poseRobot(Lu.rob, { x: 250, y: lerp(1900, 1420, lift), s: 1.35, rot: -4, face: k % 2 ? 'sceptique' : 'curieux', blink: 1, look: [14, -4], arms: ARMS.loupe, loupe: true, headRot: 4, ear: earAt(t) });
 };

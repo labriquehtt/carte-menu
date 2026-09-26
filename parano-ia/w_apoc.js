@@ -95,7 +95,7 @@ APOC.update = function (t, u) {
   });
   A.fires.forEach(f => setFlame(f.F, t, f.seed));
   A.groundFires.forEach(f => { attr(f.F.g, 'transform', `translate(${f.x} 1380) scale(0.9)`); setFlame(f.F, t, f.seed); });
-  const tIn = beat(15);
+  const tIn = beat(TIMING.seams.apoc);
   if (A.ref === undefined) A.ref = camX(tIn + 0.6) - A.x0;
   attr(A.sign, 'transform', `translate(${r2(760 + 0.5 * A.ref)} 1250)`);
   A.drones.forEach((d, i) => {

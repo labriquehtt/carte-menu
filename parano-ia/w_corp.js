@@ -117,8 +117,8 @@ CORP.update = function (t, u) {
   const C = CORP;
   const L = (el, f, dx = 0) => attr(el, 'transform', `translate(${r2(-u * f + dx)} 0)`);
   L(C.clouds, 0.05, t * 20); L(C.far, 0.12); L(C.mid, 0.4); L(C.campus, 0.7); L(C.street, 1); L(C.beds, 1.25); L(C.fore, 1.6);
-  // le méca : il marche, se penche, ouvre la mâchoire… et croque au temps fort (beat 12)
-  const tb = beat(12);
+  // le méca : il marche, se penche, ouvre la mâchoire… et croque au temps fort (2 temps après la couture)
+  const tb = beat(TIMING.seams.corp + 2);
   if (C.mx === undefined) C.mx = 640 + 0.7 * (camX(tb) - C.x0);   // le méca est bien cadré au moment du croc
   const open = clamp(1 - Math.abs(t - (tb - 0.12)) / 0.3) * (t < tb ? 1 : 0);
   const chomp = t >= tb ? Math.abs(Math.sin((t - tb) * 22)) * clamp(1 - (t - tb) / 0.5) : 0;

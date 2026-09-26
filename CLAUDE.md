@@ -10,32 +10,53 @@ ancien projet, à ignorer.
 
 ## 🎞️ Bande-annonce « PARANO-IA » — `parano-ia/`
 
-Teaser du compte Instagram PARANO-IA : 14 s, 1080×1920, 30 i/s, sans voix, tout en animation par code
+Teaser du compte Instagram PARANO-IA : **v2 ~21 s**, 1080×1920, 30 i/s, sans voix, tout en animation par code
 (même moteur que le reel : SVG rendu image par image dans Chromium). Le robot détective officiel
 (pièces copiées de `reel-la-source/index.html` dans `robot_defs.svg`, sans les pins) traverse en
 mobylette, **toujours de gauche à droite**, un plan-séquence de mondes liés à l'IA. La vidéo d'inspiration
 de l'utilisateur (lancement « Claude Opus 5.5 ») ne sert **que pour le rythme, les transitions rapides et le
-son** : décors voulus « open world », riches, jamais de fonds blancs ni de chiffres.
-- Musique calée à 118 BPM (`BEAT`, `beat(k)`) : `TD` = drop (la mobylette démarre, 1,53 s). Chaque monde
-  défile lentement puis la caméra « fouette » sur un temps fort ; le robot franchit la couture et prend le
+son** : décors voulus « open world », riches, jamais de fonds blancs ni de chiffres. **Aucune phrase en haut
+de l'écran** (« TROP MIGNONNES », etc. retirées à la demande : le décor suffit).
+- **`timing.js`** : tous les instants, en temps musicaux (118 BPM, `beat(k)`, `TD` = drop = la mobylette
+  démarre, 1,53 s) ; lu par trailer.js ET son.py (coutures, arrêts, combat, notes, coups de batterie).
+  Chaque monde défile puis la caméra « fouette » sur un temps fort ; le robot franchit la couture et prend le
   style du monde suivant (moitié avant d'abord : deux pilotes découpés par la couture).
-- Mondes (`w_*.js`, parallaxe 5-6 couches) : ville au crépuscule (caméras de surveillance qui suivent le
+- Ordre : ville → cyberpunk → dessin → musique → corporate → bonbons → apocalypse → suspects → titre.
+- **Arrêts** (`TIMING.stops`, `mopedX`/`mounted` de trailer.js) : la mobylette freine et se gare, la caméra
+  cadre puis zoome (`zoom` de SEQ), le robot descend (acteur `S.actor`), puis **remonte toujours en selle**
+  avant la couture suivante et la mobylette rattrape la caméra.
+  - Cyberpunk → `fight.js` : combat façon Street Fighter dans une arène (`buildArena` de w_cyber.js : ring
+    néon, cordes qui vibrent, public qui filme, projecteurs) contre son **clone deepfake** (même robot, filtre
+    `deepfakeFx`, en miroir). HUD barres de vie « DÉTECTIVE / DEEPFAKE », FIGHT!, coup dans l'oreille,
+    trois coups, boule d'énergie, clone qui éclate en pixels, K.O. Il gagne mais **l'oreille droite pend au
+    bout d'un ressort jusqu'à la fin** (`earAt(t)` → `poseRobot({ear})`, rebondit à chaque secousse).
+  - Musique → `w_music.js` : festival au coucher du soleil (soleil fait d'ondes sonores = clin d'œil Suno,
+    tours jumelles « II » = ElevenLabs, murs d'enceintes qui pompent, vinyle-grande roue, lasers, public de
+    dos au premier plan), route-clavier dont les touches s'allument sous les roues ; le robot saute sur un
+    escalier de touches géantes (une note par saut : la4 do5 ré5 mi5 sol5 la5) puis joue de la batterie avec
+    des baguettes (grosse caisse, crash, caisse claire, toms, roulement) : peaux qui flashent, cymbale qui
+    oscille, ondes, vibrations « ) ) », notes qui s'envolent, écran qui tremble.
+- Autres mondes (`w_*.js`, parallaxe 5-6 couches) : ville au crépuscule (caméras de surveillance qui suivent le
   robot, habitants, tram) · cyberpunk (deepfakes, cadenas, drones) · dessin au crayon (robot passé au crayon,
   main à 6 doigts, bras qui dessine la route) · campus corporate (méca « OpenIA » qui croque le petit visage
   jaune à la Hugging Face) · monde tout rose (smoothie, cookie « ACCEPTER LES COOKIES ? OUI / OUI ») ·
   apocalypse. Puis `w_lineup.js` (ChatGPT, Gemini, Claude, DeepSeek en suspects) et `w_title.js`
   (iris depuis la loupe, « PARANO-IA », « L'IA SOUS ENQUÊTE », bouton S'ABONNER cliqué, coup de chapeau).
-  Coutures décorées dans `seams.js` ; textes courts par monde (`S.caps` de trailer.js).
-- Emblèmes des IA : évocations (nœud, étincelle, baleine, astérisque), jamais les logos exacts.
+  Coutures dans `seams.js` (glitch, crayon, page déchirée, mur d'égaliseur, pâte rose, bord qui brûle).
+- Emblèmes des IA : évocations (nœud, étincelle, baleine, astérisque, soleil d'ondes, « II »), jamais les logos exacts.
 - `node render.js --stills 3.5,7.6 --out …` (images) ; `node render.js --video out/parano-ia-brut.mp4
-  --workers 4 --sub 4` (flou de bougé : moyenne de 4 sous-images par image, obturateur 180°).
-- `python3 son.py --video out/parano-ia-brut.mp4 --out out/PARANO-IA-bande-annonce.mp4` : GROOVE (drop à
-  56,98 s calé sur `TD`) coupé net sur le titre + accord final d'OUTRO + sons synthétisés (montée,
-  sub-basses, whooshes gauche→droite, impacts, moteur, braaam, croc, déclics) + bruitages de `media/sfx`
-  du reel. -14 LUFS. Crédits ElevenLabs épuisés (une musique dédiée de 15 s coûtait 225 crédits : refusée).
-  Higgsfield : 0 crédit.
-- **Livrée v1 (2026-09-26)** : `out/PARANO-IA-bande-annonce.mp4` (14 s, ~23 Mo : x264 2 passes 13 Mb/s +
-  AAC 160k). Rendu complet ~22 min (4 workers, 4 sous-images).
+  --workers 4 --sub 4` (flou de bougé : moyenne de 4 sous-images par image, obturateur 180°, ~35 min).
+- Son : `node cues.js` (touches de la route-clavier sous la roue → `out/cues.json`, glissando) puis
+  `python3 son.py --video out/parano-ia-brut.mp4 --out out/PARANO-IA-bande-annonce.mp4`. GROOVE (drop à
+  56,98 s calé sur `TD`) ; dans le monde de la musique il passe derrière un filtre (basse + grosse caisse)
+  et **le robot joue** : piano synthétisé sur chaque saut, batterie synthétisée coup pour coup ; au 1er coup
+  de batterie GROOVE repart dans sa montée (il s'éteint vers 73 s) pour que son drop retombe sur la couture
+  corporate quand le filtre se rouvre. Coupé net sur le titre + accord final d'OUTRO. Combat : crissement,
+  cloche du ring, « boïng » du ressort de l'oreille, coups, charge, explosion en éclats, foule. Plus montée,
+  sub-basses, whooshes, impacts, moteur, braaam, croc, déclics + bruitages de `media/sfx` du reel. -14 LUFS.
+  Crédits ElevenLabs épuisés (une musique dédiée de 15 s coûtait 225 crédits : refusée). Higgsfield : 0 crédit.
+- v1 (14 s) livrée le 2026-09-26 ; **v2** (combat, oreille qui pend, monde de la musique, sans phrases) :
+  `out/PARANO-IA-bande-annonce.mp4` (x264 2 passes + AAC 160k, sous 30 Mo).
 
 ---
 

@@ -163,7 +163,7 @@ function updateRider(P, st) {
     feet: [[-40, 196, -6], [60, 198, 6]],
     face: st.face || 'neutre', blink: blinkAt(t), look: st.look || [8, 0], headRot: st.headRot || 0,
     arms: st.arms || ARMS.ride, armLayer: st.armLayer || { L: 'back', R: 'front' },
-    hatLift: st.hatLift || 0, loupe: st.loupe,
+    hatLift: st.hatLift || 0, loupe: st.loupe, ear: st.ear,
   });
   updateMoped(P.moped, t, st.dist, st);
   // fumée : bouffées émises à la sortie du pot, qui restent en place dans le monde (repère écran = monde - caméra)

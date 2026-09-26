@@ -76,5 +76,5 @@ TITLE.update = function (t) {
   // le robot, en bas, soulève son chapeau au clic
   const rp = E.out(seg(t, t0 + 0.1, t0 + 0.45));
   const hat = clicked ? Math.sin(clamp((t - tc) / 0.7) * Math.PI) : 0;
-  poseRobot(T.rob, { x: 540, y: lerp(2200, 1480, rp), s: 1.05, face: clicked ? 'satisfait' : 'curieux', blink: blinkAt(t), look: [0, -6], arms: hat > 0.05 ? ARMS.hat : ARMS.down, hatLift: hat, armLayer: { R: 'top' } });
+  poseRobot(T.rob, { x: 540, y: lerp(2200, 1480, rp), s: 1.05, face: clicked ? 'satisfait' : 'curieux', blink: blinkAt(t), look: [0, -6], arms: hat > 0.05 ? ARMS.hat : ARMS.down, hatLift: hat, armLayer: { R: 'top' }, ear: earAt(t) });
 };

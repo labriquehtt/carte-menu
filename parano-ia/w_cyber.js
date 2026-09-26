@@ -126,6 +126,8 @@ CYBER.build = function (root, width) {
     const glow = mk('ellipse', { cx: 0, cy: -70, rx: 20, ry: 10, fill: '#3DFF9E', opacity: 0.6, filter: 'url(#b6)' }, hg);
     C.hackers.push({ g: hg, glow, x: hx + 60, y: 1330 });
   }
+  // l'arène du combat (là où la mobylette se gare) : ring néon, cordes, public qui filme, projecteurs
+  if (C.stop) buildArena(root, C);
   // drones de surveillance qui balaient au laser
   C.drones = [0, 1].map(i => {
     const dg = g(root);
@@ -140,10 +142,60 @@ CYBER.build = function (root, width) {
   C.splash = g(root, { fill: 'none', stroke: '#BFD8FF', 'stroke-width': 2, opacity: 0.6 });
   C.spl = [...Array(14)].map(() => mk('ellipse', {}, C.splash));
 };
+function buildArena(root, C) {
+  const A = C.arena = { g: g(root) };
+  const AX = A.x = C.stop.P - C.x0 + 475, FY = 1420;
+  // projecteurs (derrière tout le reste de l'arène)
+  A.cones = [0, 1, 2, 3].map(k => mk('path', { fill: k % 2 ? '#19F0FF' : '#FF2E88', opacity: 0.13, filter: 'url(#b12)' }, A.g));
+  A.truss = g(A.g);
+  markup(A.truss, `<g transform="translate(${AX} 540)"><rect x="-560" y="-16" width="1120" height="32" fill="#1A1030" stroke="#3A2A66" stroke-width="4"/>
+    ${[...Array(28)].map((_, i) => `<path d="M ${-560 + i * 40} -16 L ${-540 + i * 40} 16" stroke="#3A2A66" stroke-width="4"/>`).join('')}
+    <path d="M -540 -16 L -600 -700 M 540 -16 L 600 -700" stroke="#1A1030" stroke-width="10"/></g>`);
+  A.lamps = [-390, -130, 130, 390].map((dx, k) => { const lg = g(A.truss); markup(lg, `<g transform="translate(${AX + dx} 560)"><rect x="-26" y="0" width="52" height="46" rx="8" fill="#2A2F3A" stroke="${INK}" stroke-width="4"/><circle cx="0" cy="46" r="18" fill="#FFFFFF" filter="url(#glow)"/></g>`); return AX + dx; });
+  // public (deux rangs) derrière le ring
+  A.crowd = [];
+  const kinds = ['cheer', 'phone', 'clap', 'cheer', 'phone', 'cheer', 'clap', 'phone'];
+  for (let row = 0; row < 2; row++) for (let k = 0; k < 9; k++) {
+    const x = AX - 560 + k * 140 + (row ? 70 : 0), y = row ? 1236 : 1284;
+    const P = makePerson(A.g, { kind: kinds[(k + row * 3) % 8], seed: 300 + k * 7 + row * 31, full: false, shirt: ['#3A1E6A', '#1E3A6A', '#5A1E4A', '#1E5A5A'][(k + row) % 4], ink: '#07040F', speed: 1.4 });
+    A.crowd.push({ P, x, y, s: row ? 1.25 : 1.45, flip: k % 2 ? -1 : 1 });
+  }
+  // poteaux et cordes (derrière les combattants)
+  const posts = g(A.g);
+  for (const [dx, col] of [[-450, '#FF2E88'], [450, '#19F0FF']]) markup(posts, `<rect x="${AX + dx - 14}" y="1160" width="28" height="270" rx="8" fill="#2A2F3A" stroke="${INK}" stroke-width="5"/><rect x="${AX + dx - 20}" y="1150" width="40" height="40" rx="10" fill="${col}" filter="url(#neon)"/>`);
+  A.ropes = [1210, 1270, 1330].map((y, k) => mk('path', { fill: 'none', stroke: ['#FF2E88', '#FFFFFF', '#19F0FF'][k], 'stroke-width': 9, 'stroke-linecap': 'round', filter: 'url(#neon)' }, posts));
+  // plancher du ring : plateau en perspective, grille holo, bord lumineux
+  markup(A.g, `<path d="M ${AX - 520} 1470 L ${AX + 520} 1470 L ${AX + 470} 1392 L ${AX - 470} 1392 Z" fill="#150A2E" stroke="#B14DFF" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M ${AX - 520} 1470 L ${AX + 520} 1470 L ${AX + 520} 1540 L ${AX - 520} 1540 Z" fill="#0A0618" stroke="#2A1B55" stroke-width="4"/>
+    ${[...Array(11)].map((_, i) => `<path d="M ${AX - 470 + i * 94} 1392 L ${AX - 520 + i * 104} 1470" stroke="#19F0FF" stroke-width="2" opacity="0.45"/>`).join('')}
+    <path d="M ${AX - 495} 1431 L ${AX + 495} 1431" stroke="#19F0FF" stroke-width="2" opacity="0.45"/>
+    <ellipse cx="${AX}" cy="1431" rx="170" ry="28" fill="none" stroke="#FF2E88" stroke-width="5" opacity="0.8" filter="url(#glow)"/>`);
+  A.edge = mk('path', { d: `M ${AX - 520} 1474 L ${AX + 520} 1474`, stroke: '#FF2E88', 'stroke-width': 8, filter: 'url(#neon)' }, A.g);
+  A.leds = [...Array(20)].map((_, i) => mk('rect', { x: AX - 500 + i * 52, y: 1500, width: 30, height: 14, rx: 4, fill: NEON[i % 5] }, A.g));
+}
+function updateArena(C, t) {
+  const A = C.arena; if (!A) return;
+  const tf = TIMING.fight, ko = beat(tf.ko), imp = beat(tf.impact);
+  const hype = t > imp ? 1 : 0.4;
+  A.cones.forEach((c, k) => {
+    const lx = A.lamps[k], ang = Math.sin(t * (1.6 + k * 0.3) + k * 1.9) * 0.45 * (t > imp && t < ko + 1 ? 0.3 : 1);
+    const ex = lx + Math.sin(ang) * 900, ey = 560 + Math.cos(ang) * 900;
+    attr(c, 'd', `M ${lx - 20} 600 L ${r2(ex - 170)} ${r2(ey)} L ${r2(ex + 170)} ${r2(ey)} L ${lx + 20} 600 Z`);
+  });
+  A.crowd.forEach((c, k) => updatePerson(c.P, t * (1 + hype * 0.6), c.x, c.y - (t > imp ? Math.abs(Math.sin(t * 10 + k)) * 14 : 0), c.s, c.flip));
+  A.ropes.forEach((r, k) => {
+    // les cordes vibrent quand les coups tombent
+    let v = 0; for (const te of [beat(tf.earHit), ...tf.punches.map(beat), imp]) { const d = t - te; if (d > 0 && d < 0.6) v += 14 * Math.exp(-d / 0.18) * Math.sin(d * 50 + k); }
+    attr(r, 'd', `M ${A.x - 450} ${[1210, 1270, 1330][k]} Q ${A.x} ${r2([1210, 1270, 1330][k] + 18 + v)} ${A.x + 450} ${[1210, 1270, 1330][k]}`);
+  });
+  A.leds.forEach((l, i) => attr(l, 'opacity', r2(0.35 + 0.65 * ((Math.floor(t * 12) + i) % 3 === 0 ? 1 : 0.2))));
+  attr(A.edge, 'opacity', r2(0.6 + 0.4 * Math.abs(Math.sin(t * 8))));
+}
 CYBER.update = function (t, u, robot) {
   const C = CYBER;
   const L = (el, f, dx = 0) => attr(el, 'transform', `translate(${r2(-u * f + dx)} 0)`);
   L(C.far, 0.15); L(C.mid, 0.45); L(C.street, 1); L(C.stalls, 0.8);
+  if (C.arena) { L(C.arena.g, 1); updateArena(C, t); }
   attr(C.moon, 'transform', `translate(${r2(760 - u * 0.03)} 420)`);
   C.cars.forEach(c => { const xx = ((c.x0 + c.v * t - u * 0.2) % 1600 + 1600) % 1600 - 260; attr(c.g, 'transform', `translate(${r2(xx)} ${c.y}) scale(${c.v < 0 ? -1 : 1} 1)`); });
   for (const b of C.boards) {

@@ -4,10 +4,10 @@
 const NS = 'http://www.w3.org/2000/svg';
 const W = 1080, H = 1920, FPS = 30;
 const INK = '#1B1620', GREEN = '#4DFF8F';
-const BEAT = 60 / 118;            // tempo de la musique (deep tech, 118 BPM)
-const TD = 3 * BEAT;              // le drop : la mobylette démarre
+const BEAT = 60 / TIMING.bpm;     // tempo de la musique (deep tech, 118 BPM)
+const TD = TIMING.dropBeats * BEAT;   // le drop : la mobylette démarre
 const beat = k => TD + k * BEAT;  // instant du k-ième temps après le drop
-const DURATION = 14.0;
+const DURATION = Math.round(beat(TIMING.end) * 30) / 30;
 
 const $ = id => document.getElementById(id);
 const PI2 = Math.PI * 2;
@@ -141,11 +141,23 @@ function makeRobot(parent, opt = {}) {
     vis(fg, false);
     R.faces[n] = { g: fg, eL, eR };
   }
+  // oreille droite arrachée par le deepfake : on masque l'oreille d'origine (douille) et une copie pend au bout d'un ressort
+  R.ear = g(R.head); vis(R.ear, false);
+  mk('circle', { cx: 110, cy: -92, r: 13, fill: '#2A2F3A', stroke: INK, 'stroke-width': 4 }, R.ear);
+  R.earSpark = mk('path', { d: 'M 104 -98 L 116 -86 M 116 -98 L 104 -86', stroke: '#FFE14D', 'stroke-width': 3, 'stroke-linecap': 'round' }, R.ear);
+  R.earSpring = mk('path', { fill: 'none', stroke: INK, 'stroke-width': 7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, R.ear);
+  R.earSpring2 = mk('path', { fill: 'none', stroke: '#8E97A3', 'stroke-width': 3, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, R.ear);
+  R.earDisc = mk('circle', { r: 19, fill: '#A9B3BE', stroke: INK, 'stroke-width': 5 }, R.ear);
   R.loupe = g(R.body); mk('use', { href: '#loupe' }, R.loupe); vis(R.loupe, false);
   R.armFrontL = makeArm(R.body); R.armFrontR = makeArm(R.body);
   R.hat = g(R.body);
   mk('use', { href: '#rb-antenna' }, g(R.hat)); mk('use', { href: '#rb-hat' }, R.hat);
   R.armTopL = makeArm(R.body); R.armTopR = makeArm(R.body);
+  R.sticks = g(R.body, { stroke: INK, 'stroke-width': 11, 'stroke-linecap': 'round' });
+  R.stickL = mk('path', {}, R.sticks); R.stickR = mk('path', {}, R.sticks);
+  R.sticks2 = g(R.body, { stroke: '#E9C98A', 'stroke-width': 6, 'stroke-linecap': 'round' });
+  R.stickL2 = mk('path', {}, R.sticks2); R.stickR2 = mk('path', {}, R.sticks2);
+  vis(R.sticks, false); vis(R.sticks2, false);
   R.cur = null;
   return R;
 }
@@ -156,6 +168,15 @@ const ARMS = {   // poses de bras (repère du robot : cou en 0,0 ; pieds vers y 
   loupe: { L: [-62, 40, -90, 72, -96, 108], R: [62, 40, 118, 40, 112, -92] },
   cheer: { L: [-62, 40, -140, 0, -122, -120], R: [62, 40, 140, 0, 122, -120] },
   hat: { L: [-62, 40, -90, 72, -96, 108], R: [62, 40, 150, -40, 60, -200] },
+  guard: { L: [-62, 40, -110, 24, -44, -24], R: [62, 40, 120, 24, 82, -34] },            // garde de combat
+  punchR: { L: [-62, 40, -110, 24, -44, -24], R: [62, 40, 170, -6, 262, -46] },           // direct du droit
+  punchL: { L: [-62, 40, 30, -30, 196, -62], R: [62, 40, 120, 24, 82, -34] },            // crochet du gauche (traverse)
+  blast: { L: [-62, 40, 40, 40, 150, 6], R: [62, 40, 150, 50, 176, 22] },                // mains en avant (boule d'énergie)
+  victory: { L: [-62, 40, -100, 80, -70, 110], R: [62, 40, 150, -10, 118, -170] },       // poing levé
+  hit: { L: [-62, 40, -140, 0, -150, -60], R: [62, 40, 140, 70, 150, 120] },             // encaisse le coup
+  drumA: { L: [-62, 40, -50, 110, 30, 96], R: [62, 40, 120, 40, 110, -20] },
+  drumB: { L: [-62, 40, -110, 40, -60, -30], R: [62, 40, 90, 110, 150, 96] },
+  run: { L: [-62, 40, -120, 60, -110, 20], R: [62, 40, 120, 90, 150, 60] },
 };
 // état : {x, y, s, rot, sx, sy, face, blink, look:[dx,dy], arms:{L,R,layerL,layerR}, sit, hatLift, hatRot, loupe}
 function poseRobot(R, st) {
@@ -182,6 +203,28 @@ function poseRobot(R, st) {
   put('L', A.L, lay.L || (sit ? 'back' : 'front'));
   put('R', A.R, lay.R || 'front');
   vis(R.loupe, !!st.loupe);
+  // oreille qui pendouille (angle en degrés depuis la verticale, vers l'extérieur positif)
+  vis(R.ear, !!st.ear);
+  if (st.ear) {
+    const a = st.ear.ang * Math.PI / 180, L = 66;
+    const ex = 110 + Math.sin(a) * L, ey = -92 + Math.cos(a) * L;
+    let d = 'M 110 -92';
+    for (let k = 1; k <= 8; k++) { const q = k / 8, px = 110 + Math.sin(a) * L * q, py = -92 + Math.cos(a) * L * q, w = k % 2 ? 7 : -7; d += ` L ${r2(px + Math.cos(a) * w)} ${r2(py - Math.sin(a) * w)}`; }
+    attr(R.earSpring, 'd', d); attr(R.earSpring2, 'd', d);
+    attr(R.earDisc, 'cx', r2(ex)); attr(R.earDisc, 'cy', r2(ey));
+    attr(R.earSpark, 'opacity', st.ear.spark ?? 0);
+  }
+  // baguettes de batterie dans les mains
+  const stk = !!st.sticks; vis(R.sticks, stk); vis(R.sticks2, stk);
+  if (stk) {
+    const one = (p, el, el2, ang) => {
+      const hx = p[4], hy = p[5], dx = p[4] - p[2], dy = p[5] - p[3], n = Math.hypot(dx, dy) || 1;
+      const ux = Math.cos(ang) * dx / n - Math.sin(ang) * dy / n, uy = Math.sin(ang) * dx / n + Math.cos(ang) * dy / n;
+      const d = `M ${r2(hx - ux * 20)} ${r2(hy - uy * 20)} L ${r2(hx + ux * 110)} ${r2(hy + uy * 110)}`;
+      attr(el, 'd', d); attr(el2, 'd', d);
+    };
+    one(A.L, R.stickL, R.stickL2, -0.5); one(A.R, R.stickR, R.stickR2, 0.5);
+  }
   const hl = st.hatLift || 0;
   attr(R.hat, 'transform', hl || st.hatRot ? `translate(${r2(hl * 40)} ${r2(-hl * 70)}) rotate(${r2(st.hatRot || -hl * 18)} 0 -190)` : '');
 }

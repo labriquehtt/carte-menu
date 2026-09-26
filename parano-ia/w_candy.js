@@ -128,14 +128,14 @@ CANDY.update = function (t, u) {
   L(K.clouds, 0.05); L(K.far, 0.2); L(K.mid, 0.6); L(K.street, 1); L(K.fore, 1.6);
   attr(K.rainbow, 'transform', `translate(${r2(-u * 0.03)} 0)`);
   // repères : smoothie et cookie bien cadrés pendant le passage
-  const tIn = beat(13);
+  const tIn = beat(TIMING.seams.candy);
   if (K.ref === undefined) K.ref = camX(tIn + 0.5) - K.x0;
   const ref = K.ref;
   attr(K.smoothie, "transform", `translate(${r2(150 + 0.6 * ref)} ${r2(1250 + Math.abs(Math.sin(t * 8)) * -12)})`);
   attr(K.cookie, "transform", `translate(${r2(830 + 0.6 * ref)} ${r2(1250)}) rotate(${r2(Math.sin(t * 6) * 3)})`);
   attr(K.bubble, 'transform', `scale(${r2(E.back(seg(t, tIn + 0.1, tIn + 0.3)))})`);
   // une fraction de seconde avant l'apocalypse, les yeux deviennent des caméras rouges
-  const evil = t > beat(14.55);
+  const evil = t > beat(TIMING.seams.apoc - 0.45);
   K.gums.forEach(gm => { attr(gm.g, 'transform', `translate(${gm.x} ${r2(1250 - Math.abs(Math.sin(t * 7 + gm.seed)) * 18)}) scale(1 ${r2(1 - Math.abs(Math.sin(t * 7 + gm.seed)) * 0.05)})`); setFace(gm.F, t, gm.seed, evil); });
   setFace(K.smF, t, 11, evil); setFace(K.ckF, t, 13, evil);
   K.sparks.forEach((s, i) => { const tw = 0.5 + 0.5 * Math.sin(t * 9 + i * 1.7); attr(s, 'transform', `translate(${r2((hash(i) * 1400 - u * 0.1) % 1200)} ${r2(200 + hash(i * 3) * 900)}) scale(${r2(0.4 + tw)})`); attr(s, 'opacity', r2(tw)); });
