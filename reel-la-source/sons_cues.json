@@ -80,12 +80,6 @@
    1
   ],
   [
-   "PENCIL",
-   "Effet dessin (crayon)",
-   "fast pencil scribbling on paper, continuous",
-   4
-  ],
-  [
    "SWISH",
    "Geste rapide",
    "quick light swish of a small object raised in the air",
@@ -232,37 +226,31 @@
    "note": "atterrit sur le cadre (hit-stop)"
   },
   {
-   "t": 7.06,
+   "t": 7.05,
    "end": null,
    "id": "FALL",
    "note": "le cadre tombe"
   },
   {
-   "t": 7.12,
-   "end": 12.38,
-   "id": "PENCIL",
-   "note": "effet dessin sur le robot (volume bas)"
-  },
-  {
-   "t": 7.33,
+   "t": 7.31,
    "end": null,
    "id": "LAND",
    "note": "atterrit à droite"
   },
   {
-   "t": 7.46,
+   "t": 7.44,
    "end": null,
    "id": "PAPER",
    "note": "TIRE : il tire le dessin"
   },
   {
-   "t": 7.72,
+   "t": 7.68,
    "end": null,
    "id": "POP",
    "note": "le dessin arrive en place"
   },
   {
-   "t": 7.8,
+   "t": 7.75,
    "end": null,
    "id": "STUMBLE",
    "note": "il trébuche en arrière"
@@ -626,12 +614,6 @@
    "end": null,
    "id": "VR",
    "note": "il enfile le casque"
-  },
-  {
-   "t": 110.68,
-   "end": 112.44,
-   "id": "PENCIL",
-   "note": "\"entrez dans le dessin\" : effet dessin"
   },
   {
    "t": 112.54,

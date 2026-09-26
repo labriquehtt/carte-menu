@@ -22,7 +22,6 @@ const SOUNDS = [
   ['HOP', 'Petit saut', 'tiny springy cartoon hop, light boing', 0.5],
   ['PAPER', 'On tire un grand papier', 'large sheet of paper yanked quickly and sliding across a table, swoosh', 1],
   ['STUMBLE', 'Il trébuche', 'cartoon stumble, quick tiptoe steps and a little wobble', 1],
-  ['PENCIL', 'Effet dessin (crayon)', 'fast pencil scribbling on paper, continuous', 4],
   ['SWISH', 'Geste rapide', 'quick light swish of a small object raised in the air', 0.5],
   ['ZOOM_IN', 'Zoom sur le toit', 'fast cinematic zoom in whoosh, rising swoosh with a soft impact at the end', 1],
   ['GLINT', 'Reflet de la loupe', 'bright tiny glint ding, light reflecting on a magnifying glass', 0.6],
@@ -50,7 +49,7 @@ const CUES = [
   [7.6, 'SNAP', 'CLAQUE'], [7.65, 'POP', 'le cadre vidéo apparaît'],
   [10.6, 'JUMP', 'ÉCRASE : saut'], [11.0, 'LAND_BIG', 'atterrit sur le cadre (hit-stop)'],
   [11.15, 'FALL', 'le cadre tombe'], [11.7, 'LAND', 'atterrit à droite'],
-  [11.35, 'PENCIL', 'effet dessin sur le robot (volume bas)', 19.6],
+
   [11.9, 'PAPER', 'TIRE : il tire le dessin'], [12.28, 'POP', 'le dessin arrive en place'],
   [12.4, 'STUMBLE', 'il trébuche en arrière'],
   [21.3, 'JUMP', 'ÉCRASE : saut'], [21.62, 'LAND_BIG', 'atterrit sur le dessin'], [21.72, 'FALL', 'le dessin tombe'],
@@ -83,7 +82,7 @@ const CUES = [
   [162.0, 'SNAP', 'CLAQUE'], [162.05, 'POP', 'la fenêtre du site apparaît'],
   [173.2, 'SNAP', 'CLAQUE'], [173.25, 'POP', 'le casque VR apparaît dans sa main'],
   [175.3, 'VR', 'il enfile le casque'],
-  [177.4, 'PENCIL', '"entrez dans le dessin" : effet dessin', 180.2],
+
   [180.35, 'SWISH', 'il retire le casque'],
 ];
 

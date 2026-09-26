@@ -818,7 +818,8 @@ function mouthAt(t) {
 }
 
 /* ----- effets dessin / pixel ----- */
-const DRAWS = [[11.2, 19.6], [177.4, 180.2]], PIX = [93.0, 96.4];
+// effet dessin sur le robot retiré à la demande (scènes 2 et 8 : [11.2, 19.6], [177.4, 180.2])
+const DRAWS = [], PIX = [93.0, 96.4];
 const inDraw = t => DRAWS.some(([a, b]) => t >= a && t <= b);
 function drawAmt(t) {
   for (const [a, b] of DRAWS) if (t >= a && t <= b) return Math.min(E.soft((t - a) / 0.3), E.soft((b - t) / 0.3));

@@ -31,8 +31,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     large sheet of paper yanked quickly and sliding across a table, swoosh
 [STUMBLE] Il trébuche — 1 s — utilisé 1×
     cartoon stumble, quick tiptoe steps and a little wobble
-[PENCIL] Effet dessin (crayon) — 4 s — utilisé 2×
-    fast pencil scribbling on paper, continuous
 [SWISH] Geste rapide — 0.5 s — utilisé 2×
     quick light swish of a small object raised in the air
 [ZOOM_IN] Zoom sur le toit — 1 s — utilisé 2×
@@ -75,10 +73,9 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  0:05.2  POP       le cadre vidéo apparaît
  0:06.7  JUMP      ÉCRASE : saut
  0:06.9  LAND_BIG  atterrit sur le cadre (hit-stop)
- 0:07.1  FALL      le cadre tombe
- 0:07.1  PENCIL    effet dessin sur le robot (volume bas)  (jusqu'à 0:12.4)
+ 0:07.0  FALL      le cadre tombe
  0:07.3  LAND      atterrit à droite
- 0:07.5  PAPER     TIRE : il tire le dessin
+ 0:07.4  PAPER     TIRE : il tire le dessin
  0:07.7  POP       le dessin arrive en place
  0:07.8  STUMBLE   il trébuche en arrière
  0:13.2  JUMP      ÉCRASE : saut
@@ -141,7 +138,6 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
  1:47.7  SNAP      CLAQUE
  1:47.8  POP       le casque VR apparaît dans sa main
  1:49.7  VR        il enfile le casque
- 1:50.7  PENCIL    "entrez dans le dessin" : effet dessin  (jusqu'à 1:52.4)
  1:52.5  SWISH     il retire le casque
 
 Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement

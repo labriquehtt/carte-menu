@@ -7,7 +7,7 @@
 Lit sons_cues.json (écrit par `node sons.js`, repères en temps vidéo) et les sons
 media/sfx/<ID>.mp3 (générés sur ElevenLabs, hors Git comme tout media/).
 Chaque son est recalé sur son attaque (silence de tête retiré) et ramené à son niveau
-(MIX) ; PENCIL et DRIP sont bouclés sur leur plage. Pas d'ambiance de fond : la voix et la
+(MIX) ; DRIP est bouclé sur sa plage. Pas d'ambiance de fond : la voix et la
 musique viennent au montage. Seul le gros plan d'ouverture garde le son d'origine du clip
 `roof` (media/roof.wav, extrait par prepare_media.py), coupé quand l'écran s'éteint.
 """
@@ -24,9 +24,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SR = 44100
 
 # niveau visé (dB) : crête d'énergie sur 100 ms pour les sons ponctuels, énergie moyenne
-# pour la nappe PENCIL et le son du clip ; durée max (s), None = boucle sur [t, fin]
+# pour le son du clip ; durée max (s), None = boucle sur [t, fin]
 MIX = {
-    'PENCIL': (-33, None), 'DRIP': (-24, None),
+    'DRIP': (-24, None),
     'TV_OFF': (-19, 1.2), 'DEZOOM': (-19, 1.4), 'BOOT': (-20, 1.2), 'CLINK': (-20, 1.2),
     'SNAP': (-17, 0.8), 'POP': (-19, 0.8), 'JUMP': (-20, 0.8), 'LAND_BIG': (-15, 1.0),
     'FALL': (-19, 1.2), 'LAND': (-18, 1.2), 'HOP': (-22, 0.6), 'PAPER': (-19, 1.2),
@@ -35,9 +35,9 @@ MIX = {
     'WOBBLE': (-19, 2.2), 'DATA': (-20, 3.2), 'HOLO': (-19, 2.2), 'DREAM': (-19, 2.2), 'FADE': (-14, 3.5),
     'CHIME': (-20, 1.2), 'POWER': (-19, 1.8), 'VR': (-18, 1.8),
 }
-BEDS = {'PENCIL', 'ROOF'}
+BEDS = {'ROOF'}
 ROOF_LEVEL = -21   # son du clip sur l'écran de la tête (eau, vent, feuilles)
-LOOP_FADES = {'PENCIL': (0.15, 0.3), 'DRIP': (0.5, 0.8)}   # fondu entrée, sortie (s)
+LOOP_FADES = {'DRIP': (0.5, 0.8)}   # fondu entrée, sortie (s)
 
 
 def load(path):
