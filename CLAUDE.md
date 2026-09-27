@@ -290,8 +290,11 @@ Le clonage (Instant Voice Clone) demande un abonnement payant (Starter) ; le com
 prête dans le flow https://elevenlabs.io/app/flows/J3K2ScjSj4WJ2OQ6pEUC (eleven_v3, texte de `voix_ia_texte.txt`
 jusqu'à « …voir les choses ? », balises [excited]/[intrigued] sur l'accroche, [sighs]/[sleepy]/[whispers] sur le
 rêve) : **1 649 crédits, refusée faute de crédits (30 restants, rien de débité)**. À relancer dès la recharge
-mensuelle, puis refaire `BLOCS` de place_voix_ia.py sur cette prise (instants via transcrire_voix.py) et la chaîne
+mensuelle (texte balisé exact : `voix_sebas_prompt.txt`), puis refaire `BLOCS` de place_voix_ia.py sur cette prise (instants via transcrire_voix.py) et la chaîne
 Voix IA ; l'outro reste la vraie voix de l'utilisateur.
+L'utilisateur a créé un nouveau compte ElevenLabs (10 000 crédits), mais le connecteur ElevenLabs de Claude
+restait lié à l'ancien (30 crédits) : le reconnecter sur https://claude.ai/customize/connectors, ou faire générer
+la prise par l'utilisateur dans Text to Speech (Sébas, Eleven v3, `voix_sebas_prompt.txt`) et la déposer dans le chat.
 
 ### Robot détective (source)
 
