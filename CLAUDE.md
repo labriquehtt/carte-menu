@@ -285,6 +285,13 @@ wespeaker resnet34 + 3dspeaker campplus) sur 87 aperçus, similarité 0,89 contr
 même voix ≈ 0,94). Échantillon de la voix de l'utilisateur pour un clonage instantané (1 min 53, sans musique,
 silences resserrés, -18 LUFS) : `out/ma-voix-clonage.wav/.mp3`, tiré de `media/voix/voix_capcut_propre.wav`.
 Le clonage (Instant Voice Clone) demande un abonnement payant (Starter) ; le compte est gratuit.
+**Nouvelle voix voulue pour LA SOURCE (2026-09-27) : « Sébas - French Storyteller »** (voice_id
+`5jCmrHdxbpU36l1wb3Ke`, choisie par l'utilisateur pour le storytelling, à la place de Benjamin). Prise complète
+prête dans le flow https://elevenlabs.io/app/flows/J3K2ScjSj4WJ2OQ6pEUC (eleven_v3, texte de `voix_ia_texte.txt`
+jusqu'à « …voir les choses ? », balises [excited]/[intrigued] sur l'accroche, [sighs]/[sleepy]/[whispers] sur le
+rêve) : **1 649 crédits, refusée faute de crédits (30 restants, rien de débité)**. À relancer dès la recharge
+mensuelle, puis refaire `BLOCS` de place_voix_ia.py sur cette prise (instants via transcrire_voix.py) et la chaîne
+Voix IA ; l'outro reste la vraie voix de l'utilisateur.
 
 ### Robot détective (source)
 
