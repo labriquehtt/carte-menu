@@ -44,7 +44,7 @@
 <path d="M -73 -207 Q 0 -199 73 -207 L 72 -187 Q 0 -179 -72 -187 Z" fill="#231812" stroke="#1B1620" stroke-width="3"></path>
 </g>
 </defs>
-<rect x="0" y="0" width="1080" height="1080" fill="#000000"></rect>
+<rect id="bg" x="0" y="0" width="1080" height="1080" fill="#000000"></rect>
 <g id="place"><g id="tilt">
 <use href="#rb-head"></use>
 <!-- clin d'œil : œil gauche fermé (arc de l'expression officielle « curieux »), œil droit ouvert, sourire en coin -->
@@ -59,8 +59,9 @@
 </svg>
 <script>
 'use strict';
-// ?h=0.46 : hauteur de la tête (chapeau et antenne compris) en fraction du cadre ; ?rot=-6 : inclinaison
+// ?h=0.46 : hauteur de la tête (chapeau et antenne compris) en fraction du cadre ; ?rot=-6 : inclinaison ; ?bg=000000 : fond
 const q = new URLSearchParams(location.search);
+document.getElementById('bg').setAttribute('fill', '#' + (q.get('bg') || '000000'));
 const frac = parseFloat(q.get('h') || '0.46'), rot = parseFloat(q.get('rot') || '-6');
 const tilt = document.getElementById('tilt');
 tilt.setAttribute('transform', `rotate(${rot} 0 -120)`);

@@ -62,7 +62,8 @@ de l'écran** (« TROP MIGNONNES », etc. retirées à la demande : le décor su
 - Photo de profil Instagram : `node pfp.js tete 0.43 -6` (`pfp_tete.html` : tête + chapeau seuls, sans cou,
   clin d'œil, petite au centre d'un fond noir, hauteur 43 % du cadre, inclinée de -6°) → `out/pfp-tete.png`
   (carré 1080, à uploader) + `out/pfp-tete-rond.png` (aperçu découpé en rond). Version retenue par
-  l'utilisateur. `node pfp.js` seul = ancienne version en buste, loupe à l'œil (`pfp.html`).
+  l'utilisateur. Variantes de fond : 4e argument hex (`node pfp.js tete 0.43 -6 4DFF8F` vert des yeux,
+  `FFD23C` jaune) → `out/pfp-tete-vert.png`, `out/pfp-tete-jaune.png` (+ `-rond`). `node pfp.js` seul = ancienne version en buste, loupe à l'œil (`pfp.html`).
 
 ---
 
