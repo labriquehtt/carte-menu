@@ -279,6 +279,12 @@ même sonie que la voix IA : `MOI_GAIN`), à sa demande.
    rendu, encodage 2 passes, puis `VOIX_DIR=media/voix_ia python3 mix_voix.py --music out/musique2.wav
    --music-gain -8 --video … --out out/LA-SOURCE-reel-voix-IA.mp4`.
 `robot_voix.py` : léger effet robot optionnel (non utilisé : la voix plaît telle quelle).
+Voix des Shorts @Easyvideo (vidéo envoyée par l'utilisateur) = « Noé - Content Creator » de la bibliothèque
+(voice_id `7pDdnNI6PhXmAp0pXFZm`, jeune homme, FR) : trouvée par empreinte vocale (sherpa-onnx, modèles
+wespeaker resnet34 + 3dspeaker campplus) sur 87 aperçus, similarité 0,89 contre 0,75 pour la suivante (plafond
+même voix ≈ 0,94). Échantillon de la voix de l'utilisateur pour un clonage instantané (1 min 53, sans musique,
+silences resserrés, -18 LUFS) : `out/ma-voix-clonage.wav/.mp3`, tiré de `media/voix/voix_capcut_propre.wav`.
+Le clonage (Instant Voice Clone) demande un abonnement payant (Starter) ; le compte est gratuit.
 
 ### Robot détective (source)
 
