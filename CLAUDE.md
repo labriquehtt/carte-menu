@@ -236,7 +236,8 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
 
 ### État au 2026-09-26 (fin de session)
 
-- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA-v3.mp4`** (accroche plus vive, son du clip d'ouverture très bas ;
+- **Dernière livraison (2026-09-27) : `out/LA-SOURCE-reel-voix-Sebas.mp4`** (voix « Sébas », voir « Voix IA »).
+  Avant : `out/LA-SOURCE-reel-voix-IA-v3.mp4` (accroche plus vive, son du clip d'ouverture très bas ;
   avant : `out/LA-SOURCE-reel-voix-IA-v2.mp4`, voix IA « Benjamin » puis la vraie voix pour l'outro ;
   pins du chapeau retirés ; vidéo seule encodée : `out/LA-SOURCE-reel-ia-video.mp4`).
 - Version précédente, avec la voix de l'utilisateur (`out/LA-SOURCE-reel-final.mp4`) :
@@ -247,7 +248,7 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
   conseillée : plus courte, plus lisible). Rien d'autre n'est commencé pour cette vidéo.
 - `out/` et `media/` sont hors Git : dans une nouvelle session, redemander les fichiers.
 
-### Voix IA (ElevenLabs, voix « Benjamin ») — livraison actuelle
+### Voix IA (ElevenLabs : « Benjamin », puis « Sébas », voix actuelle)
 
 Voix choisie par l'utilisateur : « Benjamin » (voice_id `F9KUTOne5xOKqAbIU7yg`, bibliothèque
 ElevenLabs), modèle `eleven_v3`, flow https://elevenlabs.io/app/flows/OlxdPPc1GrvtV5tSFlnm.
@@ -285,16 +286,15 @@ wespeaker resnet34 + 3dspeaker campplus) sur 87 aperçus, similarité 0,89 contr
 même voix ≈ 0,94). Échantillon de la voix de l'utilisateur pour un clonage instantané (1 min 53, sans musique,
 silences resserrés, -18 LUFS) : `out/ma-voix-clonage.wav/.mp3`, tiré de `media/voix/voix_capcut_propre.wav`.
 Le clonage (Instant Voice Clone) demande un abonnement payant (Starter) ; le compte est gratuit.
-**Nouvelle voix voulue pour LA SOURCE (2026-09-27) : « Sébas - French Storyteller »** (voice_id
-`5jCmrHdxbpU36l1wb3Ke`, choisie par l'utilisateur pour le storytelling, à la place de Benjamin). Prise complète
-prête dans le flow https://elevenlabs.io/app/flows/J3K2ScjSj4WJ2OQ6pEUC (eleven_v3, texte de `voix_ia_texte.txt`
-jusqu'à « …voir les choses ? », balises [excited]/[intrigued] sur l'accroche, [sighs]/[sleepy]/[whispers] sur le
-rêve) : **1 649 crédits, refusée faute de crédits (30 restants, rien de débité)**. À relancer dès la recharge
-mensuelle (texte balisé exact : `voix_sebas_prompt.txt`), puis refaire `BLOCS` de place_voix_ia.py sur cette prise (instants via transcrire_voix.py) et la chaîne
-Voix IA ; l'outro reste la vraie voix de l'utilisateur.
-L'utilisateur a créé un nouveau compte ElevenLabs (10 000 crédits), mais le connecteur ElevenLabs de Claude
-restait lié à l'ancien (30 crédits) : le reconnecter sur https://claude.ai/customize/connectors, ou faire générer
-la prise par l'utilisateur dans Text to Speech (Sébas, Eleven v3, `voix_sebas_prompt.txt`) et la déposer dans le chat.
+**Voix actuelle de LA SOURCE (2026-09-27) : « Sébas - French Storyteller »** (voice_id
+`5jCmrHdxbpU36l1wb3Ke`, choisie par l'utilisateur pour le storytelling, à la place de Benjamin). Une seule prise
+eleven_v3 (texte balisé exact : `voix_sebas_prompt.txt`, 1 649 crédits) : `media/voix_ia/prise_sebas.mp3`,
+flow https://elevenlabs.io/app/flows/7tYwR8BdJoHix6jfLdj4. `place_voix_ia.py` l'utilise par défaut (`BLOCS_SEBAS`,
+seuil de silence 95e centile − 30 dB car le fond de la prise est à ~-50 dB ; `VOIX_IA=benjamin` pour l'ancienne
+voix) ; pins de la voix Sébas dans `voix_ia.js` (0 avertissement). L'outro reste la vraie voix de l'utilisateur.
+Livraison : `out/LA-SOURCE-reel-voix-Sebas.mp4` (116 s, 28 Mo). Ne jamais lancer `place_voix_ia.py | head`
+(BrokenPipe avant l'écriture de voix.wav). Le connecteur ElevenLabs de Claude est lié à un seul compte : s'il
+manque de crédits, l'utilisateur le reconnecte sur https://claude.ai/customize/connectors.
 
 ### Robot détective (source)
 
