@@ -24,7 +24,7 @@ Lyrics (seulement des balises de structure, aucune parole) :
 
 ═══ LA MUSIQUE DOIT ÉPOUSER CES MOMENTS ═══
  0:00.0  Intro      gros plan sur l'écran : très discret (on y entend l'eau et le vent du clip), vibraphone + nappes, sans batterie
- 0:04.5  Groove     le dézoom : contrebasse walking + balais, enquête espiègle
+ 0:03.7  Groove     le dézoom : contrebasse walking + balais, enquête espiègle
  0:31.1  Variation  "donner vie = faire bouger" : plus bondissant, pizzicati
  0:46.3  Thème      Yann LeCun : trompette bouchée, plus sérieux et intrigant
  0:58.0  Glitch     "prédire des pixels" : 2 s de bégaiement 8-bit, puis reprise

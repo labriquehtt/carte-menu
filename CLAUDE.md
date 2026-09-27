@@ -236,7 +236,8 @@ python3 mix_voix.py --music out/musique2.wav --music-gain -8 --video out/LA-SOUR
 
 ### État au 2026-09-26 (fin de session)
 
-- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA-v2.mp4`** (voix IA « Benjamin » puis la vraie voix pour l'outro ;
+- **Dernière livraison : `out/LA-SOURCE-reel-voix-IA-v3.mp4`** (accroche plus vive, son du clip d'ouverture très bas ;
+  avant : `out/LA-SOURCE-reel-voix-IA-v2.mp4`, voix IA « Benjamin » puis la vraie voix pour l'outro ;
   pins du chapeau retirés ; vidéo seule encodée : `out/LA-SOURCE-reel-ia-video.mp4`).
 - Version précédente, avec la voix de l'utilisateur (`out/LA-SOURCE-reel-final.mp4`) :
   sous-titres, bouche et rythme calés sur la voix, bruitages bas, musique « deep tech » très basse,
@@ -259,6 +260,13 @@ le robot s'endort puis ouvre un œil ; « C'est nous qui cherchons un sens » vi
 l'intonation endormie y sonnait bizarre). **L'outro, dès « Passons… affaire à suivre » (100,78 s), est
 la vraie voix de l'utilisateur** (`media/voix/voix_capcut_propre.wav`, mêmes instants, sans retouche,
 même sonie que la voix IA : `MOI_GAIN`), à sa demande.
+0. **Accroche refaite (2026-09-27)** : la 1re phrase (« On a demandé à une IA… et regardez bien ce qui se passe »),
+   jugée « trop IA » sur le gros plan, vient de `media/voix_ia/intro_a.mp3` (eleven_v3, balise `[excited]`, « BIEN »
+   accentué ; flow https://elevenlabs.io/app/flows/CXoVmegf5yDZDtJXEzLM), posée à 1,20 s en genre `intro` (tempo
+   ×1,15, pauses 0,25 s) → « et regardez » à 3,86 s, le dézoom arrive plus tôt (TV_OFF 3,5 s). Sous-titres de
+   l'accroche redécoupés (« On a demandé » / « à une IA de donner vie » / « à ce dessin… »). Son du clip `roof`
+   sur l'écran baissé de 14 dB (`ROOF_LEVEL = -35` dans mix_sons.py) : on entend la voix. Crédits ElevenLabs
+   restants ≈ 30 (compte gratuit, 10 000/mois).
 1. `python3 place_voix_ia.py` → `media/voix_ia/voix.wav` : chaque paragraphe posé au début du passage
    correspondant de l'ancienne voix (liste `BLOCS`), pauses internes ramenées à 0,30 s et tempo ×1,07
    (lecture plus dynamique), rêve à 0,50 s / ×1 et à son niveau naturel (≈2 LU plus doux),

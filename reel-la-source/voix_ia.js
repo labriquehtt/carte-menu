@@ -5,7 +5,7 @@
 // SYNC : les mêmes temps script que pour la voix enregistrée, sur les passages correspondants.
 const NB = '\u00a0';
 const VOIX = [
-  'On a demandé à une *IA*', 'de *donner vie* à ce dessin…', 'et regardez bien ce qui se passe.',
+  'On a demandé', 'à une *IA* de *donner vie*', 'à ce dessin…', 'et regardez bien ce qui se passe.',
   'Ce dessin, c’est celui', 'de *Philippe Delord*,', 'un dessinateur qui m’a autorisé', 'à utiliser son travail', 'pour cette vidéo.',
   `La consigne était simple${NB}:`, 'faire vivre la scène.', 'Et pourtant, il y a quelque chose', 'qui se met à *couler* du toit.',
   'La maison s’efface…', 'puis revient.',

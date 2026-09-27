@@ -36,7 +36,7 @@ MIX = {
     'CHIME': (-20, 1.2), 'POWER': (-19, 1.8), 'VR': (-18, 1.8),
 }
 BEDS = {'ROOF'}
-ROOF_LEVEL = -21   # son du clip sur l'écran de la tête (eau, vent, feuilles)
+ROOF_LEVEL = -35   # son du clip sur l'écran de la tête (eau, vent, feuilles) : très bas, la voix passe devant (était -21)
 LOOP_FADES = {'DRIP': (0.5, 0.8)}   # fondu entrée, sortie (s)
 
 

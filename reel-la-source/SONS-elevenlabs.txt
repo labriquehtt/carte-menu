@@ -65,12 +65,12 @@ Nomme chaque fichier avec son ID (ex. SNAP.mp3).
     VR headset clicking on, futuristic whoosh into a virtual world
 
 ═══ 2. PLACEMENT DANS LA VIDÉO ═══
- 0:04.3  TV_OFF    l'écran de la tête s'éteint
- 0:04.5  DEZOOM    dézoom vers le plan large
- 0:04.6  BOOT      les yeux se rallument
- 0:04.7  CLINK     la loupe retombe devant l'œil
- 0:05.1  SNAP      CLAQUE
- 0:05.2  POP       le cadre vidéo apparaît
+ 0:03.5  TV_OFF    l'écran de la tête s'éteint
+ 0:03.7  DEZOOM    dézoom vers le plan large
+ 0:03.7  BOOT      les yeux se rallument
+ 0:03.9  CLINK     la loupe retombe devant l'œil
+ 0:04.3  SNAP      CLAQUE
+ 0:04.4  POP       le cadre vidéo apparaît
  0:06.8  JUMP      ÉCRASE : saut
  0:07.0  LAND_BIG  atterrit sur le cadre (hit-stop)
  0:07.2  FALL      le cadre tombe

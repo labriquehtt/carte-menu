@@ -178,49 +178,49 @@
  ],
  "cues": [
   {
-   "t": 4.3,
+   "t": 3.5,
    "end": null,
    "id": "TV_OFF",
    "note": "l'écran de la tête s'éteint"
   },
   {
-   "t": 4.49,
+   "t": 3.66,
    "end": null,
    "id": "DEZOOM",
    "note": "dézoom vers le plan large"
   },
   {
-   "t": 4.57,
+   "t": 3.73,
    "end": null,
    "id": "BOOT",
    "note": "les yeux se rallument"
   },
   {
-   "t": 4.71,
+   "t": 3.86,
    "end": null,
    "id": "CLINK",
    "note": "la loupe retombe devant l'œil"
   },
   {
-   "t": 5.08,
+   "t": 4.27,
    "end": null,
    "id": "SNAP",
    "note": "CLAQUE"
   },
   {
-   "t": 5.18,
+   "t": 4.38,
    "end": null,
    "id": "POP",
    "note": "le cadre vidéo apparaît"
   },
   {
-   "t": 6.81,
+   "t": 6.78,
    "end": null,
    "id": "JUMP",
    "note": "ÉCRASE : saut"
   },
   {
-   "t": 7.04,
+   "t": 7.03,
    "end": null,
    "id": "LAND_BIG",
    "note": "atterrit sur le cadre (hit-stop)"
@@ -629,7 +629,7 @@
    "note": "gros plan sur l'écran : très discret (on y entend l'eau et le vent du clip), vibraphone + nappes, sans batterie"
   },
   {
-   "t": 4.49,
+   "t": 3.66,
    "name": "Groove",
    "note": "le dézoom : contrebasse walking + balais, enquête espiègle"
   },

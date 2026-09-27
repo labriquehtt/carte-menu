@@ -25,14 +25,15 @@ V = os.path.join(HERE, 'media', 'voix_ia')
 DURATION = 116.0
 TEMPO, PAUSE = 1.07, 0.30          # lecture normale : plus vive, pauses courtes
 DREAM_TEMPO, DREAM_PAUSE = 1.0, 0.50
+INTRO_TEMPO, INTRO_PAUSE = 1.15, 0.25   # accroche (1re phrase, sur le gros plan) : encore plus vive
 GAP = 0.30                          # silence minimal entre deux paragraphes
 MOI_GAIN = 1.0                      # dB : même sonie (LUFS) que la voix IA après égalisation RMS
 
 # (fichier, début, fin dans ce fichier, instant visé dans la vidéo ou None = à la suite, genre) ;
-# genre : 'ia' lecture vive, 'reve' voix endormie, 'moi' la vraie voix de l'utilisateur (outro), posée telle quelle
+# genre : 'ia' lecture vive, 'intro' accroche encore plus vive, 'reve' voix endormie, 'moi' la vraie voix de l'utilisateur (outro), posée telle quelle
 MOI = os.path.join('..', 'voix', 'voix_capcut_propre.wav')
 BLOCS = [
-    ('prise_benjamin.mp3', 0.0, 5.40, 1.46, 'ia'),      # On a demandé à une IA…
+    ('intro_a.mp3', 0.0, None, 1.20, 'intro'),          # On a demandé à une IA… (reprise [excited], plus vive que la prise)
     ('prise_benjamin.mp3', 6.75, 13.50, 6.99, 'ia'),    # Ce dessin, c'est celui de Philippe Delord…
     ('prise_benjamin.mp3', 14.60, 24.90, 13.47, 'ia'),  # La consigne était simple…
     ('prise_benjamin.mp3', 25.85, 33.75, 22.93, 'ia'),  # Et honnêtement, à part Philippe…
@@ -138,8 +139,9 @@ def main():
             moi[i:i + len(x)] += x
             print(f'{target:7.2f} → {target + len(x) / SR:7.2f}  voix de l\'utilisateur')
             continue
-        x = tighten(x, floor, DREAM_PAUSE if dream else PAUSE)
-        tempo = DREAM_TEMPO if dream else TEMPO
+        intro = genre == 'intro'
+        x = tighten(x, floor, DREAM_PAUSE if dream else INTRO_PAUSE if intro else PAUSE)
+        tempo = DREAM_TEMPO if dream else INTRO_TEMPO if intro else TEMPO
         if tempo != 1:
             x = ffilter(x, f'atempo={tempo}')
         start = max(target if target is not None else 0, end + GAP)
