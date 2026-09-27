@@ -59,6 +59,10 @@ de l'écran** (« TROP MIGNONNES », etc. retirées à la demande : le décor su
   oreille qui pend, monde de la musique, sans phrases) : `out/PARANO-IA-bande-annonce-v2.mp4` (21,1 s, 27 Mo :
   vidéo `out/parano-ia-v2-video.mp4` en x264 2 passes 10 Mb/s, puis son.py qui ajoute l'AAC 160k).
   Rendu complet ~37 min (4 workers, 4 sous-images).
+- Photo de profil Instagram : `node pfp.js tete 0.43 -6` (`pfp_tete.html` : tête + chapeau seuls, sans cou,
+  clin d'œil, petite au centre d'un fond noir, hauteur 43 % du cadre, inclinée de -6°) → `out/pfp-tete.png`
+  (carré 1080, à uploader) + `out/pfp-tete-rond.png` (aperçu découpé en rond). Version retenue par
+  l'utilisateur. `node pfp.js` seul = ancienne version en buste, loupe à l'œil (`pfp.html`).
 
 ---
 
