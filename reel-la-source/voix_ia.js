@@ -1,4 +1,4 @@
-// Texte et points de synchro de la voix IA (ElevenLabs, voix « Benjamin »), lus par aligne_voix.js :
+// Texte et points de synchro de la voix IA (ElevenLabs, voix « Sébas - French Storyteller »), lus par aligne_voix.js :
 //   VOIX_DIR=media/voix_ia VOIX_TEXTE=voix_ia.js node aligne_voix.js
 // VOIX : ce que dit la voix IA (voix_ia_texte.txt), en morceaux courts, mots-clés entre *étoiles*.
 // [texte, {rang du mot: instant}] fixe un mot que la reconnaissance place trop tard.
@@ -9,21 +9,21 @@ const VOIX = [
   'Ce dessin, c’est celui', 'de *Philippe Delord*,', 'un dessinateur qui m’a autorisé', 'à utiliser son travail', 'pour cette vidéo.',
   `La consigne était simple${NB}:`, 'faire vivre la scène.', 'Et pourtant, il y a quelque chose', 'qui se met à *couler* du toit.',
   'La maison s’efface…', 'puis revient.',
-  'Et honnêtement,', 'à part *Philippe*,', 'personne ne peut dire', 'si c’est du *bois*,', 'de l’*eau*,', 'ou de la *fumée*.', 'Pas même la machine.',
-  'Pour une *IA*,', '*donner vie*…', 'ça veut juste dire *faire bouger*.',
-  ['Elle n’a jamais vu *la vie*.', { 0: 34.8, 1: 34.97, 2: 35.12, 3: 35.42, 4: 35.56, 5: 35.7 }], 'Elle a vu des *millions* de vidéos', 'où tout ce qui est vivant bouge.', 'Alors elle fait bouger',
-  'tout ce qu’elle peut…', 'même ce qui n’était pas censé bouger.',
+  'Et honnêtement,', 'à part *Philippe*,', ['personne ne peut dire', { 2: 25.13, 3: 25.2 }], 'si c’est du *bois*,', 'de l’*eau*,', 'ou de la *fumée*.', 'Pas même la machine.',
+  ['Pour une *IA*,', { 2: 31.42 }], '*donner vie*…', 'ça veut juste dire *faire bouger*.',
+  'Elle n’a jamais vu *la vie*.', 'Elle a vu des *millions* de vidéos', 'où tout ce qui est vivant bouge.', 'Alors elle fait bouger',
+  ['tout ce qu’elle peut…', { 2: 39.86, 3: 39.98 }], 'même ce qui n’était pas censé bouger.',
   'Et c’est exactement ce que pointe', `*Yann LeCun*${NB}:`, 'un Français,', 'l’un des pionniers', 'de l’IA moderne,', 'qui a reçu le *prix Turing*,',
   'l’équivalent', 'du *Nobel* en informatique.',
   'Pour *LeCun*,', 'ces modèles', 'ne font que prédire des *pixels*.', 'Sans *aucun monde* derrière.', 'Sans savoir ce qu’est un toit,',
   'du bois… ou même de l’*eau*.',
-  'D’ailleurs… il a quitté *Meta*,', 'et levé plus d’un *milliard* de dollars', `pour construire l’inverse${NB}:`, 'ce qu’on appelle les *world models*.',
-  ['Des IA qui,', { 0: 72.13, 1: 72.3, 2: 72.66 }], ['potentiellement, sauraient', { 0: 72.84 }], 'qu’un toit ne s’écoule pas comme de l’*eau*.',
+  'D’ailleurs, il a quitté *Meta*,', 'et levé plus d’un *milliard* de dollars', `pour construire l’inverse${NB}:`, 'ce qu’on appelle les *world models*.',
+  'Des IA qui,', 'potentiellement, sauraient', 'qu’un toit ne s’écoule pas comme de l’*eau*.',
   'Bref, revenons à ce dessin.', '*Hasard* ou non…', 'ce dessin fait partie', 'de ce que Philippe a nommé…', '*La Source*.',
-  'Et *vous*…', `que voyez-vous couler de ce toit${NB}?`,
+  ['Et *vous*…', { 1: 83.32 }], `que voyez-vous couler de ce toit${NB}?`,
   'Parce que la machine,', 'elle, n’a rien voulu dire.', 'C’est nous qui cherchons *un sens*.',
-  'Alors au fond,', `qui est en train de *rêver*${NB}?`, [`La machine… ou *nous*${NB}?`, { 0: 93.95, 1: 94.1, 2: 95.13, 3: 95.3 }],
-  ['Est-ce une *hallucination*…', { 0: 96.02 }], 'ou simplement une autre façon', `de voir les choses${NB}?`,
+  'Alors au fond,', `qui est en train de *rêver*${NB}?`, `La machine… ou *nous*${NB}?`,
+  'Est-ce une *hallucination*…', 'ou simplement une autre façon', `de voir les choses${NB}?`,
   // outro : la vraie voix de l'utilisateur (son enregistrement, mêmes instants que dans aligne_voix.js)
   ['Passons… affaire à suivre.', { 0: 100.98, 1: 101.38, 2: 101.72, 3: 101.95 }], 'Les dessins de *Philippe Delord*', 'vous attendent dans sa *galerie*,', 'sur *LK Studio*.',
   'Et la galerie se visite aussi', `en *réalité virtuelle*${NB}:`, ['vous avez juste à enfiler', { 0: 109.0, 1: 109.14, 2: 109.4, 3: 109.62, 4: 109.66 }], ['un *casque*,', { 0: 109.94, 1: 110.23 }], ['et vous pouvez rentrer', { 0: 110.46, 1: 110.68, 2: 110.83, 3: 111.02 }],

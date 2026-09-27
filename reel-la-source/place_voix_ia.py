@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Monte la voix IA (ElevenLabs, voix « Benjamin ») sur la vidéo, puis la vraie voix de l'utilisateur
+"""Monte la voix IA (ElevenLabs) sur la vidéo, puis la vraie voix de l'utilisateur
 pour l'outro (dès « Passons… affaire à suivre ») → media/voix_ia/voix.wav (116 s).
 
-  python3 place_voix_ia.py        # puis transcription, analyse, alignement (voir CLAUDE.md)
+  python3 place_voix_ia.py                # voix « Sébas - French Storyteller » (prise_sebas.mp3, une seule prise)
+  VOIX_IA=benjamin python3 place_voix_ia.py   # ancienne voix « Benjamin »
+  # puis transcription, analyse, alignement (voir CLAUDE.md)
 
 Sources (media/voix_ia/, hors Git) : la prise complète du texte (prise_benjamin.mp3), une reprise
 de « D'ailleurs, il a quitté Meta… » (meta_a.mp3, mal articulée dans la prise) et le passage du
@@ -32,7 +34,7 @@ MOI_GAIN = 1.0                      # dB : même sonie (LUFS) que la voix IA apr
 # (fichier, début, fin dans ce fichier, instant visé dans la vidéo ou None = à la suite, genre) ;
 # genre : 'ia' lecture vive, 'intro' accroche encore plus vive, 'reve' voix endormie, 'moi' la vraie voix de l'utilisateur (outro), posée telle quelle
 MOI = os.path.join('..', 'voix', 'voix_capcut_propre.wav')
-BLOCS = [
+BLOCS_BENJAMIN = [
     ('intro_a.mp3', 0.0, None, 1.20, 'intro'),          # On a demandé à une IA… (reprise [excited], plus vive que la prise)
     ('prise_benjamin.mp3', 6.75, 13.50, 6.99, 'ia'),    # Ce dessin, c'est celui de Philippe Delord…
     ('prise_benjamin.mp3', 14.60, 24.90, 13.47, 'ia'),  # La consigne était simple…
@@ -50,6 +52,29 @@ BLOCS = [
     ('reve.mp3', 3.40, None, 90.60, 'reve'),             # [soupir] Alors au fond… une autre façon de voir les choses ? (endormi)
     (MOI, 100.78, 116.0, 100.78, 'moi'),                 # Passons… affaire à suivre. Les dessins… : la voix de l'utilisateur
 ]
+# Sébas : toute la narration en une prise eleven_v3 (accroche [excited], rêve [sighs]/[sleepy]/[whispers]),
+# chaque paragraphe posé au même instant que chez Benjamin
+BLOCS_SEBAS = [
+    ('prise_sebas.mp3', 0.00, 5.79, 1.20, 'intro'),     # On a demandé à une IA… et regardez BIEN ce qui se passe.
+    ('prise_sebas.mp3', 6.07, 11.42, 6.99, 'ia'),       # Ce dessin, c'est celui de Philippe Delord…
+    ('prise_sebas.mp3', 12.06, 21.02, 13.47, 'ia'),     # La consigne était simple… puis revient.
+    ('prise_sebas.mp3', 21.62, 28.20, 22.93, 'ia'),     # Et honnêtement, à part Philippe…
+    ('prise_sebas.mp3', 28.96, 31.99, 30.92, 'ia'),     # Pour une IA, donner vie…
+    ('prise_sebas.mp3', 32.72, 41.18, 34.78, 'ia'),     # Elle n'a jamais vu la vie…
+    ('prise_sebas.mp3', 41.91, 50.70, 46.27, 'ia'),     # Et c'est exactement ce que pointe Yann LeCun…
+    ('prise_sebas.mp3', 51.53, 60.10, 56.28, 'ia'),     # Pour LeCun, ces modèles…
+    ('prise_sebas.mp3', 60.80, 71.43, 64.42, 'ia'),     # D'ailleurs, il a quitté Meta… world models…
+    ('prise_sebas.mp3', 72.24, 78.82, 76.22, 'ia'),     # Bref, revenons à ce dessin… La Source.
+    ('prise_sebas.mp3', 79.52, 81.83, 82.80, 'ia'),     # Et vous… que voyez-vous couler de ce toit ?
+    ('prise_sebas.mp3', 82.60, 85.05, 85.58, 'ia'),     # Parce que la machine, elle, n'a rien voulu dire.
+    ('prise_sebas.mp3', 85.66, 86.98, 88.49, 'ia'),     # C'est nous qui cherchons un sens.
+    ('prise_sebas.mp3', 87.74, None, 90.60, 'reve'),    # [soupir] Alors au fond… une autre façon de voir les choses ?
+    (MOI, 100.78, 116.0, 100.78, 'moi'),
+]
+VOIX_IA = os.environ.get('VOIX_IA', 'sebas')
+BLOCS = BLOCS_SEBAS if VOIX_IA == 'sebas' else BLOCS_BENJAMIN
+PRISE = 'prise_sebas.mp3' if VOIX_IA == 'sebas' else 'prise_benjamin.mp3'
+FLOOR_DB = 30 if VOIX_IA == 'sebas' else 38   # seuil du silence sous le 95e centile (la prise de Sébas a un léger souffle)
 
 
 def load(path):
@@ -114,10 +139,10 @@ def tighten(x, floor, cap):
 
 def main():
     cache = {}
-    ref = load(os.path.join(V, 'prise_benjamin.mp3'))
+    ref = load(os.path.join(V, PRISE))
     hop = SR // 100
     e = 10 * np.log10((ref[:len(ref) // hop * hop].reshape(-1, hop) ** 2).mean(axis=1) + 1e-12)
-    floor = np.percentile(e, 95) - 38
+    floor = np.percentile(e, 95) - FLOOR_DB
     rms_ref = np.sqrt((ref[~np.repeat(silent_frames(ref, floor), hop)[:len(ref)]] ** 2).mean())
     mix = np.zeros(int(DURATION * SR), np.float32)
     moi = np.zeros_like(mix)
@@ -127,7 +152,7 @@ def main():
         if f not in cache:
             cache[f] = load(os.path.join(V, f))
         x = cache[f][int(t0 * SR):int(t1 * SR) if t1 else None]
-        if f != 'prise_benjamin.mp3' and not dream:   # même niveau que la prise principale (le rêve garde sa douceur)
+        if f != PRISE and not dream:   # même niveau que la prise principale (le rêve garde sa douceur)
             s = ~np.repeat(silent_frames(x, floor), hop)[:len(x)]
             x = x * rms_ref / (np.sqrt((x[s] ** 2).mean()) + 1e-9)
         if genre == 'moi':   # sa voix, sans retouche, à l'instant exact de l'enregistrement
