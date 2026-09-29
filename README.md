@@ -13,3 +13,5 @@ Planches de référence dans `planche/` (ouvrir directement dans un navigateur, 
   `rb-hat`, `loupe`), prêtes à réutiliser dans du code (`<use href="#rb-head">`, etc.).
 
 Aucun logo/pin sur le chapeau (retirés du personnage officiel).
+
+Reel en préparation : `exponentiel/` (script, brief de production et prompt du Reel PARANO-IA « EXPONENTIEL »).
