@@ -173,6 +173,15 @@ def bruitages():
         B.put(sfx('LEVIER'), K['pas_savoir'] - 1.0, -13, length=1.2, fade_out=0.3)
     B.put(sfx('SNAP'), K['openai'], -11)
     B.put(sfx('PAPER'), K['openai'] + 0.05, -14)
+    # cartes « capture » du billet d'OpenAI (mêmes instants que SHOT_TIMES dans compo.js) : entrée, zoom, sortie
+    shots = [(PL['P4']['start'] + 0.2, PL['P4']['start'] + 0.85, None),            # la sortie du P4 se fond dans « C'EST »
+             (K['openai'] - 0.05, K['openai'] + 0.5, PL['P6']['end'] - 0.25)]
+    for tin, tzoom, tout in shots:
+        B.put(sfx('WARP_IN'), tin - 0.05, -10, length=0.7, fade_out=0.2)             # la carte monte
+        B.put(sfx('GLINT'), tin + 0.3, -8)                                          # tintement quand elle se pose (reflet)
+        B.put(sfx('SWISH'), tzoom, -11)                                             # zoom sur la phrase surlignée
+        if tout:
+            B.put(sfx('SWISH'), tout, -10, pan=0.3)                                 # elle file vers la caméra
     # typo animée « C'EST / L'AUTO / AMÉLIORATION » : un impact par mot (la musique se tait)
     for i, kk in enumerate(('cest', 'lauto', 'amelio')):
         B.put(sfx('LAND_BIG'), K[kk] - 0.03, -6 + i)

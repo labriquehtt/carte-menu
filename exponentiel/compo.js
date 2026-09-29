@@ -138,12 +138,64 @@ function buildFX() {
   mk('circle', { cx: 0, cy: -80, r: 16, fill: RED, stroke: INK, 'stroke-width': 5 }, FX.card);
   const c1 = txt(FX.card, { font: 'Space Grotesk', size: 46, fill: INK }); c1.textContent = 'Pas encore de méthode sûre'; attr(c1, 'y', -8);
   const c2 = txt(FX.card, { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#6B5A45' }); c2.textContent = 'd’après OpenAI, septembre 2026'; attr(c2, 'y', 52);
+  // captures d'écran du billet d'OpenAI (media/captures, faites par l'utilisateur), en « carte navigateur »
+  const shot = (file, w, h, src) => {
+    const G = g(fx), W = 960, ih = W * h / w;
+    mk('rect', { x: -W / 2 - 20, y: -ih / 2 - 86, width: W + 40, height: ih + 170, rx: 26, fill: '#FFFFFF', stroke: INK, 'stroke-width': 7, filter: 'url(#shadow)' }, G);
+    mk('rect', { x: -W / 2 - 20, y: -ih / 2 - 86, width: W + 40, height: 66, rx: 26, fill: '#E9ECF2' }, G);
+    [0, 1, 2].forEach(i => mk('circle', { cx: -W / 2 + 14 + i * 30, cy: -ih / 2 - 53, r: 9, fill: ['#FF5F57', '#FEBC2E', '#28C840'][i] }, G));
+    mk('rect', { x: -W / 2 + 120, y: -ih / 2 - 72, width: W - 150, height: 38, rx: 19, fill: '#FFFFFF' }, G);
+    const u = txt(G, { font: 'IBM Plex Mono', weight: 500, size: 22, fill: '#5A6070', anchor: 'start' });
+    u.textContent = 'openai.com/index/research-acceleration-view-inside-openai'; attr(u, 'x', -W / 2 + 140); attr(u, 'y', -ih / 2 - 52);
+    mk('image', { href: `${D().root}/media/captures/${file}`, x: -W / 2, y: -ih / 2, width: W, height: ih, preserveAspectRatio: 'xMidYMid meet' }, G);
+    const s = txt(G, { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#3A3F4B' }); s.textContent = src; attr(s, 'y', ih / 2 + 44);
+    return G;
+  };
+  FX.shotRsi = shot('rsi_crop.png', 1376, 504, 'OpenAI, « Research acceleration », septembre 2026');
+  FX.shotFr = shot('stagiaire_crop.png', 1344, 504, 'OpenAI, « Research acceleration », septembre 2026');
+  // les cartes passent au-dessus du monde (qui devient flou et s'assombrit derrière elles)
+  FX.shots = g(null); $('stage').insertBefore(FX.shots, $('subs'));
+  FX.dim = mk('rect', { width: 1080, height: 1920, fill: '#05070F', opacity: 0 }, FX.shots);
+  for (const S of [FX.shotRsi, FX.shotFr]) {
+    FX.shots.appendChild(S);
+    const box = S.firstChild, id = 'clip' + Math.round(Math.random() * 1e9);   // reflet lumineux qui balaie la carte
+    const cp = mk('clipPath', { id }, DEFS());
+    mk('rect', { x: box.getAttribute('x'), y: box.getAttribute('y'), width: box.getAttribute('width'), height: box.getAttribute('height'), rx: 26 }, cp);
+    S.sweep = mk('rect', { x: -170, y: -1000, width: 110, height: 2000, fill: '#FFFFFF', opacity: 0.55, 'clip-path': `url(#${id})` }, S);
+  }
+  const bf = mk('filter', { id: 'worldBlur', x: '-5%', y: '-5%', width: '110%', height: '110%' }, DEFS());
+  FX.blurG = mk('feGaussianBlur', { stdDeviation: 0 }, bf);
   FX.lens = g(fx);                                                                      // « JOUR ?? » dans la loupe
   FX.lensTxt = txt(FX.lens, { size: 1, fill: GREEN, filter: 'url(#glow)' });
   FX.metr = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#C9D2FF', stroke: INK, sw: 6 });
   FX.metr.textContent = 'METR, 2025-2026 · réussite 1 fois sur 2';
   FX.title = g(fx);
   buildTitle(FX.title);
+}
+
+// instants des cartes « capture » : entrée, zoom (images clés), sortie — repris par sons.py (mêmes formules)
+const SHOT_TIMES = () => {
+  const k = K(), P4 = plans().find(q => q.id === 'P4'), P6 = plans().find(q => q.id === 'P6');
+  return {
+    fr: { tin: P4.start + 0.2, tzoom: P4.start + 0.85, tout: k.cest - 0.04 },
+    rsi: { tin: k.openai - 0.05, tzoom: k.openai + 0.5, tout: P6.end },
+  };
+};
+// carte « capture » : monte du bas en tournant (rebond, reflet), zoom par images clés sur la phrase surlignée,
+// puis file vers la caméra. Renvoie l'intensité du flou du décor (0 → 1).
+function animShot(S, t, T, z) {
+  if (t < T.tin || t >= T.tout) { vis(S, false); return 0; }
+  const qi = seg(t, T.tin, T.tin + 0.42), qo = seg(t, T.tout - 0.28, T.tout);
+  const zq = E.io(seg(t, T.tzoom, T.tzoom + 0.55));                     // zoom sur la phrase
+  const drift = seg(t, T.tzoom + 0.55, T.tout);                           // puis la caméra continue de glisser le long de la ligne
+  const s = lerp(0.5, 1, E.back(qi)) * (1 + z.s * zq + 0.05 * drift) * (1 + 0.9 * E.in(qo));
+  const x = 540 + z.dx * zq - 40 * drift;
+  const y = 720 + 900 * (1 - E.out(qi)) + z.dy * zq - 160 * E.in(qo);
+  const rot = -12 * (1 - E.out(qi)) + 3 * E.in(qo);
+  place(S, x, y, s, rot, 1 - qo);
+  attr(S.sweep, 'x', r2(-700 + 1500 * E.io(seg(t, T.tin + 0.25, T.tin + 0.8))));
+  attr(S.sweep, 'transform', 'skewX(-20)');
+  return clamp(qi * 1.6) * (1 - qo);
 }
 
 function place(el, x, y, s = 1, rot = 0, op = 1) {
@@ -154,7 +206,7 @@ function place(el, x, y, s = 1, rot = 0, op = 1) {
 function drawFX(t) {
   const k = K(), p = planAt(t), A = anchorAt(p.id, t) || {};
   for (const el of [FX.sign.parentNode, FX.big.parentNode, FX.rew, FX.speed, FX.cal.parentNode, FX.calSrc.parentNode, FX.auto.parentNode,
-    FX.lever.parentNode, FX.want.parentNode, FX.does.parentNode, FX.card, FX.lens, FX.metr.parentNode, FX.title]) vis(el, false);
+    FX.lever.parentNode, FX.want.parentNode, FX.does.parentNode, FX.card, FX.lens, FX.metr.parentNode, FX.title, FX.shotRsi, FX.shotFr]) vis(el, false);
   if ((p.id === 'P1' || p.id === 'P2') && A.sign_z > 0) {
     const day = p.id === 'P1' ? Math.floor(A.day) : (t < k.cinq_jours ? 29 : Math.round(A.day));
     FX.sign.textContent = `JOUR ${day}`;
@@ -182,6 +234,9 @@ function drawFX(t) {
     });
   }
   if (p.id === 'P3' && t > k.courbe) place(FX.metr.parentNode, 540, 1450, 1, 0, seg(t, k.courbe + 0.4, k.courbe + 0.7));
+  let blur = 0;
+  if (p.id === 'P4')                                                        // « sa propre recherche » : la capture qui le prouve
+    blur = animShot(FX.shotFr, t, SHOT_TIMES().fr, { s: 0.3, dx: 40, dy: -10 });
   if (p.id === 'P5' && A.cal_z > 0) {
     const lab = t < k.semaines - 0.25 ? '4 mois' : (t < k.une_seule ? 'quelques semaines' : '1 semaine ?');
     FX.cal.textContent = lab;
@@ -197,8 +252,13 @@ function drawFX(t) {
     if (A.lever_z > 0) place(FX.lever.parentNode, clamp(A.lever_x, 170, 910), A.lever_y - 70, 1, -6, seg(t, p.start + 0.2, p.start + 0.4));
     if (A.want_z > 0) place(FX.want.parentNode, clamp(A.want_x, 200, 880), A.want_y - 40, 1, 0, seg(t, k.garantit, k.garantit + 0.3));
     if (A.fork_z > 0) place(FX.does.parentNode, clamp(A.fork_x, 200, 880), A.fork_y - 40, 1, 0, seg(t, k.garantit + 0.6, k.garantit + 0.9));
-    place(FX.card, 540, 330, E.back(seg(t, k.openai, k.openai + 0.3)), -3 + 3 * E.out(seg(t, k.openai, k.openai + 0.4)), seg(t, k.openai, k.openai + 0.06));
+    // la vraie phrase d'OpenAI (capture) : entrée, zoom sur la phrase surlignée, sortie
+    blur = animShot(FX.shotRsi, t, SHOT_TIMES().rsi, { s: 0.4, dx: 125, dy: 30 });
   }
+  // monde flou et assombri derrière les cartes
+  attr(FX.dim, 'opacity', r2(0.45 * blur));
+  attr(FX.blurG, 'stdDeviation', r2(16 * blur));
+  attr($('world'), 'filter', blur > 0.01 ? 'url(#worldBlur)' : '');
   if (p.id === 'P8') drawTitle(t);
 }
 
