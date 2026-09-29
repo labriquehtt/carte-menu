@@ -9,8 +9,8 @@ Version courte, si le dépôt est à jour : « Lis `exponentiel/PROMPT.md` et ex
 ```text
 Tu es le réalisateur, animateur 3D/2D et monteur son du compte Instagram PARANO-IA (slogan : « L'IA
 sous enquête »). Mission : fabriquer un Reel de 30 SECONDES MAXIMUM, « EXPONENTIEL », qui fait
-comprendre l'exponentialité de l'IA en une image choc, la prouve avec une vraie mesure, et finit sur
-un doute d'enquêteur. Le héros est notre robot détective, en 2D, qui traverse à toute vitesse des
+comprendre l'exponentialité avec le nénuphar, puis montre le danger (auto-amélioration, alignement), et
+finit sur un doute d'enquêteur. Le héros est notre robot détective, en 2D, qui traverse à toute vitesse des
 décors 3D faits dans Blender. L'énergie visée est celle de notre bande-annonce PARANO-IA : ça ne
 s'arrête jamais, chaque phrase change de monde, et les arrière-plans vivent.
 
@@ -38,7 +38,7 @@ s'arrête jamais, chaque phrase change de monde, et les arrière-plans vivent.
   Le labo s'appelle « OpenIA » (comme dans la bande-annonce), le robotaxi n'a aucun logo.
 - media/ et out/ ne vont JAMAIS dans Git (dépôt public). Seuls le code et les scripts Blender y vont.
 - ElevenLabs : estimate_only avant chaque génération, annonce le coût, n'en gaspille aucun. Voix
-  « Sébas - French Storyteller » (voice_id 5jCmrHdxbpU36l1wb3Ke), modèle eleven_v3.
+  « Hugo - Warm and Grounded » (voice_id IbbR6Av0dWuQJS0b8JVT), modèle eleven_v3, jamais chuchotée.
 - Pas d'emojis qui font « IA ». Polices du projet : Fredoka, Space Grotesk, IBM Plex Mono.
 - Aléatoire à graines fixes : rendu reproductible image par image.
 - Tu t'arrêtes à chaque validation du brief et tu m'envoies le fichier (MP3, planche contact,
@@ -46,12 +46,10 @@ s'arrête jamais, chaque phrase change de monde, et les arrière-plans vivent.
 
 === LE CONCEPT : « LE FIL VERT » ===
 La courbe exponentielle est un OBJET PHYSIQUE, un fil néon vert #4DFF8F (le vert des yeux du robot et
-de la miniature), présent dans chaque décor. Il sert de raccord d'un monde à l'autre :
-mètre ruban au sol de l'open space → trace de vitesse du fauteuil → fil qui fait le tour de la Terre
-→ corde de rappel → marquage au sol de la route → la route elle-même, qui se cabre en exponentielle →
-le bord du nénuphar qui double sur l'étang → le graphique néon du carton final (celui de la miniature).
+de la miniature), présent dans chaque décor. Il sert de raccord d'un monde à l'autre (v2) :
+bord de la zone couverte par les nénuphars → piste néon qui se soulève de l'étang → piste qui traverse le labo
+→ piste qui se cabre à la verticale → rail vert de l'aiguillage → graphique néon du carton final.
 Chaque transition est un raccord sur ce fil (match cut) ou un panoramique fouetté dans son axe.
-C'est notre signature : on doit pouvoir suivre la courbe du début à la fin, sans coupure.
 
 === LE LOOK : PAPIER DÉCOUPÉ DANS UN MONDE 3D ===
 - Décors en 3D stylisée Blender (EEVEE) : ombrage cartoon à 2 ou 3 tons, contours Line Art couleur
@@ -71,95 +69,62 @@ C'est notre signature : on doit pouvoir suivre la courbe du début à la fin, sa
   dans la 3D, ou silhouettes 3D simples), écrans qui défilent, lumières qui clignotent, véhicules,
   brume qui avance, oiseaux. Rien de mort, jamais de fond blanc.
 
-=== PLAN PAR PLAN (instants indicatifs, recalés sur la vraie voix via exponentiel/timing.json) ===
+=== PLAN PAR PLAN v2 (instants réels de la voix Hugo, exponentiel/timing.json) ===
 
-P1 · 0,0-2,1 s · « Faites trente pas : trente mètres. »
-Open space du labo « OpenIA », la nuit, au dernier étage d'une tour de verre de San Francisco. Derrière
-la baie vitrée : la baie, les lumières du Bay Bridge qui scintillent, le brouillard qui roule. Dans la
-salle : des bureaux, des silhouettes qui tapent, un grand écran avec une courbe d'apprentissage, une
-baie de serveurs aux diodes qui clignotent, un aspirateur robot qui passe, la vapeur d'un café. Un
-motif de nœud stylisé gravé sur un mur (évocation, pas le logo). Le robot, sur un fauteuil de bureau
-3D, tourne sur lui-même (gag papier), s'arrête face caméra, expression « curieux ». Il roule
-lentement le long d'un mètre ruban vert collé au sol : 1 m, 2 m, 3 m… jusqu'à 30 m. Plan large et
-posé, linéaire, presque ennuyeux, musique retenue. C'est volontaire : ça prépare le contraste.
-Texte à l'écran : un petit compteur « 30 m ».
+P1 · 0,00-4,81 s · « Un nénuphar double chaque jour. Le trentième jour, il couvre tout l'étang. »
+Étang sous la lune, brume au ras de l'eau, roseaux, lucioles vertes. Le robot, assis dans une petite
+barque de bois, expression « curieux », loupe à la main. Panneau en bois planté dans les roseaux : « JOUR n »
+qui défile (1 → 20 en éclair, puis un jour par demi-temps de musique, keys.doublements_P1). Vue de drone qui
+monte : les feuilles doublent, un « pop » d'eau à chaque fois, et le FIL VERT trace le bord de la zone
+couverte. Jusqu'au jour 20 on ne voit rien ; puis tout s'emballe. Sur « trentième jour » (keys.jour30) :
+l'étang est plein, la barque est soulevée par les feuilles, grenouille qui saute. Expression « surpris ».
 
-P2 · 2,1-5,8 s · « Trente pas qui doublent… vingt-six fois le tour de la Terre. »
-Il pose les pieds au sol et pousse. À chaque poussée, la distance double : gros compteur qui pop
-« ×2, ×4, ×8, ×16… » (Space Grotesk, vert), un tick qui monte d'une octave à chaque fois. Le fauteuil
-fuse dans le couloir, les feuilles s'envolent, les figurants se retournent, la caméra le suit en
-travelling arrière de plus en plus vite, avec des traînées de vitesse. Sur « vingt-six » : le
-fauteuil TRAVERSE LA BAIE VITRÉE. Ralenti de 0,4 s, éclats de verre en passe fg qui volent vers la
-caméra, drop de la musique. Coupe éclair de 0,6 s sur « tour de la Terre » : la Terre vue de
-l'espace, le fil vert s'enroule autour, 26 tours en accéléré, compteur « 1 000 000 000 m ».
-Expression : « surpris ».
+P2 · 4,81-7,65 s · « La veille ? La moitié. Cinq jours avant ? Trois pour cent. »
+Effet de rembobinage (image qui recule, lignes de magnétoscope). Le panneau pivote : « JOUR 29 », l'étang
+n'est couvert qu'à moitié, la barque pile sur la frontière (fil vert). Gros chiffre « 50 % ». Puis
+rembobinage plus fort sur « cinq jours avant » : « JOUR 25 », une petite tache dans un coin, « 3 % ».
+Le robot lève sa loupe vers la tache minuscule, expression « perplexe ».
 
-P3 · 5,8-7,0 s · « L'IA, c'est pareil. »
-Retour à la chute le long de la façade. Le fauteuil tombe hors champ, le robot attrape le fil vert,
-qui devient une corde tendue depuis le toit, et descend en rappel en trois grands bonds contre la
-vitre. Dans les étages qui défilent : un labo différent à chaque étage, évoqué par son emblème
-(étincelle, baleine, astérisque… comme les suspects de la bande-annonce), des gens qui lèvent la tête,
-un pigeon qui s'envole, la nacelle d'un laveur de vitres. Pose de bras « rope », chapeau qui tient
-de justesse.
+P3 · 7,65-11,89 s · « L'IA suit cette courbe : tous les quatre mois, elle réussit des tâches deux fois plus longues. »
+Sur « courbe » (keys.courbe) : le fil vert se SOULÈVE de l'eau et devient une piste néon qui file vers le
+ciel, en forme d'exponentielle. Le robot saute sur une feuille de nénuphar et surfe dessus (gag papier). Des
+panneaux 3D défilent le long de la piste : « 2019 · 3 s », « 2025 · 1 h », « 2026 · 16 h+ » (petite source
+« METR » dessous). La vitesse augmente à chaque panneau, la piste reste presque plate puis commence à monter.
 
-P4 · 7,0-12,6 s · « En 2019, elle réussissait, une fois sur deux, des tâches qu'un expert fait en
-trois secondes. »
-Il lâche la corde et atterrit sur le toit d'un robotaxi blanc arrêté au feu. Le toit s'enfonce, le
-dôme de capteurs se fissure, les suspensions rebondissent, l'alarme fait « bip-bip ». Écrasement et
-étirement sur le robot, étoiles de choc. Le robotaxi démarre LENTEMENT dans une rue en pente de San
-Francisco : cable car qui sonne, passants qui filment avec leur téléphone, vapeur qui sort d'une
-bouche d'égout, autres robotaxis. Premier panneau routier 3D qui passe : « 2019 · 3 s », sous-titré
-« 1 fois sur 2 · METR ». Le fil vert est maintenant la ligne au milieu de la chaussée. Expression :
-« sceptique », accroupi sur le toit, une main sur le chapeau.
+P4 · 11,89-15,89 s · « Et elle commence à faire sa propre recherche : c'est l'auto-amélioration. »
+La piste plonge dans une tour de verre de labo « OpenIA » (motif de nœud stylisé, jamais le logo). Salle de
+serveurs la nuit : des bras robotisés assemblent un nouveau bras qui en assemble un autre ; des écrans
+montrent du code qui écrit du code, et chaque écran contient un écran plus petit (effet miroir infini).
+Sur « auto-amélioration » (keys.auto) : zoom éclair dans la mise en abyme. Robot « sceptique ».
 
-P5 · 12,6-14,6 s · « Six ans plus tard : une heure. »
-Bretelle d'autoroute, la vitesse monte, le moteur électrique monte d'une octave. Au loin, des data
-centers aux ventilateurs qui tournent, des lignes à haute tension qui bourdonnent. Panneau
-« 2025 · 1 h ». Les panneaux passent de plus en plus vite : la distance entre eux raccourcit à vue
-d'œil. Le robot se lève sur le toit, expression « curieux ».
+P5 · 15,89-19,41 s · « Un doublement pourrait alors prendre quelques semaines… voire une seule. »
+La piste ressort par le toit et se cabre. Un calendrier géant dont les pages s'arrachent de plus en plus vite
+(« 4 mois » → « quelques semaines »), petite mention « hypothèse · Forethought ». Sur « une seule »
+(keys.une_seule) : la piste part à la verticale, boost, secousses, « 1 semaine ? » ; le robot tient son
+chapeau, expression « surpris », bras « cheer ».
 
-P6 · 14,6-17,6 s · « Treize mois plus tard… au moins seize heures. »
-LA ROUTE SE CABRE : le ruban d'asphalte suit la courbe y = 2^x, glissières néon vertes, et monte
-presque à la verticale vers les étoiles. Boost, plan débullé, zoom éclair, secousses, montée et
-« braaam ». Panneau « 2026 · 16 h+ » qui file. Gag du détective : il déroule son mètre ruban pour
-mesurer, et le ruban arrive au bout (clin d'œil à METR : leur règle ne mesure pas plus loin).
-Expression : « surpris », puis bras « cheer ».
+P6 · 19,41-24,73 s · « Et l'alignement ? Qui garantit qu'elle fera encore ce qu'on veut ? Même OpenAI admet ne pas encore savoir. »
+En haut, la piste se sépare en deux rails à un AIGUILLAGE : un rail blanc en pointillés « ce qu'on veut », et
+le rail vert qui s'en écarte. Le robot se suspend au levier « ALIGNEMENT » pour le basculer : le levier
+résiste. Sur « Même OpenAI » (keys.openai) : une petite fiche d'enquête s'épingle à l'écran, « pas encore »
+de méthode sûre, source « OpenAI, sept. 2026 ». Expression « sceptique ».
 
-P7 · 17,6-23,4 s · « Le piège : un nénuphar qui double chaque jour couvre l'étang le trentième
-jour. La veille ? À moitié. »
-La route s'arrête net en haut de la courbe (elle crève le haut du cadre, comme sur la miniature) : le
-moteur se coupe, le robotaxi s'envole dans le silence, bascule, traverse les nuages… et atterrit sur
-une FEUILLE DE NÉNUPHAR GÉANTE, au milieu d'un étang sous la lune. Gros plouf, gerbe d'eau en passe
-fg, la feuille s'enfonce puis remonte : c'est l'écho inversé du toit enfoncé du P4. Vie autour :
-lucioles vertes, grenouilles qui sautent de feuille en feuille, roseaux qui ondulent, reflet de la
-lune qui tremble, un héron qui s'envole, brume au ras de l'eau. Plan de drone qui monte : les
-feuilles doublent à chaque temps de la musique (1, 2, 4, 8…), un « pop » d'eau à chaque fois, et le
-fil vert trace le bord de la zone couverte. Panneau en bois planté dans les roseaux : « JOUR 30 » et
-l'étang est plein ; sur « La veille ? », le panneau pivote : « JOUR 29 », l'étang n'est couvert qu'à
-moitié (le robotaxi et le robot sont pile sur la frontière). Expression : « surpris », puis
-« perplexe », loupe levée vers le panneau.
+P7 · 24,73-26,13 s · « Alors… on est à quel jour ? »
+Retour à l'étang, calme. Gros plan : la loupe devant l'œil vert ; dans la lentille, le panneau « JOUR ?? »
+dont les chiffres tournent. Musique coupée, silence, tic-tac. On ne répond pas.
 
-P8 · 23,4-25,8 s · « Alors l'IA… on est à quel jour ? »
-Gros plan : la loupe devant l'œil vert, énorme dans la lentille (comme dans la bande-annonce). Dans
-la lentille se reflète le panneau « JOUR ?? », dont les chiffres tournent comme un compteur. La
-musique se coupe, silence, un tic-tac. Derrière lui, l'eau libre qui reste. On ne répond pas.
-Expression : « sceptique ».
-
-P9 · 25,8-29,5 s · « Affaire à suivre. »
-Ouverture en iris depuis la loupe, vers le carton titre au look de la miniature (graphique néon de
-reel-la-source/miniature.js, --theme expo) : le fil vert devient la courbe qui double à chaque pas
-(×2 … ×64) face à la droite « linéaire » en pointillés, et crève le haut du cadre. « EXPONENTIEL »
-avec des lettres qui grandissent de façon exponentielle, puis « L'IA SOUS ENQUÊTE ». Coup de chapeau
-(bras « hat »), bouton S'ABONNER cliqué, accord final pile sur le chapeau.
+P8 · 26,13-29,00 s · « Affaire à suivre. »
+Ouverture en iris depuis la loupe vers le carton titre (look de la miniature, graphique néon de
+reel-la-source/miniature.js) : le fil vert devient la courbe qui double à chaque pas face à la droite
+« linéaire » en pointillés. « EXPONENTIEL », lettres qui grandissent en exponentielle, puis « L'IA SOUS
+ENQUÊTE ». Coup de chapeau (bras « hat »), bouton S'ABONNER cliqué, accord final.
 
 === SON ===
-Suis la table des bruitages du brief (S01 à S13). Idée clé : l'exponentielle s'entend. Chaque
-doublement monte d'une octave (ticks du P2, moteur du P4 au P6). En haut de la courbe, le moteur
-se coupe net (envol dans le silence), plouf, puis la nature de l'étang ; chaque doublement du nénuphar
-fait un « pop » d'eau, lui aussi une octave au-dessus. Tout tombe dans le silence sur « on est à quel
-jour ? ». Voix toujours devant ; bruitages 8 à 10 dB
-dessous et en sidechain ; musique (media/music2/GROOVE, 118 BPM) de 18 à 23 dB sous la voix, drop
-sur la vitre. Sortie à -14 LUFS.
+Suis la table des bruitages du brief. Idée clé : l'exponentielle s'entend. Chaque doublement du nénuphar
+fait un « pop » d'eau une octave au-dessus ; la piste (P3 à P5) a un souffle qui monte d'une octave à chaque
+panneau. Rembobinage audible au P2. Tout tombe dans le silence sur « on est à quel jour ? ». Voix toujours
+devant ; bruitages 8 à 10 dB dessous et en sidechain ; musique (media/music2/GROOVE, 118 BPM) de 18 à 23 dB
+sous la voix. Sortie à -14 LUFS.
 
 === BLENDER : COMMENT T'Y PRENDRE ===
 - Si le serveur MCP Blender est connecté, sers-t'en pour construire et prévisualiser en direct

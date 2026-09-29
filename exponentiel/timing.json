@@ -1,0 +1,461 @@
+{
+ "fps": 30,
+ "duration": 29.0,
+ "bpm": 118,
+ "voice": "media/voix_ia/voix.wav",
+ "plans": [
+  {
+   "id": "P1",
+   "start": 0.0,
+   "end": 4.81,
+   "frames": [
+    0,
+    144
+   ],
+   "desc": "Étang sous la lune : les nénuphars doublent, JOUR 1 → 30"
+  },
+  {
+   "id": "P2",
+   "start": 4.81,
+   "end": 7.65,
+   "frames": [
+    144,
+    230
+   ],
+   "desc": "Retour en arrière : JOUR 29 = 50 %, JOUR 25 = 3 %"
+  },
+  {
+   "id": "P3",
+   "start": 7.65,
+   "end": 11.89,
+   "frames": [
+    230,
+    357
+   ],
+   "desc": "Le fil vert devient la courbe METR, surf sur un nénuphar"
+  },
+  {
+   "id": "P4",
+   "start": 11.89,
+   "end": 15.89,
+   "frames": [
+    357,
+    477
+   ],
+   "desc": "Le labo : l'IA qui construit l'IA (auto-amélioration)"
+  },
+  {
+   "id": "P5",
+   "start": 15.89,
+   "end": 19.41,
+   "frames": [
+    477,
+    582
+   ],
+   "desc": "4 mois → quelques semaines → 1 semaine ? La courbe se cabre"
+  },
+  {
+   "id": "P6",
+   "start": 19.41,
+   "end": 24.73,
+   "frames": [
+    582,
+    742
+   ],
+   "desc": "L'aiguillage : ce qu'on veut / ce qu'elle fait"
+  },
+  {
+   "id": "P7",
+   "start": 24.73,
+   "end": 26.13,
+   "frames": [
+    742,
+    784
+   ],
+   "desc": "Gros plan loupe : JOUR ??"
+  },
+  {
+   "id": "P8",
+   "start": 26.13,
+   "end": 29.0,
+   "frames": [
+    784,
+    870
+   ],
+   "desc": "Carton final EXPONENTIEL"
+  }
+ ],
+ "keys": {
+  "jour30": 2.53,
+  "etang_plein": 4.37,
+  "moitie": 5.41,
+  "cinq_jours": 5.97,
+  "trois_pct": 6.93,
+  "courbe": 8.61,
+  "quatre_mois": 9.41,
+  "deux_fois": 10.93,
+  "recherche": 13.37,
+  "auto": 14.29,
+  "semaines": 17.49,
+  "une_seule": 18.85,
+  "garantit": 20.33,
+  "openai": 22.09,
+  "pas_savoir": 23.93,
+  "quel_jour": 25.53,
+  "iris": 25.98,
+  "doublements_P1": [
+   0.242,
+   0.496,
+   0.75,
+   1.005,
+   1.259,
+   1.513,
+   1.767,
+   2.022,
+   2.276,
+   2.53
+  ]
+ },
+ "words": [
+  [
+   "UN",
+   0.17
+  ],
+  [
+   "ÉNUPHAR",
+   0.61
+  ],
+  [
+   "DOUBLE",
+   1.17
+  ],
+  [
+   "CHAQUE",
+   1.69
+  ],
+  [
+   "JOUR",
+   2.09
+  ],
+  [
+   "LE",
+   2.41
+  ],
+  [
+   "TRENTIÈME",
+   2.53
+  ],
+  [
+   "JOUR",
+   3.09
+  ],
+  [
+   "IL",
+   3.37
+  ],
+  [
+   "COUVRENT",
+   3.57
+  ],
+  [
+   "TOUS",
+   4.01
+  ],
+  [
+   "LES",
+   4.21
+  ],
+  [
+   "TEMPS",
+   4.37
+  ],
+  [
+   "LA",
+   4.65
+  ],
+  [
+   "VEILLE",
+   4.81
+  ],
+  [
+   "LA",
+   5.21
+  ],
+  [
+   "MOITIÉ",
+   5.41
+  ],
+  [
+   "CINQ",
+   5.97
+  ],
+  [
+   "JOURS",
+   6.17
+  ],
+  [
+   "AVANT",
+   6.45
+  ],
+  [
+   "TROIS",
+   6.93
+  ],
+  [
+   "POURCENT",
+   7.09
+  ],
+  [
+   "LIA",
+   7.65
+  ],
+  [
+   "SUIT",
+   8.17
+  ],
+  [
+   "CETTE",
+   8.41
+  ],
+  [
+   "COURBE",
+   8.61
+  ],
+  [
+   "TOUS",
+   8.97
+  ],
+  [
+   "LES",
+   9.21
+  ],
+  [
+   "QUATRE",
+   9.41
+  ],
+  [
+   "MOIS",
+   9.61
+  ],
+  [
+   "ELLE",
+   9.89
+  ],
+  [
+   "RÉUSSIT",
+   10.09
+  ],
+  [
+   "DES",
+   10.49
+  ],
+  [
+   "TÂCHES",
+   10.61
+  ],
+  [
+   "DEUX",
+   10.93
+  ],
+  [
+   "FOIS",
+   11.13
+  ],
+  [
+   "PLUS",
+   11.41
+  ],
+  [
+   "LONGUES",
+   11.53
+  ],
+  [
+   "ET",
+   11.89
+  ],
+  [
+   "ELLE",
+   12.01
+  ],
+  [
+   "COMMENCE",
+   12.17
+  ],
+  [
+   "À",
+   12.45
+  ],
+  [
+   "FAIRE",
+   12.57
+  ],
+  [
+   "SA",
+   12.81
+  ],
+  [
+   "PROPRE",
+   12.97
+  ],
+  [
+   "RECHERCHE",
+   13.37
+  ],
+  [
+   "C'EST",
+   14.05
+  ],
+  [
+   "L'AUTO",
+   14.29
+  ],
+  [
+   "AMÉLIORATION",
+   14.73
+  ],
+  [
+   "UN",
+   15.73
+  ],
+  [
+   "DOUBLEMENT",
+   15.89
+  ],
+  [
+   "POURRAIT",
+   16.37
+  ],
+  [
+   "ALORS",
+   16.65
+  ],
+  [
+   "PRENDRE",
+   16.81
+  ],
+  [
+   "QUELQUES",
+   17.21
+  ],
+  [
+   "SEMAINES",
+   17.49
+  ],
+  [
+   "VOIRE",
+   18.13
+  ],
+  [
+   "UNE",
+   18.61
+  ],
+  [
+   "SEULE",
+   18.85
+  ],
+  [
+   "ET",
+   19.29
+  ],
+  [
+   "L'ALIGNEMENT",
+   19.41
+  ],
+  [
+   "QUI",
+   20.13
+  ],
+  [
+   "GARANTIT",
+   20.33
+  ],
+  [
+   "QU'ELLE",
+   20.73
+  ],
+  [
+   "FERA",
+   20.85
+  ],
+  [
+   "ENCORE",
+   21.21
+  ],
+  [
+   "CE",
+   21.49
+  ],
+  [
+   "QU'ON",
+   21.61
+  ],
+  [
+   "VEUT",
+   21.77
+  ],
+  [
+   "MÊME",
+   22.09
+  ],
+  [
+   "OPENAILLE",
+   22.29
+  ],
+  [
+   "ADMET",
+   22.97
+  ],
+  [
+   "NE",
+   23.33
+  ],
+  [
+   "PAS",
+   23.49
+  ],
+  [
+   "ENCORE",
+   23.65
+  ],
+  [
+   "SAVOIR",
+   23.93
+  ],
+  [
+   "ALORS",
+   24.73
+  ],
+  [
+   "ON",
+   25.05
+  ],
+  [
+   "EST",
+   25.21
+  ],
+  [
+   "À",
+   25.33
+  ],
+  [
+   "QUEL",
+   25.53
+  ],
+  [
+   "JOUR",
+   25.85
+  ],
+  [
+   "AFFAIRE",
+   26.13
+  ],
+  [
+   "À",
+   26.53
+  ],
+  [
+   "SUIVRE",
+   26.65
+  ]
+ ]
+}

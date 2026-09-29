@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>PARANO-IA — photo de profil (tête)</title>
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}#stage{display:block}</style>
+</head>
+<body>
+<svg id="stage" xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+<defs>
+<filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+<feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<g id="rb-head">
+<circle cx="-110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<circle cx="110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+<rect x="-105" y="-178" width="210" height="172" rx="50" fill="#C9D1D9" stroke="#1B1620" stroke-width="6"></rect>
+<path d="M -90 -128 Q -90 -160 -64 -168" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round"></path>
+<rect x="-87" y="-152" width="174" height="116" rx="26" fill="#15161C" stroke="#1B1620" stroke-width="4"></rect>
+<path d="M -72 -124 Q -72 -140 -58 -142" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="4" stroke-linecap="round"></path>
+<rect x="-22" y="-29" width="44" height="15" rx="4" fill="#A9B3BE" stroke="#1B1620" stroke-width="3"></rect>
+<circle cx="-15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+<circle cx="-88" cy="-24" r="4" fill="#8E97A3"></circle>
+<circle cx="88" cy="-24" r="4" fill="#8E97A3"></circle>
+</g>
+<g id="loupe">
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#1B1620" stroke-width="15" stroke-linecap="round"></path>
+<path d="M 58 -104 L 110 -98" fill="none" stroke="#D4A64A" stroke-width="7" stroke-linecap="round"></path>
+<circle cx="30" cy="-96" r="31" fill="#B8FFD6" fill-opacity="0.16" stroke="#1B1620" stroke-width="14"></circle>
+<circle cx="30" cy="-96" r="31" fill="none" stroke="#D4A64A" stroke-width="7"></circle>
+<path d="M 13 -113 Q 21 -122 34 -121" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="4" stroke-linecap="round"></path>
+</g>
+<g id="rb-antenna">
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#1B1620" stroke-width="10" stroke-linecap="round"></path>
+<path d="M 22 -236 L 40 -282" fill="none" stroke="#8E97A3" stroke-width="4" stroke-linecap="round"></path>
+<circle cx="42" cy="-288" r="10" fill="#4DFF8F" stroke="#1B1620" stroke-width="4"></circle>
+</g>
+<g id="rb-hat">
+<path d="M -128 -170 Q -130 -186 -80 -191 L 80 -191 Q 130 -186 128 -170 Q 0 -150 -128 -170 Z" fill="#4A3526" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -72 -186 Q -76 -240 -46 -254 Q -20 -244 0 -250 Q 20 -244 46 -254 Q 76 -240 72 -186 Q 0 -178 -72 -186 Z" fill="#5E4330" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+<path d="M -14 -246 Q 0 -228 14 -246" fill="none" stroke="#3A281C" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -56 -226 Q -54 -244 -40 -249" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"></path>
+<path d="M -73 -207 Q 0 -199 73 -207 L 72 -187 Q 0 -179 -72 -187 Z" fill="#231812" stroke="#1B1620" stroke-width="3"></path>
+</g>
+</defs>
+<rect id="bg" x="0" y="0" width="1080" height="1080" fill="#000000"></rect>
+<g id="place"><g id="tilt">
+<use href="#rb-head"></use>
+<!-- clin d'œil : œil gauche fermé (arc de l'expression officielle « curieux »), œil droit ouvert, sourire en coin -->
+<g filter="url(#glow)" fill="none" stroke="#4DFF8F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M -44 -94 Q -30 -108 -16 -94"></path>
+<ellipse cx="30" cy="-96" rx="16" ry="21" fill="#4DFF8F" stroke="none"></ellipse>
+<path d="M -12 -60 Q 2 -52 16 -63" stroke-width="5"></path>
+</g>
+<use href="#rb-antenna"></use>
+<use href="#rb-hat"></use>
+</g></g>
+</svg>
+<script>
+'use strict';
+// ?h=0.46 : hauteur de la tête (chapeau et antenne compris) en fraction du cadre ; ?rot=-6 : inclinaison ; ?bg=000000 : fond
+const q = new URLSearchParams(location.search);
+document.getElementById('bg').setAttribute('fill', '#' + (q.get('bg') || '000000'));
+const frac = parseFloat(q.get('h') || '0.46'), rot = parseFloat(q.get('rot') || '-6');
+const tilt = document.getElementById('tilt');
+tilt.setAttribute('transform', `rotate(${rot} 0 -120)`);
+const bb = tilt.getBBox();                       // boîte de la tête + chapeau + antenne (inclinaison comprise)
+const s = frac * 1080 / bb.height;
+const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
+document.getElementById('place').setAttribute('transform', `translate(540 540) scale(${s}) translate(${-cx} ${-cy})`);
+window.READY = true;
+</script>
+</body>
+</html>

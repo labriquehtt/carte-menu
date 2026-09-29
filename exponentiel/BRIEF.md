@@ -8,7 +8,7 @@
 | | |
 |---|---|
 | Format | 1080×1920 (9:16), 30 i/s, H.264 + AAC, **28 à 30 s**, fichier final de moins de 30 Mo |
-| Voix | ElevenLabs « Sébas - French Storyteller », `5jCmrHdxbpU36l1wb3Ke`, `eleven_v3` |
+| Voix | ElevenLabs « Hugo - Warm and Grounded », `IbbR6Av0dWuQJS0b8JVT`, `eleven_v3` (validée le 2026-09-29, 580 crédits) |
 | Personnage | le robot détective officiel, pièces de `planche/robot_defs.svg` : **jamais redessiné** |
 | Look | décors en **3D Blender stylisée** (ombrage cartoon, contours) + robot **2D vectoriel** incrusté (principe « Roger Rabbit / Spider-Verse ») |
 | Fil rouge visuel | **le fil vert** `#4DFF8F` : la courbe exponentielle est un objet physique qui traverse tous les décors |
@@ -135,37 +135,33 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 - Légende Instagram et sources (`SCRIPT.md` §5).
 - Mettre à jour `CLAUDE.md` (chaîne exacte, voix, crédits dépensés) ; commit du code seulement.
 
-## Découpage (instants indicatifs, recalculés sur la vraie voix à l'étape 3)
+## Découpage v2 (instants réels : `timing.json`, voix Hugo)
 
-| Plan | ≈ temps | Texte dit | Décor (3D) | Action |
+| Plan | Temps | Texte dit | Décor (3D) | Action |
 |---|---|---|---|---|
-| P1 | 0,0 – 2,1 | « Faites trente pas : trente mètres. » | Open space « OpenIA », la nuit, vue sur la baie | Le robot tourne sur un fauteuil de bureau, puis roule lentement le long d'un mètre ruban vert au sol (0 → 30 m). Plat, linéaire, presque ennuyeux. |
-| P2 | 2,1 – 5,8 | « Trente pas qui doublent… vingt-six fois le tour de la Terre. » | Couloir de l'open space → espace | Chaque poussée double : compteur ×2 ×4 ×8…, le fauteuil fuse, **traverse la baie vitrée** sur « vingt-six ». Coupe éclair de 0,6 s : la Terre vue de l'espace, le fil vert qui en fait 26 fois le tour. |
-| P3 | 5,8 – 7,0 | « L'IA, c'est pareil. » | Façade de la tour de verre | Chute, il attrape le fil vert (qui devient une corde), descend en rappel en trois bonds. |
-| P4 | 7,0 – 12,6 | « En 2019… trois secondes. » | Rue de San Francisco | Il atterrit sur le toit d'un robotaxi (toit enfoncé, dôme de capteurs fissuré). Le robotaxi démarre, **lentement**. Panneau « 2019 · 3 s ». |
-| P5 | 12,6 – 14,6 | « Six ans plus tard : une heure. » | Autoroute, data centers au loin | Ça accélère. Panneau « 2025 · 1 h ». |
-| P6 | 14,6 – 17,6 | « Treize mois plus tard… au moins seize heures. » | La route **se cabre et devient la courbe** | Boost, la route monte presque à la verticale vers les étoiles. Panneau « 2026 · 16 h+ » ; le mètre ruban du détective arrive au bout. |
-| P7 | 17,6 – 23,4 | « Le piège : un nénuphar qui double chaque jour couvre l'étang le trentième jour. La veille ? À moitié. » | Étang sous la lune | La route s'arrête net en haut de la courbe : le robotaxi s'envole, traverse les nuages et **atterrit sur une feuille de nénuphar géante** (plouf, écho de l'atterrissage sur le toit). Vue de drone : les feuilles doublent à chaque temps, le fil vert trace le bord de la zone couverte. Panneau en bois dans les roseaux : « JOUR 30 », l'étang est plein ; il se retourne sur « La veille ? » : « JOUR 29 », la moitié seulement. |
-| P8 | 23,4 – 25,8 | « Alors l'IA… on est à quel jour ? » | Même étang, eau libre devant | Gros plan : la loupe devant l'œil vert, dans laquelle se reflète le panneau « JOUR ?? » dont les chiffres tournent. Silence, tic-tac. On ne répond pas. |
-| P9 | 25,8 – 29,5 | « Affaire à suivre. » | Carton titre (look de la miniature) | Ouverture en iris depuis la loupe → EXPONENTIEL, « L'IA SOUS ENQUÊTE », coup de chapeau, bouton S'ABONNER cliqué. |
+| P1 | 0,00 – 4,81 | « Un nénuphar double chaque jour. Le trentième jour, il couvre tout l'étang. » | Étang sous la lune | Robot dans une barque. Panneau « JOUR n ». Vue de drone : les feuilles doublent (pop), le fil vert borde la zone couverte ; étang plein sur « trentième jour ». |
+| P2 | 4,81 – 7,65 | « La veille ? La moitié. Cinq jours avant ? Trois pour cent. » | Même étang, rembobiné | « JOUR 29 » : 50 %, barque pile sur la frontière ; « JOUR 25 » : 3 %, loupe sur la petite tache. |
+| P3 | 7,65 – 11,89 | « L'IA suit cette courbe : … deux fois plus longues. » | Piste néon qui sort de l'étang | Le fil vert se soulève et devient la piste ; surf sur une feuille. Panneaux « 2019 · 3 s », « 2025 · 1 h », « 2026 · 16 h+ » (METR). |
+| P4 | 11,89 – 15,89 | « Et elle commence à faire sa propre recherche : c'est l'auto-amélioration. » | Labo « OpenIA », salle de serveurs | Bras robotisés qui assemblent des bras, écrans en mise en abyme, zoom éclair sur « auto-amélioration ». |
+| P5 | 15,89 – 19,41 | « Un doublement pourrait alors prendre quelques semaines… voire une seule. » | La piste ressort et se cabre | Calendrier dont les pages s'arrachent : 4 mois → quelques semaines → « 1 semaine ? » (hypothèse · Forethought). Verticale sur « une seule ». |
+| P6 | 19,41 – 24,73 | « Et l'alignement ? … Même OpenAI admet ne pas encore savoir. » | Aiguillage dans le ciel | Rail blanc « ce qu'on veut » / rail vert qui s'écarte ; levier « ALIGNEMENT » qui résiste ; fiche « pas encore » (OpenAI, sept. 2026). |
+| P7 | 24,73 – 26,13 | « Alors… on est à quel jour ? » | Étang, gros plan | Loupe devant l'œil vert, « JOUR ?? » qui tourne. Silence, tic-tac. |
+| P8 | 26,13 – 29,00 | « Affaire à suivre. » | Carton titre (look de la miniature) | Iris → EXPONENTIEL, « L'IA SOUS ENQUÊTE », coup de chapeau, S'ABONNER. |
 
-## Bruitages (repères depuis timing.json)
+## Bruitages v2 (repères depuis timing.json)
 
 | ID | Moment | Son | Source |
 |---|---|---|---|
-| S01 | P1 | Ambiance d'open space la nuit (clim, clavier lointain) | `media/sfx` ou ElevenLabs |
-| S02 | P1 | Fauteuil qui tourne (grincement) + roulettes lentes | ElevenLabs |
-| S03 | P2, chaque doublement | « Tick » qui monte d'une octave à chaque fois | synthèse Python |
-| S04 | P2 | Souffle qui accélère dans le couloir | `media/sfx` (whoosh) |
-| S05 | P2, « vingt-six » | Baie vitrée qui éclate + pluie d'éclats | ElevenLabs |
-| S06 | P3 | Vent de chute, mousqueton, corde qui file | ElevenLabs |
-| S07 | P4, atterrissage | Tôle écrasée + plastique qui craque + « bip-bip » d'alarme | ElevenLabs |
-| S08 | P4 → P6 | Moteur électrique qui monte d'une octave à chaque panneau | synthèse Python |
-| S09 | P4 à P6 | Passage de chaque panneau (whoosh court, de plus en plus aigu) | `media/sfx` |
-| S10 | P6 | Montée + « braaam » quand la route se cabre | `media/sfx` / son.py |
-| S11 | P7 | Envol (le moteur s'arrête d'un coup), vent, gros plouf sur la feuille de nénuphar, puis grenouilles, grillons et clapotis ; « pop » d'eau à chaque doublement ; panneau de bois qui pivote | ElevenLabs + synthèse |
-| S12 | P8 | Silence, puis tic-tac d'horloge | ElevenLabs ou synthèse |
-| S13 | P9 | Iris, accord final, clic S'ABONNER, coup de chapeau | `media/sfx` de LA SOURCE |
+| S01 | P1, P2, P7 | Ambiance d'étang la nuit (grillons, clapotis, grenouilles) | ElevenLabs |
+| S02 | P1, chaque doublement | « Pop » d'eau qui monte d'une octave à chaque fois | synthèse Python |
+| S03 | P1, « trentième jour » | Gerbe d'eau, barque soulevée, grenouille | `media/sfx` (DROP, LAND) |
+| S04 | P2 | Rembobinage de magnétoscope (deux fois, le 2e plus fort) + panneau de bois qui pivote | ElevenLabs |
+| S05 | P3 | Le fil qui se tend et s'arrache de l'eau, puis souffle de glisse qui monte d'une octave à chaque panneau | synthèse + `media/sfx` |
+| S06 | P4 | Salle de serveurs (ventilation, bras robotisés, bips) | ElevenLabs |
+| S07 | P5 | Pages de calendrier qui s'arrachent de plus en plus vite + montée + « braaam » | ElevenLabs + `media/sfx` (RISER) |
+| S08 | P6 | Levier d'aiguillage métallique qui résiste, grincement, rails | ElevenLabs |
+| S09 | P7 | Silence, puis tic-tac d'horloge | synthèse |
+| S10 | P8 | Iris, accord final, clic S'ABONNER, coup de chapeau | `media/sfx` de LA SOURCE |
 
 ## Budget ElevenLabs (compte gratuit : 10 000 crédits par mois)
 

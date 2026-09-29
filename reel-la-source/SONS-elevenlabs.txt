@@ -1,0 +1,144 @@
+LA SOURCE — sons à faire sur ElevenLabs (Sound Effects)
+Vidéo : 1:56.0 · les repères sont en temps vidéo (m:ss.d)
+
+═══ 1. BANQUE DE SONS — générer chaque son UNE fois, puis le réutiliser ═══
+Colle le prompt (en anglais, ElevenLabs le comprend mieux) et règle la durée indiquée.
+Nomme chaque fichier avec son ID (ex. SNAP.mp3).
+
+[TV_OFF] Extinction vieille télé — 1 s — utilisé 1×
+    old CRT television switching off, high pitched electric zip collapsing into a tiny blip
+[DEZOOM] Dézoom caméra — 1.2 s — utilisé 3×
+    smooth cinematic camera pull back whoosh, airy and soft
+[BOOT] Les yeux du robot se rallument — 1 s — utilisé 1×
+    cute small robot powering on, soft electronic startup chirp
+[CLINK] Loupe qui retombe — 1 s — utilisé 1×
+    small brass magnifying glass dropping into place with a light metallic clink and tiny bounce
+[SNAP] Claquement de doigts — 0.8 s — utilisé 10×
+    crisp cartoon finger snap with a tiny magical sparkle shimmer, dry and close
+[POP] Un cadre apparaît — 0.6 s — utilisé 7×
+    playful cartoon pop with a short bright whoosh, an image popping into view
+[JUMP] Saut — 0.7 s — utilisé 6×
+    quick springy cartoon jump whoosh going up
+[LAND_BIG] Atterrissage lourd sur un cadre — 0.8 s — utilisé 4×
+    punchy cartoon landing thud of a small metal robot on a wooden board, with a clank
+[FALL] Le cadre tombe — 1 s — utilisé 5×
+    object falling fast downward, descending cartoon whistle whoosh
+[LAND] Atterrissage + antenne qui vibre — 1 s — utilisé 6×
+    small robot landing thud followed by a springy antenna wobble boing
+[HOP] Petit saut — 0.5 s — utilisé 7×
+    tiny springy cartoon hop, light boing
+[PAPER] On tire un grand papier — 1 s — utilisé 2×
+    large sheet of paper yanked quickly and sliding across a table, swoosh
+[STUMBLE] Il trébuche — 1 s — utilisé 1×
+    cartoon stumble, quick tiptoe steps and a little wobble
+[SWISH] Geste rapide — 0.5 s — utilisé 2×
+    quick light swish of a small object raised in the air
+[ZOOM_IN] Zoom sur le toit — 1 s — utilisé 2×
+    fast cinematic zoom in whoosh, rising swoosh with a soft impact at the end
+[GLINT] Reflet de la loupe — 0.6 s — utilisé 1×
+    bright tiny glint ding, light reflecting on a magnifying glass
+[QUESTION] Point d'interrogation — 0.6 s — utilisé 1×
+    curious cartoon question pop, little rising boing
+[WOOD] Icône bois — 0.5 s — utilisé 1×
+    single wooden plank knock
+[DROP] Icône eau — 0.5 s — utilisé 1×
+    single water drop plop
+[SMOKE] Icône fumée — 0.8 s — utilisé 1×
+    soft puff of smoke
+[WOBBLE] Objet qui gigote — 2 s — utilisé 3×
+    rubbery cartoon wobble, jelly boing, an object wiggling unnaturally
+[DATA] Mosaïque de vidéos — 3 s — utilisé 1×
+    digital data whoosh, many video thumbnails flickering by, soft glitch texture
+[HOLO] Globe filaire qui se dessine — 2 s — utilisé 1×
+    sci-fi hologram drawing itself line by line, electric tracing shimmer
+[DREAM] Bulle de rêve — 2 s — utilisé 1×
+    soft magical dream bubble opening, gentle chimes and airy shimmer
+[DRIP] Gouttes dans le rêve (boucle) — 6 s — utilisé 1×
+    slow gentle water drips, soft and dreamy, distant
+[FADE] Fondu au noir — 3 s — utilisé 1×
+    deep cinematic low boom fading into silence
+[CHIME] Un œil s'ouvre — 1 s — utilisé 1×
+    tiny soft electronic chime, a robot eye slowly opening
+[POWER] La lumière revient — 1.5 s — utilisé 1×
+    lights turning back on, soft electrical hum rising, city waking up
+[VR] Il enfile le casque VR — 1.5 s — utilisé 1×
+    VR headset clicking on, futuristic whoosh into a virtual world
+
+═══ 2. PLACEMENT DANS LA VIDÉO ═══
+ 0:03.4  TV_OFF    l'écran de la tête s'éteint
+ 0:03.5  DEZOOM    dézoom vers le plan large
+ 0:03.6  BOOT      les yeux se rallument
+ 0:03.7  CLINK     la loupe retombe devant l'œil
+ 0:04.1  SNAP      CLAQUE
+ 0:04.3  POP       le cadre vidéo apparaît
+ 0:06.8  JUMP      ÉCRASE : saut
+ 0:07.0  LAND_BIG  atterrit sur le cadre (hit-stop)
+ 0:07.2  FALL      le cadre tombe
+ 0:07.4  LAND      atterrit à droite
+ 0:07.5  PAPER     TIRE : il tire le dessin
+ 0:07.7  POP       le dessin arrive en place
+ 0:07.8  STUMBLE   il trébuche en arrière
+ 0:13.1  JUMP      ÉCRASE : saut
+ 0:13.4  LAND_BIG  atterrit sur le dessin
+ 0:13.6  FALL      le dessin tombe
+ 0:13.7  SNAP      CLAQUE en plein vol
+ 0:13.7  POP       le cadre vidéo revient
+ 0:13.8  LAND      atterrit sous le cadre
+ 0:16.1  SWISH     il lève la loupe
+ 0:17.3  ZOOM_IN   zoom sur le toit qui coule
+ 0:17.5  GLINT     pose "examine un indice"
+ 0:18.7  DEZOOM    on ressort du zoom
+ 0:18.7  HOP       petit recul surpris
+ 0:20.0  QUESTION  il se gratte la tête, "?"
+ 0:25.3  SNAP      CLAQUE
+ 0:25.4  WOOD      icône planche
+ 0:26.4  SNAP      CLAQUE
+ 0:26.5  DROP      icône goutte
+ 0:27.0  SNAP      CLAQUE
+ 0:27.0  SMOKE     icône fumée
+ 0:30.6  JUMP      ÉCRASE : saut
+ 0:30.9  LAND_BIG  atterrit sur le cadre
+ 0:31.0  FALL      le cadre et les icônes tombent
+ 0:31.1  SNAP      CLAQUE en plein vol
+ 0:31.2  POP       arbre, maison, caillou apparaissent
+ 0:31.2  LAND      atterrit au centre
+ 0:32.5  HOP       vers l'arbre
+ 0:32.9  WOBBLE    il touche l'arbre (hit-stop) : l'arbre gigote
+ 0:33.3  HOP       vers la maison
+ 0:33.6  HOP       
+ 0:34.1  WOBBLE    la maison gigote
+ 0:34.4  HOP       retour au centre
+ 0:36.1  DATA      la mosaïque de vidéos défile
+ 0:40.2  HOP       vers le caillou
+ 0:40.6  WOBBLE    le caillou gigote
+ 0:41.1  HOP       retour au centre
+ 0:45.8  JUMP      TIRE depuis le haut : il saute s'accrocher
+ 0:45.9  FALL      les objets tombent
+ 0:46.2  PAPER     il tire la photo vers le bas
+ 0:46.7  LAND      il lâche et atterrit
+ 1:08.8  SNAP      CLAQUE (assis)
+ 1:08.9  HOLO      le globe se dessine
+ 1:15.9  JUMP      ÉCRASE : saut
+ 1:16.1  LAND_BIG  atterrit sur la carte
+ 1:16.3  FALL      carte, photo et globe tombent
+ 1:16.3  SNAP      CLAQUE en plein vol
+ 1:16.4  POP       le cadre vidéo revient
+ 1:16.5  LAND      atterrit sous le cadre
+ 1:24.2  ZOOM_IN   zoom sur le toit
+ 1:25.6  DEZOOM    on ressort du zoom
+ 1:29.9  DREAM     il s'endort, la bulle de rêve s'ouvre
+ 1:30.1  DRIP      gouttes dans la bulle  (jusqu'à 1:35.3)
+ 1:35.3  FADE      fondu au noir, "Hallucination"
+ 1:35.9  CHIME     il ouvre un œil
+ 1:40.6  POWER     la lumière revient (outro LK Studio)
+ 1:40.9  JUMP      il saute à sa place
+ 1:41.2  LAND      
+ 1:43.0  SNAP      CLAQUE
+ 1:43.0  POP       la fenêtre du site apparaît
+ 1:47.7  SNAP      CLAQUE
+ 1:47.8  POP       le casque VR apparaît dans sa main
+ 1:49.7  VR        il enfile le casque
+ 1:52.5  SWISH     il retire le casque
+
+Astuce : envoie-moi les sons générés (nommés par ID), je peux les placer automatiquement
+à l'image près et te rendre la vidéo avec la piste de bruitages déjà mixée.
