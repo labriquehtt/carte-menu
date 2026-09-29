@@ -97,7 +97,7 @@ def ride(pts, t_of_u, frames, lift=0.25):
     pad = C.cyl('feuille', (0, 0, 0), 0.8, 0.08, pad_m, verts=20)
     anchor = C.empty('ROBOT_ANCHOR')
     anchor.parent = pad
-    anchor.location = (0, 0, 0.55)
+    anchor.location = (0, 0, 0.06)                   # pieds sur la feuille
     for fr in frames:
         u = min(0.999, max(0.0, t_of_u(fr)))
         i = u * (len(pts) - 1)

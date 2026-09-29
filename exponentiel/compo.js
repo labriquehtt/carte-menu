@@ -32,7 +32,7 @@ function direction(t) {
       break;
     case 'P3':
       st.face = t < k.courbe + 0.3 ? 'curieux' : (t < k.deux_fois ? 'surpris' : 'satisfait');
-      st.arms = ARMS.surf; st.rot = 6 * Math.sin(t * 5.3) - 8; st.s = 0.9;
+      st.arms = ARMS.surf; st.rot = 6 * Math.sin(t * 5.3) - 8; st.s = 0.9; st.maxS = 0.75;
       st.dy = t < k.courbe ? 0 : -60 * pulse(t, k.courbe, 0.45);
       break;
     case 'P4':
@@ -76,7 +76,7 @@ function drawRobot(t) {
   if (!A || A.z <= 0) { vis(RB.root, false); vis(SHADOW, false); return; }
   vis(RB.root, true);
   const st = direction(t);
-  let s = Math.max(A.s * st.s, st.minS);
+  let s = Math.min(Math.max(A.s * st.s, st.minS), st.maxS || 9);
   let x = A.x + st.dx, y = A.y + st.dy, rot = (A.rot || 0) + st.rot;
   if (p.id === 'P7') {                                      // gros plan : la loupe devant l'œil, énorme
     const u = seg(t, p.start, p.end);
@@ -125,9 +125,9 @@ function buildFX() {
   FX.auto.textContent = 'AUTO-AMÉLIORATION';
   FX.lever = txt(g(fx), { font: 'Space Grotesk', size: 44, fill: YELLOW, stroke: INK, sw: 9 });
   FX.lever.textContent = 'ALIGNEMENT';
-  FX.want = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 34, fill: WHITE, stroke: INK, sw: 7 });
+  FX.want = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 44, fill: WHITE, stroke: INK, sw: 7 });
   FX.want.textContent = 'ce qu’on veut';
-  FX.does = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 34, fill: GREEN, stroke: INK, sw: 7 });
+  FX.does = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 44, fill: GREEN, stroke: INK, sw: 7 });
   FX.does.textContent = 'ce qu’elle fait';
   FX.card = g(fx);                                                                      // fiche d'enquête épinglée
   mk('rect', { x: -330, y: -95, width: 660, height: 190, rx: 16, fill: '#F4EAD2', stroke: INK, 'stroke-width': 7 }, FX.card);
@@ -191,9 +191,9 @@ function drawFX(t) {
     place(FX.calSrc.parentNode, 540, 1460, 1, 0, seg(t, p.start + 0.4, p.start + 0.7));
   }
   if (p.id === 'P6') {
-    if (A.lever_z > 0) place(FX.lever.parentNode, A.lever_x, A.lever_y - 70, 1, -6, seg(t, p.start + 0.2, p.start + 0.4));
-    if (A.want_z > 0) place(FX.want.parentNode, A.want_x, A.want_y - 40, 1, 0, seg(t, k.garantit, k.garantit + 0.3));
-    if (A.fork_z > 0) place(FX.does.parentNode, A.fork_x, A.fork_y - 40, 1, 0, seg(t, k.garantit + 0.6, k.garantit + 0.9));
+    if (A.lever_z > 0) place(FX.lever.parentNode, clamp(A.lever_x, 170, 910), A.lever_y - 70, 1, -6, seg(t, p.start + 0.2, p.start + 0.4));
+    if (A.want_z > 0) place(FX.want.parentNode, clamp(A.want_x, 200, 880), A.want_y - 40, 1, 0, seg(t, k.garantit, k.garantit + 0.3));
+    if (A.fork_z > 0) place(FX.does.parentNode, clamp(A.fork_x, 200, 880), A.fork_y - 40, 1, 0, seg(t, k.garantit + 0.6, k.garantit + 0.9));
     place(FX.card, 540, 330, E.back(seg(t, k.openai, k.openai + 0.3)), -3 + 3 * E.out(seg(t, k.openai, k.openai + 0.4)), seg(t, k.openai, k.openai + 0.06));
   }
   if (p.id === 'P7') {                                                      // « JOUR ?? » qui tourne dans la loupe
