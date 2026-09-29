@@ -14,4 +14,4 @@ Planches de référence dans `planche/` (ouvrir directement dans un navigateur, 
 
 Aucun logo/pin sur le chapeau (retirés du personnage officiel).
 
-Reel en préparation : `exponentiel/` (script, brief de production et prompt du Reel PARANO-IA « EXPONENTIEL »).
+Reel en préparation : `exponentiel/` (script, brief de production, prompt du Reel PARANO-IA « EXPONENTIEL » et fiche de techniques d'animation par prompt).

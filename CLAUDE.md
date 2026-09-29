@@ -20,6 +20,11 @@ produit dans Claude Code en local (Terminal, avec Blender). Trois fichiers :
   bruitages → musique → mixage), le découpage en 9 plans, les bruitages, le budget, les 5 validations.
 - `PROMPT.md` : le méga prompt à coller dans Terminal (concept du « fil vert », décors 3D + robot 2D, plan par plan).
 - Vidéos courtes : l'utilisateur veut des Reels de **30 s maximum**.
+- `FICHE-TECHNIQUES.pdf` / `.md` (générés par `build_fiche.py`, à relancer après toute modification du contenu) :
+  15 techniques d'animation par prompt (on twos, stop motion, line boil, papier, feutrine, pâte à modeler,
+  comics, grain, 12 principes, impacts, robot-feuille, caméra, typo cinétique, Blender toon, Three.js), un
+  prompt à copier par technique, sources numérotées. À joindre au terminal ; max. deux techniques de style
+  par plan ; effets de trait sur le robot seulement sur demande.
 
 ## Anciens projets (retirés du dépôt, récupérables dans l'historique)
 

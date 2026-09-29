@@ -25,6 +25,10 @@ s'arrête jamais, chaque phrase change de monde, et les arrière-plans vivent.
 5. git show b439b9a:CLAUDE.md : les notes complètes des vidéos précédentes (moteur de rendu SVG image
    par image, chaîne voix, mixage). Puis restaure le code :
    git checkout b439b9a -- parano-ia reel-la-source
+6. exponentiel/FICHE-TECHNIQUES.md (même contenu en PDF) : catalogue de 15 techniques d'animation à
+   demander par prompt (cadence on twos, stop motion, line boil, papier, feutrine, comics, ressorts,
+   impacts, Blender toon…), avec un prompt prêt à l'emploi pour chacune. Pioche-y au maximum DEUX
+   techniques de style par plan, et dis-moi lesquelles tu as choisies avant de les appliquer.
 
 === RÈGLES NON NÉGOCIABLES ===
 - 30 s maximum, carton final compris. Mieux vaut 28 s qui claquent que 31 s.
@@ -54,6 +58,9 @@ Chaque transition est un raccord sur ce fil (match cut) ou un panoramique fouett
 C'est notre signature : on doit pouvoir suivre la courbe du début à la fin, sans coupure.
 
 === LE LOOK : PAPIER DÉCOUPÉ DANS UN MONDE 3D ===
+(Look de base. Les techniques T1 à T15 de la fiche peuvent l'enrichir : par exemple T1 « on twos » pour le
+robot avec un décor fluide, ou T7 (demi-teinte) très léger sur les décors. Jamais plus de deux techniques
+de style par plan, jamais d'effet de trait sur le robot sans me le demander.)
 - Décors en 3D stylisée Blender (EEVEE) : ombrage cartoon à 2 ou 3 tons, contours Line Art couleur
   encre #1B1620 de la même épaisseur que le trait du robot, halos néon, brume, flou de mouvement.
   Palette : nuit bleu profond, néons verts, touches de jaune chaud #FFD23C (lampes, phares, soleil
