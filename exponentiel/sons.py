@@ -174,8 +174,7 @@ def bruitages():
     B.put(sfx('SNAP'), K['openai'], -11)
     B.put(sfx('PAPER'), K['openai'] + 0.05, -14)
     # cartes « capture » du billet d'OpenAI (mêmes instants que SHOT_TIMES dans compo.js) : entrée, zoom, sortie
-    shots = [(PL['P4']['start'] + 0.2, PL['P4']['start'] + 0.85, None),            # la sortie du P4 se fond dans « C'EST »
-             (K['openai'] - 0.05, K['openai'] + 0.5, PL['P6']['end'] - 0.25)]
+    shots = [(K['openai'] - 0.05, K['openai'] + 0.5, PL['P6']['end'] - 0.25)]   # P6 seulement (P4 : plus de capture)
     for tin, tzoom, tout in shots:
         B.put(sfx('WARP_IN'), tin - 0.05, -10, length=0.7, fade_out=0.2)             # la carte monte
         B.put(sfx('GLINT'), tin + 0.3, -8)                                          # tintement quand elle se pose (reflet)

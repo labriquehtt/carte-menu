@@ -235,8 +235,7 @@ function drawFX(t) {
   }
   if (p.id === 'P3' && t > k.courbe) place(FX.metr.parentNode, 540, 1450, 1, 0, seg(t, k.courbe + 0.4, k.courbe + 0.7));
   let blur = 0;
-  if (p.id === 'P4')                                                        // « sa propre recherche » : la capture qui le prouve
-    blur = animShot(FX.shotFr, t, SHOT_TIMES().fr, { s: 0.3, dx: 40, dy: -10 });
+  // P4 : pas de capture (demande de l'utilisateur : on garde le data center et le nénuphar à l'écran)
   if (p.id === 'P5' && A.cal_z > 0) {
     const lab = t < k.semaines - 0.25 ? '4 mois' : (t < k.une_seule ? 'quelques semaines' : '1 semaine ?');
     FX.cal.textContent = lab;
