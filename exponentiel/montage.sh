@@ -6,7 +6,7 @@ set -e
 cd "$(dirname "$0")"
 export PYTHONUTF8=1
 python sons.py                                                             # bruitages + musique + mixage (-14 LUFS)
-node render.js --plates plates --video out/EXPONENTIEL-video.mp4 --workers 4 --sub ${SUB:-4}
+node render.js --plates plates --video out/EXPONENTIEL-video.mp4 --workers ${WORKERS:-2} --sub ${SUB:-4}   # 12 Go de RAM : pas plus de 2 navigateurs (sinon manque de mémoire)
 ffmpeg -v error -y -i out/EXPONENTIEL-video.mp4 -c:v libx264 -b:v 6500k -preset slow -pass 1 -an -f mp4 -passlogfile out/x264 NUL 2>/dev/null \
   || ffmpeg -v error -y -i out/EXPONENTIEL-video.mp4 -c:v libx264 -b:v 6500k -preset slow -pass 1 -an -f mp4 -passlogfile out/x264 /dev/null
 ffmpeg -v error -y -i out/EXPONENTIEL-video.mp4 -i out/bande-son.wav -map 0:v -map 1:a -c:v libx264 -b:v 6500k -preset slow -pass 2 \

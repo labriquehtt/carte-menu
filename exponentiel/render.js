@@ -52,7 +52,8 @@ function encoder(file, sub, fps = 30) {
   const vf = (sub > 1 ? `tmix=frames=${sub},select='eq(mod(n\\,${sub})\\,${sub - 1})',setpts=N/${fps}/TB,` : '')
     + 'scale=out_color_matrix=bt709:out_range=tv,format=yuv420p';
   const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps * sub), '-c:v', 'png', '-i', '-',
-    '-vf', vf, '-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
+    '-vf', vf, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '12', '-x264-params', 'rc-lookahead=8:threads=4',   // léger en mémoire
+    '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
   return { ff, done: new Promise((res, rej) => ff.on('close', c => (c === 0 ? res() : rej(new Error('ffmpeg ' + c))))) };
 }
 async function renderRange(browser, a, b, file, label, sub) {
@@ -87,7 +88,11 @@ async function renderRange(browser, a, b, file, label, sub) {
       const dur = JSON.parse(fs.readFileSync(path.join(ROOT, 'timing.json'), 'utf8')).duration;
       const N = Math.round(dur * 30), W = +(opt('workers') || 1), sub = +(opt('sub') || 1);
       const out = path.resolve(opt('video'));
-      if (W === 1) await renderRange(browser, 0, N, out, 'rendu', sub);
+      if (opt('range')) {                                     // tranche d'images [a, b) : --range 0:120 (parties à concaténer)
+        const [ra, rb] = opt('range').split(':').map(Number), per = Math.ceil((rb - ra) / W);
+        await Promise.all([...Array(W)].map((_, w) => renderRange(browser, ra + w * per, Math.min(rb, ra + (w + 1) * per),
+          out.replace(/\.mp4$/, `.r${String(ra + w * per).padStart(4, '0')}.mp4`), 'w' + w, sub)));
+      } else if (W === 1) await renderRange(browser, 0, N, out, 'rendu', sub);
       else {
         const parts = [], per = Math.ceil(N / W);
         await Promise.all([...Array(W)].map((_, w) => {
