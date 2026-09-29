@@ -1,1 +1,4 @@
 node_modules/
+media/
+out/
+__pycache__/
