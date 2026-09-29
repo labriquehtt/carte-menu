@@ -3,7 +3,7 @@
 
   PYTHONUTF8=1 python place_voix.py
 
-Source (hors Git) : media/voix_ia/exponentiel_sebas.mp3 (32,56 s brute, flow ElevenLabs
+Source (hors Git) : media/voix_ia/exponentiel_hugo.mp3 (Hugo, 36,88 s brute ; ancienne prise Sébas : exponentiel_sebas.mp3, flow ElevenLabs
 https://elevenlabs.io/app/flows/my2I2EZxu63yKmSuJ8Hr). Un seul bloc, pas de recalage sur une ancienne voix :
 chaque pause est plafonnée selon sa ponctuation (PAUSES, repérées sur la prise brute), le reste à
 DEFAULT_CAP ; puis tempo ×TEMPO (hauteur conservée), compression douce et sonie à -16 LUFS.
@@ -22,30 +22,20 @@ from place_voix_ia import SR, load, ffilter, silent_frames   # noqa: E402  (cha�
 from mix_sons import FF                                      # noqa: E402
 
 V = os.path.join(HERE, 'media', 'voix_ia')
-PRISE = os.path.join(V, 'exponentiel_sebas.mp3')
+PRISE = os.path.join(V, 'exponentiel_hugo.mp3')   # Hugo (voix de LA SOURCE), script v2 validé le 2026-09-29
 LEAD = 0.12              # silence avant le premier mot
-TEMPO = 1.0
+TEMPO = 1.06
 FLOOR = 25               # silence : 25 dB sous le 95e centile (respirations comprises)
 MIN_PAUSE = 0.12
 DEFAULT_CAP = 0.25
 # début approximatif de la pause dans la prise brute (s) → durée gardée (s)
-PAUSES = {
-    1.01: 0.25,   # Faites trente pas :
-    2.00: 0.30,   # trente mètres.
-    4.05: 0.40,   # Trente pas qui doublent…
-    6.27: 0.35,   # …le tour de la Terre.
-    8.07: 0.30,   # L'IA, c'est pareil.
-    13.72: 0.30,  # …en trois secondes.
-    15.23: 0.30,  # Six ans plus tard :
-    16.44: 0.30,  # une heure.
-    18.44: 0.40,  # Treize mois plus tard…
-    19.70: 0.35,  # au moins seize heures.
-    21.07: 0.28,  # Le piège :
-    25.43: 0.35,  # …le trentième jour.
-    26.70: 0.40,  # La veille ?
-    27.87: 0.40,  # À moitié.
-    29.58: 0.35,  # Alors l'IA…
-    30.82: 0.45,  # on est à quel jour ?
+PAUSES = {       # prise Hugo (36,88 s brute)
+    9.54: 0.30,   # …Trois pour cent. (avant « L'IA suit cette courbe »)
+    20.18: 0.35,  # …c'est l'auto-amélioration.
+    25.00: 0.35,  # …voire une seule.
+    32.26: 0.35,  # …ne pas encore savoir.
+    33.89: 0.30,  # Alors…
+    35.06: 0.35,  # on est à quel jour ?
 }
 
 
