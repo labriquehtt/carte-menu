@@ -49,7 +49,7 @@ La courbe exponentielle est un OBJET PHYSIQUE, un fil néon vert #4DFF8F (le ver
 de la miniature), présent dans chaque décor. Il sert de raccord d'un monde à l'autre :
 mètre ruban au sol de l'open space → trace de vitesse du fauteuil → fil qui fait le tour de la Terre
 → corde de rappel → marquage au sol de la route → la route elle-même, qui se cabre en exponentielle →
-qui s'aplatit en S sur le plateau → le graphique néon du carton final (celui de la miniature).
+le bord du nénuphar qui double sur l'étang → le graphique néon du carton final (celui de la miniature).
 Chaque transition est un raccord sur ce fil (match cut) ou un panoramique fouetté dans son axe.
 C'est notre signature : on doit pouvoir suivre la courbe du début à la fin, sans coupure.
 
@@ -102,8 +102,8 @@ vitre. Dans les étages qui défilent : un labo différent à chaque étage, év
 un pigeon qui s'envole, la nacelle d'un laveur de vitres. Pose de bras « rope », chapeau qui tient
 de justesse.
 
-P4 · 7,0-13,0 s · « En 2019, elle réussissait, une fois sur deux, des tâches informatiques qu'un
-expert boucle en deux secondes. »
+P4 · 7,0-12,6 s · « En 2019, elle réussissait, une fois sur deux, des tâches qu'un expert fait en
+deux secondes. »
 Il lâche la corde et atterrit sur le toit d'un robotaxi blanc arrêté au feu. Le toit s'enfonce, le
 dôme de capteurs se fissure, les suspensions rebondissent, l'alarme fait « bip-bip ». Écrasement et
 étirement sur le robot, étoiles de choc. Le robotaxi démarre LENTEMENT dans une rue en pente de San
@@ -112,34 +112,40 @@ bouche d'égout, autres robotaxis. Premier panneau routier 3D qui passe : « 201
 « 1 fois sur 2 · METR ». Le fil vert est maintenant la ligne au milieu de la chaussée. Expression :
 « sceptique », accroupi sur le toit, une main sur le chapeau.
 
-P5 · 13,0-15,5 s · « Six ans plus tard : des tâches d'une heure. »
+P5 · 12,6-14,6 s · « Six ans plus tard : une heure. »
 Bretelle d'autoroute, la vitesse monte, le moteur électrique monte d'une octave. Au loin, des data
 centers aux ventilateurs qui tournent, des lignes à haute tension qui bourdonnent. Panneau
 « 2025 · 1 h ». Les panneaux passent de plus en plus vite : la distance entre eux raccourcit à vue
 d'œil. Le robot se lève sur le toit, expression « curieux ».
 
-P6 · 15,5-18,8 s · « Treize mois plus tard… au moins seize heures. »
+P6 · 14,6-17,6 s · « Treize mois plus tard… au moins seize heures. »
 LA ROUTE SE CABRE : le ruban d'asphalte suit la courbe y = 2^x, glissières néon vertes, et monte
 presque à la verticale vers les étoiles. Boost, plan débullé, zoom éclair, secousses, montée et
 « braaam ». Panneau « 2026 · 16 h+ » qui file. Gag du détective : il déroule son mètre ruban pour
 mesurer, et le ruban arrive au bout (clin d'œil à METR : leur règle ne mesure pas plus loin).
 Expression : « surpris », puis bras « cheer ».
 
-P7 · 18,8-22,8 s · « Mais pour Yann LeCun, toute exponentielle finit par plafonner. »
-Changement de monde : on crève les nuages. Au-dessus, un plateau de nuages éclairé par la lune, la
-route S'APLATIT (la courbe fait un S : une sigmoïde), le robotaxi ralentit et roule doucement, le
-moteur se stabilise sur une note tenue et la musique passe derrière un filtre. Carte « suspect » qui
-claque à l'écran : « YANN LECUN · prix Turing », avec sa photo si je te la fournis (sinon la carte
-seule, sans portrait dessiné), et la citation courte « Toute tendance exponentielle finit en
-sigmoïde » (traduit de l'anglais) · X, juin 2024. En petit, le tracé de la courbe en S. Le robot se tourne vers la carte, expression
-« perplexe », loupe levée.
+P7 · 17,6-23,4 s · « Le piège : un nénuphar qui double chaque jour couvre l'étang le trentième
+jour. La veille ? À moitié. »
+La route s'arrête net en haut de la courbe (elle crève le haut du cadre, comme sur la miniature) : le
+moteur se coupe, le robotaxi s'envole dans le silence, bascule, traverse les nuages… et atterrit sur
+une FEUILLE DE NÉNUPHAR GÉANTE, au milieu d'un étang sous la lune. Gros plouf, gerbe d'eau en passe
+fg, la feuille s'enfonce puis remonte : c'est l'écho inversé du toit enfoncé du P4. Vie autour :
+lucioles vertes, grenouilles qui sautent de feuille en feuille, roseaux qui ondulent, reflet de la
+lune qui tremble, un héron qui s'envole, brume au ras de l'eau. Plan de drone qui monte : les
+feuilles doublent à chaque temps de la musique (1, 2, 4, 8…), un « pop » d'eau à chaque fois, et le
+fil vert trace le bord de la zone couverte. Panneau en bois planté dans les roseaux : « JOUR 30 » et
+l'étang est plein ; sur « La veille ? », le panneau pivote : « JOUR 29 », l'étang n'est couvert qu'à
+moitié (le robotaxi et le robot sont pile sur la frontière). Expression : « surpris », puis
+« perplexe », loupe levée vers le panneau.
 
-P8 · 22,8-25,6 s · « La vraie question… c'est quand ? »
-Gros plan : la loupe devant l'œil vert, énorme dans la lentille (comme dans la bande-annonce). La
-musique se coupe, silence, un tic-tac. Derrière lui, la route disparaît dans le brouillard : plateau
-ou nouvelle montée ? On ne le saura pas. Expression : « sceptique ».
+P8 · 23,4-25,8 s · « Alors l'IA… on est à quel jour ? »
+Gros plan : la loupe devant l'œil vert, énorme dans la lentille (comme dans la bande-annonce). Dans
+la lentille se reflète le panneau « JOUR ?? », dont les chiffres tournent comme un compteur. La
+musique se coupe, silence, un tic-tac. Derrière lui, l'eau libre qui reste. On ne répond pas.
+Expression : « sceptique ».
 
-P9 · 25,6-29,5 s · « Affaire à suivre. »
+P9 · 25,8-29,5 s · « Affaire à suivre. »
 Ouverture en iris depuis la loupe, vers le carton titre au look de la miniature (graphique néon de
 reel-la-source/miniature.js, --theme expo) : le fil vert devient la courbe qui double à chaque pas
 (×2 … ×64) face à la droite « linéaire » en pointillés, et crève le haut du cadre. « EXPONENTIEL »
@@ -148,8 +154,10 @@ avec des lettres qui grandissent de façon exponentielle, puis « L'IA SOUS ENQU
 
 === SON ===
 Suis la table des bruitages du brief (S01 à S13). Idée clé : l'exponentielle s'entend. Chaque
-doublement monte d'une octave (ticks du P2, moteur du P4 au P6), puis tout se fige sur une note tenue
-au plateau et tombe dans le silence sur « quand ? ». Voix toujours devant ; bruitages 8 à 10 dB
+doublement monte d'une octave (ticks du P2, moteur du P4 au P6). En haut de la courbe, le moteur
+se coupe net (envol dans le silence), plouf, puis la nature de l'étang ; chaque doublement du nénuphar
+fait un « pop » d'eau, lui aussi une octave au-dessus. Tout tombe dans le silence sur « on est à quel
+jour ? ». Voix toujours devant ; bruitages 8 à 10 dB
 dessous et en sidechain ; musique (media/music2/GROOVE, 118 BPM) de 18 à 23 dB sous la voix, drop
 sur la vitre. Sortie à -14 LUFS.
 

@@ -41,7 +41,7 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
    - Le connecteur ElevenLabs et le **solde de crédits**.
 4. Demander à l'utilisateur les fichiers qui ne sont pas dans Git, s'il les a encore :
    `media/music2/` (musiques « deep tech » 118 BPM de LA SOURCE), `media/sfx/` (bruitages de LA
-   SOURCE), `out/miniature-exponentiel.png`, et, facultatif, la photo de Yann LeCun utilisée dans LA SOURCE.
+   SOURCE) et `out/miniature-exponentiel.png`.
 
 ### 1. Vérification des faits (15 min), avant de dépenser le moindre crédit
 
@@ -66,7 +66,7 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 1. Transcription avec les instants de chaque mot (`transcrire_voix.py`, ou `--whisper`).
 2. Écrire `exponentiel/timing.json` : début et fin de chaque plan, calés sur des mots précis (table
    ci-dessous), plus les instants clés (vitre, prise de la corde, atterrissage, panneaux, rampe,
-   plateau, tic-tac, iris). **Toute la suite lit ce fichier** : Blender, moteur 2D, bruitages, musique.
+   envol, plongeon dans l'étang, doublements du nénuphar, tic-tac, iris). **Toute la suite lit ce fichier** : Blender, moteur 2D, bruitages, musique.
 3. Formes de bouche (`analyse_voix.py`) et sous-titres mot à mot (`aligne_voix.js`, texte de
    `SCRIPT.md` §2).
 
@@ -87,7 +87,7 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 - Pour chaque plan, trois sorties :
   - `out/plates/Pxx/bg/####.png` : tout le décor ;
   - `out/plates/Pxx/fg/####.png` : sur fond transparent, seulement ce qui passe **devant** le robot
-    (accoudoirs, éclats de verre, rebord du toit de la voiture, nuages du premier plan) ;
+    (accoudoirs, éclats de verre, rebord du toit de la voiture, roseaux et gerbes d'eau du premier plan) ;
   - `out/plates/Pxx/anchor.json` : pour chaque image, la position à l'écran d'un Empty
     `ROBOT_ANCHOR` (x, y, échelle, rotation, profondeur), calculée avec
     `bpy_extras.object_utils.world_to_camera_view`. Le robot 2D suivra exactement la 3D.
@@ -119,8 +119,8 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 ### 8. Musique (en dernier)
 
 - Par défaut : `media/music2/GROOVE` (118 BPM), coupée à 30 s ; le drop tombe sur la vitre qui
-  éclate, et un filtre coupe la musique pendant le plateau (« plafonner »), jusqu'au silence de
-  « quand ? ». Accord final sur le coup de chapeau.
+  éclate, un filtre étouffe la musique quand on plonge dans l'étang (« Le piège »), puis silence sur
+  « on est à quel jour ? ». Accord final sur le coup de chapeau.
 - Sinon, une musique ElevenLabs de 30 s (environ 450 crédits : **demander avant**).
 - Musique très basse, de 18 à 23 dB sous la voix.
 
@@ -142,12 +142,12 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 | P1 | 0,0 – 2,1 | « Faites trente pas : trente mètres. » | Open space « OpenIA », la nuit, vue sur la baie | Le robot tourne sur un fauteuil de bureau, puis roule lentement le long d'un mètre ruban vert au sol (0 → 30 m). Plat, linéaire, presque ennuyeux. |
 | P2 | 2,1 – 5,8 | « Trente pas qui doublent… vingt-six fois le tour de la Terre. » | Couloir de l'open space → espace | Chaque poussée double : compteur ×2 ×4 ×8…, le fauteuil fuse, **traverse la baie vitrée** sur « vingt-six ». Coupe éclair de 0,6 s : la Terre vue de l'espace, le fil vert qui en fait 26 fois le tour. |
 | P3 | 5,8 – 7,0 | « L'IA, c'est pareil. » | Façade de la tour de verre | Chute, il attrape le fil vert (qui devient une corde), descend en rappel en trois bonds. |
-| P4 | 7,0 – 13,0 | « En 2019… deux secondes. » | Rue de San Francisco | Il atterrit sur le toit d'un robotaxi (toit enfoncé, dôme de capteurs fissuré). Le robotaxi démarre, **lentement**. Panneau « 2019 · 2 s ». |
-| P5 | 13,0 – 15,5 | « Six ans plus tard : des tâches d'une heure. » | Autoroute, data centers au loin | Ça accélère. Panneau « 2025 · 1 h ». |
-| P6 | 15,5 – 18,8 | « Treize mois plus tard… au moins seize heures. » | La route **se cabre et devient la courbe** | Boost, la route monte presque à la verticale vers les étoiles. Panneau « 2026 · 16 h+ » ; le mètre ruban du détective arrive au bout. |
-| P7 | 18,8 – 22,8 | « Mais pour Yann LeCun, toute exponentielle finit par plafonner. » | Plateau au-dessus des nuages | La courbe **s'aplatit en S** (sigmoïde) ; le robotaxi roule au ralenti ; carte « suspect » Yann LeCun avec sa citation. |
-| P8 | 22,8 – 25,6 | « La vraie question… c'est quand ? » | Même plateau, brouillard devant | Gros plan : la loupe devant l'œil vert. Silence, tic-tac. La route devant : plateau ou nouvelle montée ? On ne voit pas. |
-| P9 | 25,6 – 29,5 | « Affaire à suivre. » | Carton titre (look de la miniature) | Ouverture en iris depuis la loupe → EXPONENTIEL, « L'IA SOUS ENQUÊTE », coup de chapeau, bouton S'ABONNER cliqué. |
+| P4 | 7,0 – 12,6 | « En 2019… deux secondes. » | Rue de San Francisco | Il atterrit sur le toit d'un robotaxi (toit enfoncé, dôme de capteurs fissuré). Le robotaxi démarre, **lentement**. Panneau « 2019 · 2 s ». |
+| P5 | 12,6 – 14,6 | « Six ans plus tard : une heure. » | Autoroute, data centers au loin | Ça accélère. Panneau « 2025 · 1 h ». |
+| P6 | 14,6 – 17,6 | « Treize mois plus tard… au moins seize heures. » | La route **se cabre et devient la courbe** | Boost, la route monte presque à la verticale vers les étoiles. Panneau « 2026 · 16 h+ » ; le mètre ruban du détective arrive au bout. |
+| P7 | 17,6 – 23,4 | « Le piège : un nénuphar qui double chaque jour couvre l'étang le trentième jour. La veille ? À moitié. » | Étang sous la lune | La route s'arrête net en haut de la courbe : le robotaxi s'envole, traverse les nuages et **atterrit sur une feuille de nénuphar géante** (plouf, écho de l'atterrissage sur le toit). Vue de drone : les feuilles doublent à chaque temps, le fil vert trace le bord de la zone couverte. Panneau en bois dans les roseaux : « JOUR 30 », l'étang est plein ; il se retourne sur « La veille ? » : « JOUR 29 », la moitié seulement. |
+| P8 | 23,4 – 25,8 | « Alors l'IA… on est à quel jour ? » | Même étang, eau libre devant | Gros plan : la loupe devant l'œil vert, dans laquelle se reflète le panneau « JOUR ?? » dont les chiffres tournent. Silence, tic-tac. On ne répond pas. |
+| P9 | 25,8 – 29,5 | « Affaire à suivre. » | Carton titre (look de la miniature) | Ouverture en iris depuis la loupe → EXPONENTIEL, « L'IA SOUS ENQUÊTE », coup de chapeau, bouton S'ABONNER cliqué. |
 
 ## Bruitages (repères depuis timing.json)
 
@@ -163,7 +163,7 @@ recale tout à chaque changement : c'est ce qui a coûté le plus de temps sur L
 | S08 | P4 → P6 | Moteur électrique qui monte d'une octave à chaque panneau | synthèse Python |
 | S09 | P4 à P6 | Passage de chaque panneau (whoosh court, de plus en plus aigu) | `media/sfx` |
 | S10 | P6 | Montée + « braaam » quand la route se cabre | `media/sfx` / son.py |
-| S11 | P7 | Vent d'altitude, moteur qui se stabilise sur une note tenue | synthèse + `media/sfx` |
+| S11 | P7 | Envol (le moteur s'arrête d'un coup), vent, gros plouf sur la feuille de nénuphar, puis grenouilles, grillons et clapotis ; « pop » d'eau à chaque doublement ; panneau de bois qui pivote | ElevenLabs + synthèse |
 | S12 | P8 | Silence, puis tic-tac d'horloge | ElevenLabs ou synthèse |
 | S13 | P9 | Iris, accord final, clic S'ABONNER, coup de chapeau | `media/sfx` de LA SOURCE |
 

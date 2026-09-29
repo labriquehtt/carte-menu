@@ -13,10 +13,13 @@ Préparé le 2026-09-29 (recherches, texte, brief), **rien n'est encore fabriqu�
 produit dans Claude Code en local (Terminal, avec Blender). Trois fichiers :
 - `SCRIPT.md` : le texte de la voix Sébas (balises eleven_v3), les sous-titres, les sources ligne par ligne
   (METR : 2 s en 2019 → ~1 h en 2025 → au moins 16 h en 2026 ; image des 30 pas de Kurzweil/Diamandis ;
-  Yann LeCun, « toute exponentielle finit en sigmoïde »), une réserve de faits sourcés et la légende Instagram.
+  devinette du nénuphar citée par *Les Limites à la croissance*, 1972), une réserve de faits sourcés et la
+  légende Instagram. **Pas de Yann LeCun** pour parler d'exponentialité (l'utilisateur juge qu'il n'est pas
+  le mieux placé).
 - `BRIEF.md` : l'ordre de fabrication (vérification → voix → timings → animatique → 3D Blender → robot 2D →
   bruitages → musique → mixage), le découpage en 9 plans, les bruitages, le budget, les 5 validations.
 - `PROMPT.md` : le méga prompt à coller dans Terminal (concept du « fil vert », décors 3D + robot 2D, plan par plan).
+- Vidéos courtes : l'utilisateur veut des Reels de **30 s maximum**.
 
 ## Anciens projets (retirés du dépôt, récupérables dans l'historique)
 
