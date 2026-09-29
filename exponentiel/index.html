@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>EXPONENTIEL — compositing</title>
+<style>
+@font-face{font-family:'Fredoka';font-weight:700;src:url(../parano-ia/assets/Fredoka-700.woff2) format('woff2')}
+@font-face{font-family:'Space Grotesk';font-weight:700;src:url(../parano-ia/assets/SpaceGrotesk-700.woff2) format('woff2')}
+@font-face{font-family:'IBM Plex Mono';font-weight:500;src:url(../parano-ia/assets/IBMPlexMono-500.woff2) format('woff2')}
+html,body{margin:0;padding:0;background:#0B1230;overflow:hidden}
+#stage{display:block}
+</style>
+</head>
+<body>
+<svg id="stage" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+<defs>
+<filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+<feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="4" result="a"/>
+<feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/>
+<feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="a"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+<feDropShadow dx="10" dy="18" stdDeviation="8" flood-color="#000" flood-opacity="0.5"/>
+</filter>
+<filter id="b3" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3"/></filter>
+<radialGradient id="vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient>
+<clipPath id="lensClip"><circle cx="0" cy="0" r="1"/></clipPath>
+<!-- les pièces du robot (planche/robot_defs.svg) sont injectées ici par render.js -->
+</defs>
+<g id="world">
+<image id="bg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="none"/>
+<g id="robotLayer"></g>
+<image id="fg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="none"/>
+<g id="fx"></g>
+</g>
+<rect width="1080" height="1920" fill="url(#vig)" pointer-events="none"/>
+<g id="subs"></g>
+<rect id="flash" width="1080" height="1920" fill="#FFFFFF" opacity="0"/>
+</svg>
+<script>
+// TIMING minimal pour core.js (il attend la structure de la bande-annonce PARANO-IA)
+const TIMING = { bpm: 118, dropBeats: 0, end: 60 };
+</script>
+<script src="../parano-ia/core.js"></script>
+<script src="compo.js"></script>
+</body>
+</html>
