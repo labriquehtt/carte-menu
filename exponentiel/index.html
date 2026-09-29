@@ -27,16 +27,32 @@ html,body{margin:0;padding:0;background:#0B1230;overflow:hidden}
 </filter>
 <filter id="b3" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3"/></filter>
 <radialGradient id="vig" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient>
+<!-- étalonnage du robot : il prend la lumière du décor (clair de lune bleuté), liseré clair côté lune -->
+<filter id="grade" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+<feColorMatrix type="matrix" values="0.80 0.04 0.04 0 0.00  0.03 0.84 0.05 0 0.01  0.04 0.07 0.95 0 0.035  0 0 0 1 0" result="c"/>
+<feMorphology in="SourceAlpha" operator="erode" radius="3" result="er"/>
+<feComposite in="SourceAlpha" in2="er" operator="out" result="edge"/>
+<feOffset in="edge" dx="-3" dy="-3" result="edge2"/>
+<feComposite in="edge2" in2="SourceAlpha" operator="in" result="rimA"/>
+<feFlood flood-color="#BFD3FF" flood-opacity="0.55"/>
+<feComposite in2="rimA" operator="in" result="rim"/>
+<feMerge><feMergeNode in="c"/><feMergeNode in="rim"/></feMerge>
+</filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%">
+<feTurbulence id="grainT" type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="1"/>
+<feColorMatrix type="saturate" values="0"/>
+</filter>
 <clipPath id="lensClip"><circle cx="0" cy="0" r="1"/></clipPath>
 <!-- les pièces du robot (planche/robot_defs.svg) sont injectées ici par render.js -->
 </defs>
 <g id="world">
 <image id="bg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="none"/>
-<g id="robotLayer"></g>
+<g id="robotLayer" filter="url(#grade)"></g>
 <image id="fg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="none"/>
 <g id="fx"></g>
 </g>
 <rect width="1080" height="1920" fill="url(#vig)" pointer-events="none"/>
+<rect id="grainR" width="1080" height="1920" filter="url(#grain)" opacity="0.07" style="mix-blend-mode:overlay"/>
 <g id="subs"></g>
 <rect id="flash" width="1080" height="1920" fill="#FFFFFF" opacity="0"/>
 </svg>

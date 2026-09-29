@@ -373,6 +373,8 @@ window.renderAt = async function (t) {
   drawFX(t);
   drawSubs(t);
   drawTransitions(t);
+  $('grainT').setAttribute('seed', String(1 + Math.round(t * 30) % 97));   // grain de film animé
+  attr($('robotLayer'), 'filter', p.id === 'P8' ? '' : 'url(#grade)');
   // attend que les images soient décodées
   await Promise.all([bg, fg].filter(im => im.style.display !== 'none' && im.getAttribute('href')).map(im => new Promise(res => {
     const img = new Image(); img.onload = img.onerror = res; img.src = im.getAttribute('href');
