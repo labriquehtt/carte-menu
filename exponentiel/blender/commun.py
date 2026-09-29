@@ -21,6 +21,9 @@ import bpy
 from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from matieres import pbr, final_look, world_sky   # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 TIMING = json.load(open(os.path.join(ROOT, 'timing.json'), encoding='utf8'))
@@ -36,9 +39,12 @@ def hexcol(h, a=1.0):
 
 
 GREEN, YELLOW, NIGHT = hexcol('4DFF8F'), hexcol('FFD23C'), hexcol('0B1230')
+QUALITY = 'anim'
+FOG = {}                       # brume du rendu final, réglée par décor : {'fog': 0.02, 'fog_color': (…)}
 
 
 def args():
+    global QUALITY
     a = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
     opt = {'quality': 'anim', 'step': 2, 'frames': None, 'render': True}
     i = 0
@@ -52,6 +58,7 @@ def args():
         elif a[i] == '--no-render':
             opt['render'] = False
         i += 1
+    QUALITY = opt['quality']
     return opt
 
 
@@ -112,7 +119,9 @@ def mat(name, color, emission=0.0, rough=0.6):
 
 
 def toon(name, color, shade=0.45):
-    """ombrage cartoon à deux tons (Shader to RGB + rampe constante)"""
+    """animatique : couleur unie (Workbench) ; final : matière réaliste procédurale (voir pbr)"""
+    if QUALITY == 'final':
+        return pbr(name, color)
     m = bpy.data.materials.get(name)
     if m:
         return m
@@ -281,7 +290,7 @@ def setup_render(sc, quality, out_dir):
         e.taa_render_samples = 16
         r.use_motion_blur = True
         r.motion_blur_shutter = 0.5
-        lineart(sc)
+        final_look(sc, **FOG)
 
 
 def lineart(sc):

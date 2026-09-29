@@ -36,19 +36,47 @@ metal = C.toon('metal', C.hexcol('59606E'))
 dark = C.toon('sombre', C.hexcol('1A2033'))
 glass = C.toon('verre', C.hexcol('2A3F6E'), 0.7)
 cloud_m = C.toon('nuage', C.hexcol('3B4A7A'), 0.7)
-star_m = C.mat('etoile', C.hexcol('FFFFFF'), emission=3.0)
-C.sun(1.4)
+star_m = C.mat('etoile', C.hexcol('FFFFFF'), emission=6.0)
+C.sun(1.4 if C.QUALITY != 'final' else 4.0, color=(0.62, 0.72, 1.0))
+if C.QUALITY == 'final':                              # même clair de lune que l'étang
+    C.world_sky(sc, strength=1.2)
 
-for i in range(160):                                  # ciel étoilé (une coupole)
-    th, ph = rng.random() * 2 * math.pi, rng.uniform(0.15, 1.3)
-    r = 400
-    C.sphere(f'etoile{i}', (r * math.cos(th) * math.cos(ph), r * math.sin(th) * math.cos(ph), r * math.sin(ph)),
-             rng.uniform(0.6, 1.4), star_m, seg=6)
+import nature as NA   # noqa: E402
+
+NA.ciel(260, rng, star_m)
+C.sphere('lune', (-60, 260, 120), 9, C.mat('lune', C.hexcol('FFF3C4'), emission=5.0))
 
 
 def track_z(y, steep):
     """hauteur de la piste : exponentielle 2^(y/steep) - 1"""
     return 2 ** (y / steep) - 1
+
+
+def deck(name, pts, half=0.8):
+    """tablier de verre sous les rails (bande de faces le long de la piste)"""
+    verts, faces = [], []
+    for i, p in enumerate(pts):
+        verts += [(p[0] - half, p[1], p[2] - 0.03), (p[0] + half, p[1], p[2] - 0.03)]
+        if i:
+            faces.append((2 * i - 2, 2 * i - 1, 2 * i + 1, 2 * i))
+    me = bpy.data.meshes.new(name)
+    me.from_pydata(verts, [], faces)
+    o = bpy.data.objects.new(name, me)
+    sc.collection.objects.link(o)
+    m = bpy.data.materials.get('tablier') or bpy.data.materials.new('tablier')
+    m.use_nodes = True
+    b = m.node_tree.nodes['Principled BSDF']
+    b.inputs['Base Color'].default_value = (0.02, 0.12, 0.06, 1)
+    b.inputs['Roughness'].default_value = 0.05
+    b.inputs['Metallic'].default_value = 0.4
+    b.inputs['Emission Color'].default_value = C.GREEN
+    b.inputs['Emission Strength'].default_value = 0.25
+    b.inputs['Alpha'].default_value = 0.55
+    if hasattr(m, 'surface_render_method'):
+        m.surface_render_method = 'BLENDED'
+    m.diffuse_color = (0.05, 0.3, 0.15, 1)
+    o.data.materials.append(m)
+    return C.link(o)
 
 
 def build_track(y0, y1, steep, n=400, x=0.0, z0=0.0, name='piste'):
@@ -57,6 +85,10 @@ def build_track(y0, y1, steep, n=400, x=0.0, z0=0.0, name='piste'):
     rail_pts = [(p[0] + 0.9, p[1], p[2]) for p in pts]
     C.curve_from_points(name + '_g', rail_pts, 0.04, fil)
     C.curve_from_points(name + '_d', [(p[0] - 0.9, p[1], p[2]) for p in pts], 0.04, fil)
+    deck(name + '_tablier', pts)
+    for i in range(0, n, 8):                          # traverses lumineuses : on sent la vitesse
+        p0, p1 = Vector(pts[i]), Vector(pts[min(n, i + 1)])
+        C.curve_from_points(f'{name}_trav{i}', [(p0.x - 0.9, p0.y, p0.z), (p0.x + 0.9, p0.y, p0.z)], 0.025, fil)
     return pts
 
 
@@ -93,10 +125,29 @@ extra_pts = {}
 
 if PID == 'P3':
     # l'eau de l'étang au départ, puis la piste file vers les étoiles ; panneaux METR
-    C.cyl('etang', (0, 0, -0.03), 14, 0.04, C.toon('eau', C.hexcol('10254A'), 0.6), verts=64)
-    for i in range(40):
-        ang = rng.random() * 2 * math.pi
-        C.cyl(f'n{i}', (rng.uniform(-10, 10), rng.uniform(-12, 4), 0.01), rng.uniform(0.35, 0.5), 0.02, pad_m, verts=12)
+    C.cyl('etang', (0, 0, -0.03), 30, 0.04, C.toon('eau', C.hexcol('10254A'), 0.6), verts=96)
+    for i in range(160):                              # l'étang couvert de feuilles (on sort du jour 30)
+        x, y = rng.uniform(-12, 12), rng.uniform(-14, 10)
+        if abs(x) < 1.3:
+            continue
+        C.cyl(f'n{i}', (x, y, 0.01), rng.uniform(0.35, 0.5), 0.02, pad_m, verts=14)
+    needles = C.toon('aiguilles', C.hexcol('1E3A2A'), 0.7)
+    bark = C.toon('ecorce', C.hexcol('3A2A1E'))
+    for i in range(40):                               # la forêt autour, qui défile quand on accélère
+        side = -1 if i % 2 else 1
+        NA.sapin(f'sapin{i}', (side * rng.uniform(14, 30), rng.uniform(-20, 140), 0), rng.uniform(7, 13), rng, needles, bark)
+    for i in range(70):                               # la forêt continue sous la piste
+        side = -1 if i % 2 else 1
+        NA.sapin(f'sapinloin{i}', (side * rng.uniform(4, 60), rng.uniform(140, 420), 0), rng.uniform(8, 16), rng, needles, bark)
+    C.box('plaine', (0, 200, -0.2), (400, 500, 0.2), C.toon('sol_mousse', C.hexcol('1C2A1C')))
+    warm = C.mat('lumiere_ville', C.YELLOW, emission=12.0)
+    for i in range(140):                              # lumières de la vallée, au loin
+        C.sphere(f'ville{i}', (rng.uniform(-160, 160), rng.uniform(260, 520), 0.3), rng.uniform(0.15, 0.5), warm, seg=6)
+    rock_m = C.toon('roche', C.hexcol('4A4E55'))
+    for i in range(18):
+        NA.rocher(f'rocher{i}', (rng.choice((-1, 1)) * rng.uniform(12, 16), rng.uniform(-10, 40), 0), rng.uniform(0.4, 1.2), rock_m, rng)
+    if C.QUALITY == 'final':
+        C.FOG.update(fog=0.05, fog_color=(0.55, 0.62, 0.9), fog_box=((0, 30, 1.5), (80, 120, 3)))
     L = 420
     pts = build_track(0, L, 60)
     # le fil se soulève de l'eau : la piste monte de sous la surface sur « courbe »
@@ -130,8 +181,20 @@ elif PID == 'P4':
     # couloir de serveurs du labo « OpenIA » ; au bout, un écran qui contient un écran qui contient un écran…
     L = 60
     pts = build_track(0, L, 1e9, n=60)                # piste à plat dans le labo
-    C.box('sol', (0, L / 2, -0.1), (12, L + 20, 0.2), dark)
+    shiny = C.mat('sol_brillant', C.hexcol('0C0F18'), rough=0.08)
+    C.box('sol', (0, L / 2, -0.1), (12, L + 20, 0.2), shiny)
     C.box('plafond', (0, L / 2, 6.2), (12, L + 20, 0.2), dark)
+    strip = C.mat('neon_plafond', C.hexcol('DDE8FF'), emission=6.0)
+    for k in range(14):                               # néons au plafond (ils filent au-dessus de la caméra)
+        C.box(f'neon{k}', (0, 2 + k * 4.4, 6.05), (0.25, 2.6, 0.06), strip)
+    if C.QUALITY == 'final':
+        C.FOG.update(fog=0.06, fog_color=(0.6, 0.8, 1.0), fog_box=((0, L / 2, 3), (12, L + 20, 6)))
+        for k in range(8):                            # lampes du couloir (sous les néons)
+            ld = bpy.data.lights.new(f'lampe{k}', 'AREA')
+            ld.energy, ld.size, ld.color = 260, 2.5, (0.85, 0.92, 1.0)
+            lo = bpy.data.objects.new(f'lampe{k}', ld)
+            sc.collection.objects.link(lo)
+            lo.location = (0, 2 + k * 8, 5.9)
     led_on = C.mat('led_v', C.GREEN, emission=12.0)
     led_b = C.mat('led_b', C.hexcol('4DA3FF'), emission=10.0)
     for side in (-1, 1):
@@ -155,7 +218,36 @@ elif PID == 'P4':
                 seg1.rotation_euler = (math.sin(fr * 0.21 + k) * 0.6, math.cos(fr * 0.17 + k) * 0.5, 0)
                 seg1.keyframe_insert('rotation_euler', frame=fr)
             C.box(f'piece{side}{k}', (side * 1.9, y + 0.6, 0.3), (0.5, 0.3, 0.3), C.toon('orange', C.hexcol('E07A2E')))
-    screen_m = C.mat('ecran', C.hexcol('0E3B2A'), emission=2.0)
+    screen_m = bpy.data.materials.new('ecran_code')        # « du code qui écrit du code » : lignes qui défilent
+    screen_m.use_nodes = True
+    N, Lk = screen_m.node_tree.nodes, screen_m.node_tree.links
+    bsdf = N['Principled BSDF']
+    tcs = N.new('ShaderNodeTexCoord')
+    mp = N.new('ShaderNodeMapping')
+    Lk.new(tcs.outputs['Object'], mp.inputs['Vector'])
+    mp.inputs['Location'].keyframe_insert('default_value', frame=s0)
+    mp.inputs['Location'].default_value[2] = 3.0
+    mp.inputs['Location'].keyframe_insert('default_value', frame=s1)
+    wv = N.new('ShaderNodeTexWave')
+    wv.bands_direction = 'Z'
+    wv.inputs['Scale'].default_value = 9
+    wv.inputs['Distortion'].default_value = 0.0
+    nz = N.new('ShaderNodeTexNoise')
+    nz.inputs['Scale'].default_value = 30
+    Lk.new(mp.outputs['Vector'], wv.inputs['Vector'])
+    Lk.new(mp.outputs['Vector'], nz.inputs['Vector'])
+    mul = N.new('ShaderNodeMath')
+    mul.operation = 'MULTIPLY'
+    Lk.new(wv.outputs['Fac'], mul.inputs[0])
+    Lk.new(nz.outputs['Fac'], mul.inputs[1])
+    gt = N.new('ShaderNodeMath')
+    gt.operation = 'GREATER_THAN'
+    gt.inputs[1].default_value = 0.32
+    Lk.new(mul.outputs[0], gt.inputs[0])
+    bsdf.inputs['Base Color'].default_value = (0.01, 0.03, 0.02, 1)
+    bsdf.inputs['Emission Color'].default_value = C.GREEN
+    Lk.new(gt.outputs[0], bsdf.inputs['Emission Strength'])
+    screen_m.diffuse_color = (0.05, 0.25, 0.15, 1)
     for k in range(7):                                # écrans en mise en abyme au fond du couloir
         s = 5.2 * 0.62 ** k
         C.box(f'cadre{k}', (0, L + 1 - k * 0.02, 3.0), (s * 0.62, 0.05, s), metal if k % 2 == 0 else screen_m)
@@ -180,7 +272,10 @@ elif PID == 'P5':
     pts = build_track(0, L, 12)
     C.box('toit', (0, -6, -1.2), (16, 20, 2.4), glass)
     for i in range(30):
-        C.sphere(f'nuage{i}', (rng.uniform(-30, 30), rng.uniform(10, 140), rng.uniform(4, 90)), rng.uniform(2, 6), cloud_m, seg=10)
+        c = (rng.uniform(-30, 30), rng.uniform(10, 140), rng.uniform(4, 90))
+        for j in range(4):                            # un nuage = quatre boules déformées
+            NA.rocher(f'nuage{i}_{j}', (c[0] + rng.uniform(-3, 3), c[1] + rng.uniform(-2, 2), c[2] + rng.uniform(-1, 1)),
+                      rng.uniform(5, 9), cloud_m, rng)
     cal = C.box('calendrier', (-6, 38, track_z(38, 12) + 3), (4.2, 0.4, 5.2), C.toon('papier', C.hexcol('F4F1EA'), 0.8))
     C.box('cal_haut', (-6, 37.9, track_z(38, 12) + 5.8), (4.2, 0.5, 0.9), C.toon('rouge', C.hexcol('D8453B')))
     fus = F(K['une_seule'])
@@ -218,8 +313,17 @@ elif PID == 'P5':
 else:
     # P6 : aiguillage dans le ciel. Rail blanc en pointillés « ce qu'on veut » (droit) / rail vert qui s'en écarte
     for i in range(24):
-        C.sphere(f'nuage{i}', (rng.uniform(-25, 25), rng.uniform(-10, 60), rng.uniform(-8, -2)), rng.uniform(3, 7), cloud_m, seg=10)
-    C.box('plateforme', (0, 0, -0.3), (5, 6, 0.4), metal, bevel=0.1)
+        c = (rng.uniform(-25, 25), rng.uniform(-10, 60), rng.uniform(-8, -2))
+        for j in range(4):
+            NA.rocher(f'nuage{i}_{j}', (c[0] + rng.uniform(-4, 4), c[1] + rng.uniform(-3, 3), c[2] + rng.uniform(-1, 1)),
+                      rng.uniform(6, 11), cloud_m, rng)
+    rock_m = C.toon('roche', C.hexcol('4A4E55'))
+    ile = NA.rocher('ile', (0, 0.5, -1.2), 3.2, rock_m, rng)
+    ile.scale = (1.2, 1.4, 0.5)
+    C.box('dalle', (0, 0.5, -0.12), (4.2, 5, 0.16), C.toon('metal_dalle', C.hexcol('3A3F4A')), bevel=0.04)
+    for i in range(8):                                 # mousse et herbes sur l'île
+        NA.massette(f'herbe{i}', (rng.uniform(-2.2, 2.2), rng.uniform(-1.5, 2.8), -0.05), rng.uniform(0.3, 0.7),
+                    C.toon('roseau', C.hexcol('3E5A2E')), C.toon('epi', C.hexcol('5A3A22')), rng)
     pts_w = [(0, y, 0.12 * y) for y in [i * 0.5 for i in range(80)]]
     for i in range(0, 79, 2):                         # pointillés blancs
         p0, p1 = Vector(pts_w[i]), Vector(pts_w[i + 1])
@@ -235,7 +339,13 @@ else:
     vert.data.bevel_factor_end = 1.0
     vert.data.keyframe_insert('bevel_factor_end', frame=fo)
     C.box('socle_levier', (-1.6, 1.5, 0.2), (0.6, 0.6, 0.5), metal)
-    lever = C.box('levier', (-1.6, 1.5, 1.1), (0.14, 0.14, 1.8), C.toon('rouge', C.hexcol('D8453B')))
+    lever = C.box('levier', (-1.6, 1.5, 1.1), (0.12, 0.12, 1.8), C.toon('rouge', C.hexcol('D8453B')))
+    poignee = C.sphere('poignee', (0, 0, 0.95), 0.16, C.toon('metal', C.hexcol('59606E')))
+    poignee.parent = lever
+    poignee.location = (0, 0, 0.95)
+    C.cyl('axe', (-1.6, 1.5, 0.25), 0.2, 0.7, C.toon('metal', C.hexcol('59606E')), rot=(0, math.radians(90), 0))
+    lampe_m = C.mat('voyant', (1.0, 0.25, 0.2, 1), emission=8.0)
+    C.sphere('voyant', (-1.15, 1.2, 0.6), 0.08, lampe_m, seg=8)      # voyant rouge : « pas aligné »
     for fr in range(s0, s1 + 1, 6):                   # le levier résiste : il tremble sans basculer
         lever.rotation_euler = (0, math.radians(18 + rng.uniform(-4, 4)), 0)
         lever.keyframe_insert('rotation_euler', frame=fr)

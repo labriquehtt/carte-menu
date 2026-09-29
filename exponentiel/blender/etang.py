@@ -53,28 +53,35 @@ fil = C.mat('fil_vert', C.GREEN, emission=6.0)
 moon_m = C.mat('lune', C.hexcol('FFF3C4'), emission=4.0)
 glow_m = C.mat('luciole', C.GREEN, emission=10.0)
 
-C.cyl('eau', (0, 0, -0.02), R_POND, 0.04, water, verts=96)
-C.cyl('berge', (0, 0, -0.08), R_POND + 1.6, 0.1, bank, verts=96)
-C.cyl('sol', (0, 0, -0.14), 60, 0.1, C.toon('sol', C.hexcol('0F1A14')), verts=64)
+import nature as NA   # noqa: E402
+
+C.cyl('eau', (0, 0, -0.02), R_POND + 0.6, 0.04, water, verts=128)
+NA.sol('sol', 60, C.toon('sol_mousse', C.hexcol('1C2A1C')))
 C.sphere('lune', (-30, 70, 38), 5, moon_m)
-for i in range(26):                                     # arbres en silhouette autour
-    ang = i / 26 * 2 * math.pi + rng.uniform(-0.1, 0.1)
-    d = rng.uniform(15, 22)
-    h = rng.uniform(5, 10)
-    bpy.ops.mesh.primitive_cone_add(vertices=8, radius1=rng.uniform(1.4, 2.4), depth=h,
-                                    location=(d * math.cos(ang), d * math.sin(ang), h / 2 - 0.1))
-    o = bpy.context.object
-    o.data.materials.append(tree_m)
-    C.link(o)
-for i in range(70):                                     # roseaux au bord de l'eau
+NA.ciel(260, rng, C.mat('etoile', C.hexcol('FFFFFF'), emission=6.0))
+needles = C.toon('aiguilles', C.hexcol('1E3A2A'), 0.7)
+bark = C.toon('ecorce', C.hexcol('3A2A1E'))
+for i in range(34):                                     # forêt de sapins autour de l'étang
+    ang = i / 34 * 2 * math.pi + rng.uniform(-0.08, 0.08)
+    d = rng.uniform(14.5, 24)
+    NA.sapin(f'sapin{i}', (d * math.cos(ang), d * math.sin(ang), max(0.0, (d - 11.5) * 0.18) - 0.1), rng.uniform(6, 11), rng, needles, bark)
+rock_m = C.toon('roche', C.hexcol('4A4E55'))
+for i in range(22):                                     # rochers sur la berge
     ang = rng.random() * 2 * math.pi
-    d = R_POND + rng.uniform(-0.2, 1.2)
-    h = rng.uniform(0.8, 1.8)
-    o = C.cyl(f'roseau{i}', (d * math.cos(ang), d * math.sin(ang), h / 2), 0.04, h, reed_m, verts=6)
-    o.rotation_euler = (rng.uniform(-0.15, 0.15), rng.uniform(-0.15, 0.15), 0)
-    o.keyframe_insert('rotation_euler', frame=sc.frame_start)
-    o.rotation_euler.x += 0.08
-    o.keyframe_insert('rotation_euler', frame=sc.frame_start + 45)
+    d = R_POND + rng.uniform(0.4, 2.2)
+    NA.rocher(f'rocher{i}', (d * math.cos(ang), d * math.sin(ang), 0.0), rng.uniform(0.25, 0.8), rock_m, rng)
+cattail = C.toon('epi', C.hexcol('5A3A22'))
+for i in range(110):                                    # massettes au bord de l'eau, qui ondulent
+    ang = rng.random() * 2 * math.pi
+    d = R_POND + rng.uniform(-0.3, 1.4)
+    o = NA.massette(f'roseau{i}', (d * math.cos(ang), d * math.sin(ang), 0), rng.uniform(0.9, 2.0), reed_m, cattail, rng)
+    base = o.rotation_euler.copy()
+    for fr in range(sc.frame_start, sc.frame_end + 1, 20):
+        o.rotation_euler = (base.x + 0.06 * math.sin(fr * 0.09 + i), base.y + 0.04 * math.cos(fr * 0.07 + i), 0)
+        o.keyframe_insert('rotation_euler', frame=fr)
+petal = C.toon('petale', C.hexcol('F2C6D8'), 0.8)
+heart = C.mat('coeur', C.YELLOW, emission=0.6)
+
 for i in range(18):                                     # lucioles
     s = C.sphere(f'luciole{i}', (rng.uniform(-9, 9), rng.uniform(-9, 9), rng.uniform(0.6, 2.2)), 0.05, glow_m, seg=8)
     for fr in range(sc.frame_start, sc.frame_end + 1, 15):
@@ -137,6 +144,11 @@ for fr in range(sc.frame_start, sc.frame_end + 1):
             o['last'] = s
     for o in buckets:
         C.ease_all(o, 'CONSTANT')
+for i, idx in enumerate((0, 2, 5, 9, 14, 21, 30, 41, 55, 90, 140, 230, 400, 700)):   # fleurs, portées par leur feuille
+    x, y, r, _ = pads[idx]
+    k = 0 if idx == 0 else int(math.log2(idx)) + 1
+    for o in NA.fleur(f'fleur{i}', (x + 0.08, y + 0.05, 0.02), petal, heart, rng):
+        o.parent = buckets[k]          # la feuille est à l'origine, sans rotation : pas de matrice inverse
 
 # fil vert : bord de la zone couverte, un anneau par jour (20 → 30)
 rings = {}
@@ -166,21 +178,21 @@ for o in rings.values():
 # ---------------- barque, robot, panneau ----------------
 r29 = covered_radius(512)
 bx, by = SEED[0] + r29 * math.cos(0.55), SEED[1] + r29 * math.sin(0.55)   # la barque est sur la frontière du jour 29
-boat = C.box('barque', (bx, by, 0.12), (1.5, 0.75, 0.3), wood, bevel=0.12)
+boat = NA.barque('barque', (bx, by, 0.2), wood)
 boat.rotation_euler.z = 0.55
 anchor = C.empty('ROBOT_ANCHOR', (bx, by, 0.3))
 anchor['robot_scale'] = 1.0
 anchor.parent = boat
-anchor.location = (0, 0, 0.6)
+anchor.location = (0, 0, -0.05)   # pieds du robot assis au fond de la barque
 boat.keyframe_insert('location', frame=sc.frame_start)
 jf = F(K['jour30'])
 if sc.frame_start <= jf <= sc.frame_end:                 # la barque est soulevée par les feuilles, puis retombe
     boat.keyframe_insert('location', frame=jf - 2)
-    boat.location.z = 0.55
+    boat.location.z = 0.6
     boat.rotation_euler.x = 0.18
     boat.keyframe_insert('location', frame=jf + 4)
     boat.keyframe_insert('rotation_euler', frame=jf + 4)
-    boat.location.z = 0.2
+    boat.location.z = 0.25
     boat.rotation_euler.x = -0.05
     boat.keyframe_insert('location', frame=jf + 14)
     boat.keyframe_insert('rotation_euler', frame=jf + 14)
@@ -203,7 +215,22 @@ for i in range(9):
     h = rng.uniform(1.2, 2.2)
     C.cyl(f'roseau_fg{i}', (bx - 1.2 + i * 0.3, by - 1.6 + rng.uniform(-0.2, 0.2), h / 2), 0.035, h, fg_m, collection='FG', verts=6)
 
-C.sun(1.6)
+C.sun(1.6 if C.QUALITY != 'final' else 4.5, color=(0.62, 0.72, 1.0))
+if C.QUALITY == 'final':
+    C.FOG.update(fog=0.05, fog_color=(0.55, 0.62, 0.9), fog_box=((0, 0, 1.2), (44, 44, 2.4)))
+    C.world_sky(sc, strength=1.5)                             # ciel de nuit en dégradé (éclaire aussi les ombres)
+    lamp = bpy.data.lights.new('lanterne', 'POINT')           # lanterne chaude sur la barque (touche jaune)
+    lamp.energy, lamp.color, lamp.shadow_soft_size = 35, (1.0, 0.78, 0.35), 0.15
+    lo = bpy.data.objects.new('lanterne', lamp)
+    sc.collection.objects.link(lo)
+    lo.parent = boat
+    lo.location = (0.55, 0.2, 0.9)
+    rim = bpy.data.lights.new('contre', 'AREA')                # contre-jour lunaire sur l'eau
+    rim.energy, rim.size, rim.color = 900, 12, (0.55, 0.65, 1.0)
+    ro = bpy.data.objects.new('contre', rim)
+    sc.collection.objects.link(ro)
+    ro.location = (-25, 55, 20)
+    C.look_at(ro, (0, 0, 0))
 cam = C.camera(lens=24 if PID != 'P7' else 50)
 
 # ---------------- caméras ----------------
@@ -242,7 +269,7 @@ elif PID == 'P2':
         return loc, tgt, 24 - 4 * u, -10 * u
     C.cam_path(cam, range(s0, s1 + 1), cam_p2)
     boat.keyframe_insert('location', frame=fc + 10)
-    boat.location = (SEED[0] + covered_radius(32) + 0.9, SEED[1] + 0.3, 0.12)
+    boat.location = (SEED[0] + covered_radius(32) + 0.9, SEED[1] + 0.3, 0.2)
     boat.keyframe_insert('location', frame=fc + 11)
     C.ease_all(boat, 'CONSTANT')
 else:
