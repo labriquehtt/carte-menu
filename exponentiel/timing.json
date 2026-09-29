@@ -1,6 +1,6 @@
 {
  "fps": 30,
- "duration": 29.0,
+ "duration": 44.0,
  "bpm": 118,
  "voice": "media/voix_ia/voix.wav",
  "plans": [
@@ -57,30 +57,30 @@
   {
    "id": "P6",
    "start": 19.41,
-   "end": 24.73,
+   "end": 24.42,
    "frames": [
     582,
-    742
+    733
    ],
    "desc": "L'aiguillage : ce qu'on veut / ce qu'elle fait"
   },
   {
-   "id": "P7",
-   "start": 24.73,
-   "end": 26.13,
+   "id": "M1",
+   "start": 24.419999999999998,
+   "end": 40.89,
    "frames": [
-    742,
-    784
+    733,
+    1227
    ],
-   "desc": "Gros plan loupe : JOUR ??"
+   "desc": "Motion design : il sort du décor 3D, puis explique l'alignement"
   },
   {
    "id": "P8",
-   "start": 26.13,
-   "end": 29.0,
+   "start": 40.89,
+   "end": 44.0,
    "frames": [
-    784,
-    870
+    1227,
+    1320
    ],
    "desc": "Carton final EXPONENTIEL"
   }
@@ -100,9 +100,24 @@
   "une_seule": 18.85,
   "garantit": 20.33,
   "openai": 22.09,
-  "pas_savoir": 23.93,
-  "quel_jour": 25.53,
-  "iris": 25.98,
+  "pas_savoir": 23.97,
+  "cest": 14.05,
+  "lauto": 14.29,
+  "amelio": 14.73,
+  "sortie": 24.42,
+  "align": 25.45,
+  "veut2": 28.57,
+  "probleme": 28.89,
+  "recompense": 31.21,
+  "tests": 32.57,
+  "alors_elle": 32.85,
+  "decrocher": 33.57,
+  "sans": 34.97,
+  "comme": 36.05,
+  "triche": 36.85,
+  "align2": 37.97,
+  "video": 39.97,
+  "iris": 40.74,
   "doublements_P1": [
    0.242,
    0.496,
@@ -419,43 +434,239 @@
   ],
   [
    "SAVOIR",
-   23.93
+   23.97
   ],
   [
-   "ALORS",
-   24.73
+   "L'ALIGNEMENT",
+   25.45
+  ],
+  [
+   "S'EST",
+   26.25
+  ],
+  [
+   "FAIRE",
+   26.45
+  ],
+  [
+   "EN",
+   26.65
+  ],
+  [
+   "SORTE",
+   26.77
+  ],
+  [
+   "QU'UNIA",
+   27.05
+  ],
+  [
+   "VEUILLE",
+   27.53
+  ],
+  [
+   "VRAIMENT",
+   27.89
+  ],
+  [
+   "CE",
+   28.33
+  ],
+  [
+   "QU'ON",
+   28.41
+  ],
+  [
+   "VEUT",
+   28.57
+  ],
+  [
+   "PROBLÈME",
+   28.89
   ],
   [
    "ON",
-   25.05
+   29.49
   ],
   [
-   "EST",
-   25.21
+   "LUI",
+   29.65
+  ],
+  [
+   "ÉCRIT",
+   29.77
+  ],
+  [
+   "PAS",
+   30.01
+  ],
+  [
+   "SES",
+   30.17
+  ],
+  [
+   "OBJECTIFS",
+   30.33
+  ],
+  [
+   "ON",
+   30.89
+  ],
+  [
+   "LA",
+   31.05
+  ],
+  [
+   "RÉCOMPENSE",
+   31.21
+  ],
+  [
+   "QUAND",
+   31.61
+  ],
+  [
+   "ELLE",
+   31.85
+  ],
+  [
+   "RÉUSSIT",
+   31.97
+  ],
+  [
+   "DES",
+   32.49
+  ],
+  [
+   "TESTS",
+   32.57
+  ],
+  [
+   "ALORS",
+   32.85
+  ],
+  [
+   "ELLE",
+   33.01
+  ],
+  [
+   "PEUT",
+   33.13
+  ],
+  [
+   "APPRENDRE",
+   33.25
   ],
   [
    "À",
-   25.33
+   33.53
   ],
   [
-   "QUEL",
-   25.53
+   "DÉCROCHER",
+   33.57
   ],
   [
-   "JOUR",
-   25.85
+   "LA",
+   33.97
+  ],
+  [
+   "RÉCOMPENSE",
+   34.13
+  ],
+  [
+   "SANS",
+   34.97
+  ],
+  [
+   "FAIRE",
+   35.17
+  ],
+  [
+   "CE",
+   35.37
+  ],
+  [
+   "QU'ON",
+   35.45
+  ],
+  [
+   "VOULAIT",
+   35.69
+  ],
+  [
+   "COMME",
+   36.05
+  ],
+  [
+   "UN",
+   36.17
+  ],
+  [
+   "ÉLÈVE",
+   36.33
+  ],
+  [
+   "QUI",
+   36.65
+  ],
+  [
+   "TRICHE",
+   36.85
+  ],
+  [
+   "AU",
+   37.13
+  ],
+  [
+   "LIEU",
+   37.33
+  ],
+  [
+   "D'APPRENDRE",
+   37.49
+  ],
+  [
+   "L'ALIGNEMENT",
+   37.97
+  ],
+  [
+   "ON",
+   38.77
+  ],
+  [
+   "LUI",
+   38.93
+  ],
+  [
+   "CONSACRE",
+   39.13
+  ],
+  [
+   "BIENTÔT",
+   39.53
+  ],
+  [
+   "UNE",
+   39.81
+  ],
+  [
+   "VIDÉO",
+   39.97
+  ],
+  [
+   "ENTIÈRE",
+   40.49
   ],
   [
    "AFFAIRE",
-   26.13
+   40.89
   ],
   [
    "À",
-   26.53
+   41.25
   ],
   [
    "SUIVRE",
-   26.65
+   41.37
   ]
  ]
 }

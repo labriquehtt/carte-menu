@@ -101,7 +101,13 @@ VOIX_DIR=media/voix_ia python mix_voix.py --music out/musique2.wav --music-gain 
   grain) rendus par `render.js` (Playwright). Son : `sons.py` (5 bruitages ElevenLabs dans `media/sfx_expo`,
   sons de LA SOURCE, synthèse des pops/glisse/tic-tac ; GROOVE 118 BPM). Tout : `bash rendu_decors.sh && bash montage.sh`
   → `out/EXPONENTIEL-reel.mp4`.
-- Crédits ElevenLabs : 526 (prise Sébas refusée) + 580 (Hugo) + 83 (5 bruitages) = **1 189**.
+- **v2 (44 s, `out/EXPONENTIEL-reel-v2.mp4`)** sans nouveau rendu Blender : `motion.js` (typo animée « C'EST / L'AUTO /
+  AMÉLIORATION » avec la musique coupée, sortie du robot hors du décor 3D, séquence « alignement » dans une arène néon
+  en motion design, décor du carton final). « Alors l'IA… on est à quel jour ? » retiré ; voix alignement
+  `media/voix_ia/alignement_hugo.mp3` collée par `place_voix2.py` (lancer place_voix2 après place_voix).
+  Rendu par tranches : `node render.js --plates plates --video out/tranches/v.mp4 --workers 2 --sub 4 --range a:b`
+  (12 Go de RAM : jamais plus de 2 navigateurs), puis concaténation et encodage 2 passes.
+- Crédits ElevenLabs : 526 (prise Sébas refusée) + 580 (Hugo) + 83 (5 bruitages) + 405 (alignement) = **1 594**.
 
 ## Règles
 

@@ -9,7 +9,7 @@ const plans = () => D().timing.plans;
 const planAt = t => plans().find(p => t >= p.start && t < p.end) || plans()[plans().length - 1];
 
 // ---------------- robot ----------------
-let RB, TALK, SHADOW;
+let RB, TALK, SHADOW, MOTION = {};
 const MOUTH = { f: 'ferm', m: 'mi', u: 'ouv', o: 'o' };
 ARMS.surf = { L: [-62, 40, -130, 30, -176, 6], R: [62, 40, 130, 30, 176, -4] };            // bras écartés pour l'équilibre
 ARMS.holdHat = { L: [-62, 40, -150, 20, -150, -40], R: [62, 40, 110, -40, 64, -196] };      // retient son chapeau
@@ -72,20 +72,24 @@ function drawRobot(t) {
   const p = planAt(t);
   vis(FX.robotT.root, false);
   if (p.id === 'P8') { vis(RB.root, false); vis(SHADOW, false); return drawTitleRobot(t); }
+  if (p.id === 'M1') {                                      // séquence motion design : position donnée par motion.js
+    const M = MOTION.robot;
+    if (!M) { vis(RB.root, false); vis(SHADOW, false); return; }
+    vis(RB.root, true); vis(SHADOW, true);
+    poseRobot(RB, { x: M.x, y: M.y - 166 * M.s, s: M.s, rot: M.rot, face: M.face, blink: blinkAt(t), arms: M.arms, loupe: M.loupe });
+    attr(SHADOW, 'transform', `translate(${r2(M.x)} ${r2(M.y + 6 * M.s)}) scale(${r2(M.s * 1.1)} ${r2(M.s * 0.25)})`);
+    return drawMouth(t, M.face);
+  }
   const A = anchorAt(p.id, t);
   if (!A || A.z <= 0) { vis(RB.root, false); vis(SHADOW, false); return; }
   vis(RB.root, true);
   const st = direction(t);
   let s = Math.min(Math.max(A.s * st.s, st.minS), st.maxS || 9);
   let x = A.x + st.dx, y = A.y + st.dy, rot = (A.rot || 0) + st.rot;
-  if (p.id === 'P7') {                                      // gros plan : la loupe devant l'œil, énorme
-    const u = seg(t, p.start, p.end);
-    s = lerp(2.9, 3.4, E.soft(u)); x = 540 - 30 * s; y = 820 + 96 * s + 166 * s;   // lentille centrée en (540, 820)
-  }
   poseRobot(RB, { x, y: y - 166 * s, s, rot, face: st.face, blink: blinkAt(t), sit: st.sit, arms: st.arms, loupe: st.loupe,
     hatLift: p.id === 'P5' && t > K().une_seule ? 0.25 * Math.abs(Math.sin(t * 25)) : 0 });
   // ombre portée sur le décor (le papier découpé posé dans la 3D)
-  vis(SHADOW, p.id !== 'P7');
+  vis(SHADOW, true);
   attr(SHADOW, 'transform', `translate(${r2(x + 14 * s)} ${r2(y + 4 * s)}) scale(${r2(s * 1.1)} ${r2(s * 0.28)})`);
   drawMouth(t, st.face);
 }
@@ -132,8 +136,8 @@ function buildFX() {
   FX.card = g(fx);                                                                      // fiche d'enquête épinglée
   mk('rect', { x: -330, y: -95, width: 660, height: 190, rx: 16, fill: '#F4EAD2', stroke: INK, 'stroke-width': 7 }, FX.card);
   mk('circle', { cx: 0, cy: -80, r: 16, fill: RED, stroke: INK, 'stroke-width': 5 }, FX.card);
-  const c1 = txt(FX.card, { font: 'Space Grotesk', size: 46, fill: INK }); c1.textContent = '« pas encore » de méthode sûre'; attr(c1, 'y', -8);
-  const c2 = txt(FX.card, { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#6B5A45' }); c2.textContent = 'OpenAI, sept. 2026 (via Fortune)'; attr(c2, 'y', 52);
+  const c1 = txt(FX.card, { font: 'Space Grotesk', size: 46, fill: INK }); c1.textContent = 'Pas encore de méthode sûre'; attr(c1, 'y', -8);
+  const c2 = txt(FX.card, { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#6B5A45' }); c2.textContent = 'd’après OpenAI, septembre 2026'; attr(c2, 'y', 52);
   FX.lens = g(fx);                                                                      // « JOUR ?? » dans la loupe
   FX.lensTxt = txt(FX.lens, { size: 1, fill: GREEN, filter: 'url(#glow)' });
   FX.metr = txt(g(fx), { font: 'IBM Plex Mono', weight: 500, size: 26, fill: '#C9D2FF', stroke: INK, sw: 6 });
@@ -178,7 +182,6 @@ function drawFX(t) {
     });
   }
   if (p.id === 'P3' && t > k.courbe) place(FX.metr.parentNode, 540, 1450, 1, 0, seg(t, k.courbe + 0.4, k.courbe + 0.7));
-  if (p.id === 'P4') place(FX.auto.parentNode, 540, 560, E.back(seg(t, k.auto, k.auto + 0.3)) * lerp(1, 1.15, seg(t, k.auto, p.end)), -4, seg(t, k.auto, k.auto + 0.08));
   if (p.id === 'P5' && A.cal_z > 0) {
     const lab = t < k.semaines - 0.25 ? '4 mois' : (t < k.une_seule ? 'quelques semaines' : '1 semaine ?');
     FX.cal.textContent = lab;
@@ -195,13 +198,6 @@ function drawFX(t) {
     if (A.want_z > 0) place(FX.want.parentNode, clamp(A.want_x, 200, 880), A.want_y - 40, 1, 0, seg(t, k.garantit, k.garantit + 0.3));
     if (A.fork_z > 0) place(FX.does.parentNode, clamp(A.fork_x, 200, 880), A.fork_y - 40, 1, 0, seg(t, k.garantit + 0.6, k.garantit + 0.9));
     place(FX.card, 540, 330, E.back(seg(t, k.openai, k.openai + 0.3)), -3 + 3 * E.out(seg(t, k.openai, k.openai + 0.4)), seg(t, k.openai, k.openai + 0.06));
-  }
-  if (p.id === 'P7') {                                                      // « JOUR ?? » qui tourne dans la loupe
-    const u = seg(t, p.start, p.end), s = lerp(2.9, 3.4, E.soft(u));
-    const lx = 540, ly = 820;
-    const n = t < k.quel_jour + 0.25 ? String(10 + Math.floor(t * 23) % 20) : '??';
-    FX.lensTxt.textContent = `JOUR ${n}`;
-    place(FX.lens, lx, ly, s * 20, 0, 1);
   }
   if (p.id === 'P8') drawTitle(t);
 }
@@ -302,7 +298,7 @@ function layoutSubs() {   // coupe en 2 lignes si trop long (zone sûre des Reel
 }
 function drawSubs(t) {
   for (const S of SUBS) {
-    const on = t >= S.t0 && t < S.t1 && planAt(t).id !== 'P8';
+    const on = t >= S.t0 && t < S.t1 && planAt(t).id !== 'P8' && !MOTION.kin;
     vis(S.el, on);
     if (!on) continue;
     S.ws.forEach((w, i) => attr(w, 'opacity', t >= S.words[i] - 0.03 ? 1 : 0));
@@ -324,7 +320,7 @@ function plateSrc(pid, layer, t) {
 // ---------------- transitions : flash + fouetté à chaque changement de plan ----------------
 function drawTransitions(t) {
   let fl = 0, whip = 0;
-  for (const p of plans().slice(1)) {
+  for (const p of plans().slice(1).filter(q => q.id !== 'M1')) {
     fl = Math.max(fl, pulse(t, p.start - 0.02, 0.16) * (p.id === 'P8' ? 0 : 0.55));
     whip += (t < p.start ? -1 : 1) * pulse(t, p.start - 0.12, 0.24);
   }
@@ -347,6 +343,7 @@ window.init = function () {
     o: mk('ellipse', { cx: 0, cy: 0, rx: 8, ry: 11, fill: 'none', stroke: GREEN, 'stroke-width': 5 }, TALK.g),
   };
   buildFX();
+  window.buildMotion();
   buildSubs();
   return document.fonts.ready.then(() => {
     layoutSubs();
@@ -359,7 +356,12 @@ window.init = function () {
 window.renderAt = async function (t) {
   const p = planAt(t);
   const bg = $('bg'), fg = $('fg');
-  if (p.id === 'P8') { vis(bg, false); vis(fg, false); }
+  MOTION = window.drawMotion(t);
+  if (p.id === 'M1') {
+    vis(bg, false); vis(fg, false);
+    const src = window.motionPhotoSrc(t);
+    if (MO.photoImg.getAttribute('href') !== src) MO.photoImg.setAttribute('href', src);
+  } else if (p.id === 'P8') { vis(bg, false); vis(fg, false); }
   else {
     vis(bg, true);
     const sb = plateSrc(p.id, 'bg', t), sf = plateSrc(p.id, 'fg', t);
@@ -374,9 +376,9 @@ window.renderAt = async function (t) {
   drawSubs(t);
   drawTransitions(t);
   $('grainT').setAttribute('seed', String(1 + Math.round(t * 30) % 97));   // grain de film animé
-  attr($('robotLayer'), 'filter', p.id === 'P8' ? '' : 'url(#grade)');
+  attr($('robotLayer'), 'filter', p.id === 'P8' || (p.id === 'M1' && t > K().align - 0.1) ? '' : 'url(#grade)');
   // attend que les images soient décodées
-  await Promise.all([bg, fg].filter(im => im.style.display !== 'none' && im.getAttribute('href')).map(im => new Promise(res => {
+  await Promise.all([bg, fg, MO.photoImg].filter(im => im.style.display !== 'none' && im.getAttribute('href')).map(im => new Promise(res => {
     const img = new Image(); img.onload = img.onerror = res; img.src = im.getAttribute('href');
   })));
 };

@@ -41,7 +41,15 @@ voire *une seule*.
 Et l'*alignement* ?
 Qui garantit qu'elle fera encore ce qu'on veut ?
 Même OpenAI admet *ne pas encore savoir*.
-Alors… on est à *quel jour* ?
+L'*alignement*, c'est faire en sorte
+qu'une IA veuille *vraiment* ce qu'on veut.
+Problème : on ne lui écrit pas ses objectifs,
+on la *récompense* quand elle réussit des tests.
+Alors elle peut apprendre à décrocher la récompense…
+*sans faire ce qu'on voulait*.
+Comme un élève qui *triche* au lieu d'apprendre.
+L'alignement, on lui consacre bientôt
+une *vidéo entière*.
 Affaire à suivre.
 ```
 

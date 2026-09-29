@@ -133,7 +133,6 @@ def bruitages():
         amb = sfx('ETANG')
         B.put(amb, 0.0, -14, fade_out=0.5)                              # 6 s d'ambiance : relayée une fois
         B.put(amb, 5.5, -14, length=PL['P2']['end'] + 0.3 - 5.5, fade_out=0.4)
-        B.put(amb, PL['P7']['start'] - 0.1, -12, length=PL['P7']['end'] - PL['P7']['start'] + 0.3, fade_out=0.3)
     # S02 pops d'eau : les jours 1 → 20 en petites gouttes, puis un pop par doublement, une octave au-dessus à chaque fois
     for k in range(10):
         B.put(tick(3000 + 150 * k) * 0.35, 0.25 + k * (K['doublements_P1'][0] - 0.3) / 10, -16, pan=0.3 * np.sin(k))
@@ -174,9 +173,29 @@ def bruitages():
         B.put(sfx('LEVIER'), K['pas_savoir'] - 1.0, -13, length=1.2, fade_out=0.3)
     B.put(sfx('SNAP'), K['openai'], -11)
     B.put(sfx('PAPER'), K['openai'] + 0.05, -14)
-    # S09 silence puis tic-tac
-    for k in range(4):
-        B.put(tick(1500 if k % 2 else 1900), K['quel_jour'] + 0.1 + k * 0.5, -10)
+    # typo animée « C'EST / L'AUTO / AMÉLIORATION » : un impact par mot (la musique se tait)
+    for i, kk in enumerate(('cest', 'lauto', 'amelio')):
+        B.put(sfx('LAND_BIG'), K[kk] - 0.03, -6 + i)
+        B.put(sfx('SNAP'), K[kk] - 0.02, -12)
+    # sortie du décor 3D : arrachement, envol de la photo, atterrissage dans l'arène
+    B.put(sfx('PAPER'), K['sortie'] - 0.05, -8)
+    B.put(sfx('WARP_OUT'), K['sortie'], -9)
+    B.put(sfx('SWISH'), K['sortie'] + 0.35, -8)
+    B.put(sfx('LAND'), K['align'] - 0.12, -7)
+    # l'arène « alignement »
+    B.put(sfx('HOLO'), K['align'] + 0.1, -16, length=1.6, fade_out=0.4)
+    B.put(sfx('GLINT'), K['veut2'] - 0.25, -10)                          # l'orbe se pose au centre de la cible
+    for tw in (K['probleme'] - 0.05, K['alors_elle'] + 0.05, K['comme'], K['align2']):
+        B.put(sfx('SWISH'), tw, -9)                                      # fouettés de caméra
+    B.put(sfx('PAPER'), K['probleme'] + 0.9, -11)                        # « objectifs » barrés
+    for i in range(6):                                                   # cases cochées une à une
+        B.put(sfx('POP'), K['recompense'] + 0.2 + i * 0.22, -15 + i * 0.5)
+    B.put(sfx('PAPER'), K['decrocher'] - 0.15, -9)                       # le crayon trafique la copie
+    B.put(sfx('DATA'), K['decrocher'], -13, length=1.6, fade_out=0.3)    # le score s'emballe
+    B.put(sfx('QUESTION'), K['sans'], -11)
+    B.put(sfx('LAND_BIG'), K['triche'] - 0.05, -6)                       # tampon TRICHE
+    B.put(sfx('WARP_IN'), K['align2'] + 0.05, -12, length=1.0, fade_out=0.3)
+    B.put(sfx('CHIME'), K['video'] - 0.05, -8)                           # la cloche
     # S10 carton : iris, coup de chapeau, clic S'ABONNER
     p8 = PL['P8']['start']
     B.put(sfx('DEZOOM'), p8 - 0.05, -12)
@@ -184,7 +203,8 @@ def bruitages():
     B.put(sfx('CLINK'), p8 + 2.2, -10)
     # transitions : fouetté à chaque changement de plan
     for p in T['plans'][1:-1]:
-        B.put(sfx('SWISH'), p['start'] - 0.12, -15, pan=-0.5)
+        if p['id'] != 'M1':
+            B.put(sfx('SWISH'), p['start'] - 0.12, -15, pan=-0.5)
     return B.x
 
 
@@ -215,12 +235,18 @@ def sidechain(x, v, depth_db=6.0, attack=0.02, release=0.25):
 def musique():
     m = load(os.path.join(HERE, '..', 'reel-la-source', 'media', 'music2', 'GROOVE.mp3'))
     out = np.zeros((int(DUR * SR) + SR, 2), np.float32)
-    cut = int(K['quel_jour'] * SR) - int(0.35 * SR)       # coupée net juste avant « quel jour »
+    cut = int((K['iris'] + 0.1) * SR)                     # jusqu'au carton final
     seg = m[:cut].copy()
     n = int(0.3 * SR)
     seg[:n] *= np.linspace(0, 1, n)[:, None]
     seg[-int(0.05 * SR):] *= np.linspace(1, 0, int(0.05 * SR))[:, None]
     out[:len(seg)] += seg
+    # « C'EST / L'AUTO / AMÉLIORATION » : la musique s'arrête net, puis repart
+    a0, a1 = int((K['cest'] - 0.06) * SR), int((K['amelio'] + 0.75) * SR)
+    out[a0:a1] = 0
+    nf = int(0.02 * SR)
+    out[a0 - nf:a0] *= np.linspace(1, 0, nf)[:, None]
+    out[a1:a1 + nf] *= np.linspace(0, 1, nf)[:, None]
     # labo (P4) : musique étouffée (passe-bas) → rendu par ffmpeg sur la tranche
     a, b = int(PL['P4']['start'] * SR), int(PL['P4']['end'] * SR)
     tranche = out[a:b].copy()

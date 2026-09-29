@@ -13,7 +13,7 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 LAG = 0.15
 FPS = 30
-DURATION = 29.0
+DURATION = 44.0
 BPM = 118
 
 # plans : (id, mot de départ, n-ième occurrence de ce mot, description)
@@ -24,7 +24,7 @@ PLANS = [
     ('P4', 'ET', 1, 'Le labo : l\'IA qui construit l\'IA (auto-amélioration)'),
     ('P5', 'DOUBLEMENT', 1, '4 mois → quelques semaines → 1 semaine ? La courbe se cabre'),
     ('P6', "L'ALIGNEMENT", 1, 'L\'aiguillage : ce qu\'on veut / ce qu\'elle fait'),
-    ('P7', 'ALORS', 2, 'Gros plan loupe : JOUR ??'),
+    ('M1', 'SAVOIR', 1, 'Motion design : il sort du décor 3D, puis explique l\'alignement'),
     ('P8', 'AFFAIRE', 1, 'Carton final EXPONENTIEL'),
 ]
 # instants clés : (nom, mot, occurrence, décalage en s)
@@ -44,7 +44,22 @@ KEYS = [
     ('garantit', 'GARANTIT', 1, 0.0),
     ('openai', 'MÊME', 1, 0.0),
     ('pas_savoir', 'SAVOIR', 1, 0.0),
-    ('quel_jour', 'QUEL', 1, 0.0),         # silence, tic-tac
+    ('cest', "C'EST", 1, 0.0),             # typo animée « C'EST / L'AUTO / AMÉLIORATION », musique coupée
+    ('lauto', "L'AUTO", 1, 0.0),
+    ('amelio', 'AMÉLIORATION', 1, 0.0),
+    ('sortie', 'SAVOIR', 1, 0.45),         # le robot arrache l'image 3D et saute dans le motion design
+    ('align', "L'ALIGNEMENT", 2, 0.0),     # séquence alignement (voix v3)
+    ('veut2', 'VEUT', 2, 0.0),
+    ('probleme', 'PROBLÈME', 1, 0.0),
+    ('recompense', 'RÉCOMPENSE', 1, 0.0),
+    ('tests', 'TESTS', 1, 0.0),
+    ('alors_elle', 'ALORS', 2, 0.0),
+    ('decrocher', 'DÉCROCHER', 1, 0.0),
+    ('sans', 'SANS', 1, 0.0),
+    ('comme', 'COMME', 1, 0.0),
+    ('triche', 'TRICHE', 1, 0.0),
+    ('align2', "L'ALIGNEMENT", 3, 0.0),
+    ('video', 'VIDÉO', 1, 0.0),
     ('iris', 'AFFAIRE', 1, -0.15),
 ]
 
@@ -71,6 +86,7 @@ def main():
     ws = words()
     starts = [find(ws, w, n) for _, w, n, _ in PLANS]
     starts[0] = 0.0
+    starts[[p[0] for p in PLANS].index('M1')] += 0.45
     plans = []
     for i, (pid, _, _, desc) in enumerate(PLANS):
         end = starts[i + 1] if i + 1 < len(PLANS) else DURATION

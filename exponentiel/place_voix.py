@@ -40,6 +40,8 @@ PAUSES = {       # prise Hugo (36,88 s brute)
 
 
 def cap_for(t):
+    if not PAUSES:
+        return DEFAULT_CAP
     k = min(PAUSES, key=lambda p: abs(p - t))
     return PAUSES[k] if abs(k - t) < 0.25 else DEFAULT_CAP
 
