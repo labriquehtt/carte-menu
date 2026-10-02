@@ -1,0 +1,9 @@
+# Médias et rendus : jamais dans Git (dépôt public, voir ../CLAUDE.md § Règles). media/ et out/ sont déjà ignorés
+# à la racine. Les vidéos finies vont dans le dépôt IA-sous-enquete- (dossier videos/).
+renders/
+snapshots/
+assets/clips/
+assets/plates/
+assets/son/
+assets/logos/
+node_modules/

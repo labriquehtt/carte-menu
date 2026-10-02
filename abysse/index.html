@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>PARANO-IA — bande-annonce ABYSSE</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: 'Space Grotesk'; font-weight: 700; src: url(assets/fonts/SpaceGrotesk-700.woff2) format('woff2'); }
+      @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url(assets/fonts/IBMPlexMono-500.woff2) format('woff2'); }
+      :root {
+        --fond: #05090b;
+        --texte: #eef4f1;
+        --vert: #4dff8f;
+        --eau: #2fd3c0;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--fond); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      .plein { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      #fond { background: var(--fond); }
+      canvas { display: block; }
+      /* l'écran du bureau : posé sur la dalle 3D par une homographie (matrix3d) image par image */
+      #ecran { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; opacity: 0;
+               overflow: hidden; background: #000; }
+      #ecran video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      #robot { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="abysse" data-start="0" data-duration="29" data-width="1080" data-height="1920">
+      <div id="fond" class="plein"></div>
+
+      <!-- plaques Blender (rendues image par image, calées sur la partition) -->
+      <video id="plaque-plongee" class="plein" src="assets/plates/plongee.mp4" data-start="9.6" data-duration="11.2"
+             data-track-index="1" muted playsinline></video>
+      <video id="plaque-bureau" class="plein" src="assets/plates/bureau.mp4" data-start="20.8" data-duration="4.8"
+             data-track-index="1" muted playsinline></video>
+
+      <!-- fond du motion design (le champ de points noir et blanc) -->
+      <canvas id="bg" class="plein" width="1080" height="1920" data-layout-allow-overflow></canvas>
+
+      <!-- l'écran du bureau : le montage des vidéos du compte, puis le logo (qui finit plein cadre) -->
+      <div id="ecran">
+        <video id="montage" src="assets/clips/ecran.mp4" data-start="20.8" data-duration="4.8" data-track-index="6" muted playsinline></video>
+        <canvas id="logo" class="plein" width="1080" height="1920"></canvas>
+        <svg id="robot" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- pièces officielles du robot détective (copiées de carte-menu/planche, jamais redessinées) -->
+            <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3" result="b"></feGaussianBlur>
+              <feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+            </filter>
+            <g id="arm-l-down">
+              <path d="M -62 40 Q -90 72 -96 108" fill="none" stroke="#1B1620" stroke-width="34" stroke-linecap="round"></path>
+              <path d="M -62 40 Q -90 72 -96 108" fill="none" stroke="#C8A97E" stroke-width="23" stroke-linecap="round"></path>
+              <circle cx="-98" cy="120" r="14" fill="#C9D1D9" stroke="#1B1620" stroke-width="5"></circle>
+            </g>
+            <g id="arm-r-down">
+              <path d="M 62 40 Q 90 72 96 108" fill="none" stroke="#1B1620" stroke-width="34" stroke-linecap="round"></path>
+              <path d="M 62 40 Q 90 72 96 108" fill="none" stroke="#C8A97E" stroke-width="23" stroke-linecap="round"></path>
+              <circle cx="98" cy="120" r="14" fill="#C9D1D9" stroke="#1B1620" stroke-width="5"></circle>
+            </g>
+            <g id="rb-coat">
+              <rect x="-58" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+              <rect x="18" y="136" width="40" height="30" rx="14" fill="#3A3F4B" stroke="#1B1620" stroke-width="5"></rect>
+              <rect x="-16" y="-12" width="32" height="30" fill="#8E97A3" stroke="#1B1620" stroke-width="5"></rect>
+              <path d="M -66 24 Q -76 90 -88 150 Q 0 166 88 150 Q 76 90 66 24 Q 0 6 -66 24 Z" fill="#C8A97E" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+              <path d="M -20 16 L 0 58 L 20 16 Z" fill="#A9B3BE" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+              <circle cx="0" cy="32" r="5" fill="#4DFF8F"></circle>
+              <path d="M -46 22 L -4 88 L -20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+              <path d="M 46 22 L 4 88 L 20 16 Z" fill="#B08F66" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+              <path d="M 4 88 L 6 154" fill="none" stroke="#1B1620" stroke-width="3"></path>
+              <path d="M -81 96 Q 0 110 81 96 L 83 116 Q 0 130 -83 116 Z" fill="#8C6A45" stroke="#1B1620" stroke-width="4" stroke-linejoin="round"></path>
+              <rect x="-14" y="100" width="28" height="23" rx="5" fill="none" stroke="#D4A64A" stroke-width="5"></rect>
+              <path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#1B1620" stroke-width="16" stroke-linecap="round"></path>
+              <path d="M 14 118 Q 30 134 24 152" fill="none" stroke="#8C6A45" stroke-width="9" stroke-linecap="round"></path>
+              <path d="M -66 132 L -36 134" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+              <path d="M 40 134 L 68 132" fill="none" stroke="#1B1620" stroke-width="4" stroke-linecap="round"></path>
+              <path d="M -66 24 L -60 -10 L -24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+              <path d="M 66 24 L 60 -10 L 24 16 Z" fill="#D8BD93" stroke="#1B1620" stroke-width="5" stroke-linejoin="round"></path>
+            </g>
+            <g id="rb-head">
+              <circle cx="-110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+              <circle cx="110" cy="-92" r="17" fill="#A9B3BE" stroke="#1B1620" stroke-width="5"></circle>
+              <rect x="-105" y="-178" width="210" height="172" rx="50" fill="#C9D1D9" stroke="#1B1620" stroke-width="6"></rect>
+              <path d="M -90 -128 Q -90 -160 -64 -168" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="5" stroke-linecap="round"></path>
+              <rect x="-87" y="-152" width="174" height="116" rx="26" fill="#15161C" stroke="#1B1620" stroke-width="4"></rect>
+              <path d="M -72 -124 Q -72 -140 -58 -142" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="4" stroke-linecap="round"></path>
+              <rect x="-22" y="-29" width="44" height="15" rx="4" fill="#A9B3BE" stroke="#1B1620" stroke-width="3"></rect>
+              <circle cx="-15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+              <circle cx="15" cy="-21.5" r="2.2" fill="#1B1620"></circle>
+              <circle cx="-88" cy="-24" r="4" fill="#8E97A3"></circle>
+              <circle cx="88" cy="-24" r="4" fill="#8E97A3"></circle>
+            </g>
+            <g id="loupe">
+              <path d="M 58 -104 L 110 -98" fill="none" stroke="#1B1620" stroke-width="15" stroke-linecap="round"></path>
+              <path d="M 58 -104 L 110 -98" fill="none" stroke="#D4A64A" stroke-width="7" stroke-linecap="round"></path>
+              <circle cx="30" cy="-96" r="31" fill="#B8FFD6" fill-opacity="0.16" stroke="#1B1620" stroke-width="14"></circle>
+              <circle cx="30" cy="-96" r="31" fill="none" stroke="#D4A64A" stroke-width="7"></circle>
+              <path d="M 13 -113 Q 21 -122 34 -121" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="4" stroke-linecap="round"></path>
+            </g>
+            <g id="rb-antenna">
+              <path d="M 22 -236 L 40 -282" fill="none" stroke="#1B1620" stroke-width="10" stroke-linecap="round"></path>
+              <path d="M 22 -236 L 40 -282" fill="none" stroke="#8E97A3" stroke-width="4" stroke-linecap="round"></path>
+              <circle cx="42" cy="-288" r="10" fill="#4DFF8F" stroke="#1B1620" stroke-width="4"></circle>
+            </g>
+            <g id="rb-hat">
+              <path d="M -128 -170 Q -130 -186 -80 -191 L 80 -191 Q 130 -186 128 -170 Q 0 -150 -128 -170 Z" fill="#4A3526" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+              <path d="M -72 -186 Q -76 -240 -46 -254 Q -20 -244 0 -250 Q 20 -244 46 -254 Q 76 -240 72 -186 Q 0 -178 -72 -186 Z" fill="#5E4330" stroke="#1B1620" stroke-width="6" stroke-linejoin="round"></path>
+              <path d="M -14 -246 Q 0 -228 14 -246" fill="none" stroke="#3A281C" stroke-width="4" stroke-linecap="round"></path>
+              <path d="M -56 -226 Q -54 -244 -40 -249" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"></path>
+              <path d="M -73 -207 Q 0 -199 73 -207 L 72 -187 Q 0 -179 -72 -187 Z" fill="#231812" stroke="#1B1620" stroke-width="3"></path>
+            </g>
+            <g id="f-curieux">
+              <g filter="url(#glow)" fill="none" stroke="#4DFF8F" stroke-width="6" stroke-linecap="round">
+                <path d="M -42 -94 Q -30 -106 -18 -94"></path>
+                <ellipse cx="30" cy="-96" rx="20" ry="25" fill="#4DFF8F" stroke="none"></ellipse>
+                <path d="M 10 -134 Q 30 -146 50 -136" stroke-width="5"></path>
+                <path d="M -10 -58 Q 2 -54 14 -62" stroke-width="5"></path>
+              </g>
+              <use href="#loupe"></use>
+            </g>
+          </defs>
+          <g id="robot-pose" transform="translate(540 2400) scale(1.55)">
+            <use href="#arm-l-down"></use>
+            <use href="#arm-r-down"></use>
+            <use href="#rb-coat"></use>
+            <use href="#rb-head"></use>
+            <use href="#f-curieux"></use>
+            <g id="robot-antenne"><use href="#rb-antenna"></use></g>
+            <use href="#rb-hat"></use>
+          </g>
+        </svg>
+      </div>
+
+      <!-- premier plan : balle, ligne, lettres, logos, nappe de points, plongée (DeepSeek, applis de musique), viseur REC, éclairs, grain -->
+      <canvas id="fg" class="plein" width="1080" height="1920" data-layout-allow-overflow></canvas>
+
+      <audio id="bande-son" src="assets/son/bande-son.wav" data-start="0" data-duration="29" data-track-index="10" data-volume="1"></audio>
+    </div>
+
+    <script src="assets/data/partition.js"></script>
+    <script src="assets/data/ecran.js"></script>
+    <script src="assets/data/spatial.js"></script>
+    <script src="assets/data/niveaux.js"></script>
+    <script src="motion.js"></script>
+    <script>
+      // une seule timeline, en pause, enregistrée une fois les polices chargées et le logo préparé
+      window.ABYSSE.pret.then(function () {
+        const tl = window.ABYSSE.timeline();
+        window.__timelines["abysse"] = tl;
+        if (window.__hfForceTimelineRebind) window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1318 @@
+{
+ "version": 2,
+ "fps": 30,
+ "bpm": 150,
+ "temps": 0.4,
+ "mesure": 1.6,
+ "duree": 29.0,
+ "images": 870,
+ "largeur": 1080,
+ "hauteur": 1920,
+ "decalage_3d": 1.6,
+ "plaques": {
+  "plongee": {
+   "debut": 9.6,
+   "premiere_image_3d": 240,
+   "images": 336
+  },
+  "bureau": {
+   "debut": 20.8,
+   "premiere_image_3d": 576,
+   "images": 144
+  }
+ },
+ "musique": {
+  "tonalite": "ré mineur harmonique",
+  "montage": [
+   {
+    "nom": "intro",
+    "fichier": "media/musique/surface_B.mp3",
+    "film": 0.0,
+    "source": 0.0,
+    "duree": 8.0,
+    "etat": "clair"
+   },
+   {
+    "nom": "montee",
+    "fichier": "media/musique/surface_B.mp3",
+    "film": 8.0,
+    "source": 11.200000000000001,
+    "duree": 1.6,
+    "etat": "clair"
+   },
+   {
+    "nom": "drop_etouffe",
+    "fichier": "media/musique/surface_B.mp3",
+    "film": 9.6,
+    "source": 12.8,
+    "duree": 4.800000000000001,
+    "etat": "sous_eau"
+   },
+   {
+    "nom": "approche",
+    "fichier": "media/musique/bureau_B.mp3",
+    "film": 17.6,
+    "source": 3.2,
+    "duree": 3.2,
+    "etat": "coque"
+   },
+   {
+    "nom": "bureau",
+    "fichier": "media/musique/bureau_B.mp3",
+    "film": 20.8,
+    "source": 6.4,
+    "duree": 4.800000000000001,
+    "etat": "clair"
+   },
+   {
+    "nom": "final",
+    "fichier": "media/musique/surface_B.mp3",
+    "film": 25.6,
+    "source": 24.0,
+    "duree": 3.4,
+    "etat": "clair"
+   }
+  ]
+ },
+ "plans": [
+  {
+   "id": "S1",
+   "nom": "accroche",
+   "type": "motion",
+   "debut": 0.0,
+   "fin": 3.2,
+   "image_debut": 0,
+   "image_fin": 96
+  },
+  {
+   "id": "S2",
+   "nom": "logos",
+   "type": "motion",
+   "debut": 3.2,
+   "fin": 8.0,
+   "image_debut": 96,
+   "image_fin": 240
+  },
+  {
+   "id": "S3",
+   "nom": "la-ligne",
+   "type": "motion",
+   "debut": 8.0,
+   "fin": 9.6,
+   "image_debut": 240,
+   "image_fin": 288
+  },
+  {
+   "id": "P1",
+   "nom": "plongee",
+   "type": "blender",
+   "debut": 9.6,
+   "fin": 17.6,
+   "image_debut": 288,
+   "image_fin": 528
+  },
+  {
+   "id": "P2",
+   "nom": "station",
+   "type": "blender",
+   "debut": 17.6,
+   "fin": 20.8,
+   "image_debut": 528,
+   "image_fin": 624
+  },
+  {
+   "id": "P3",
+   "nom": "bureau",
+   "type": "blender",
+   "debut": 20.8,
+   "fin": 25.6,
+   "image_debut": 624,
+   "image_fin": 768
+  },
+  {
+   "id": "S4",
+   "nom": "logo",
+   "type": "motion",
+   "debut": 25.6,
+   "fin": 29.0,
+   "image_debut": 768,
+   "image_fin": 870
+  }
+ ],
+ "hook": [
+  73,
+  69,
+  76,
+  73,
+  70,
+  69,
+  65,
+  64
+ ],
+ "logos": [
+  "chatgpt",
+  "claude",
+  "gemini",
+  "grok",
+  "deepseek",
+  "mistral",
+  "meta",
+  "suno",
+  "elevenlabs",
+  "midjourney",
+  "perplexity",
+  "huggingface"
+ ],
+ "noms_caches": [
+  "GPT-5",
+  "CLAUDE",
+  "GEMINI",
+  "LLAMA",
+  "MISTRAL",
+  "QWEN",
+  "DEEPSEEK",
+  "GROK",
+  "KIMI",
+  "GEMMA",
+  "PHI-4",
+  "SORA",
+  "VEO",
+  "FLUX",
+  "SUNO",
+  "COPILOT"
+ ],
+ "musique_ia": [
+  "suno",
+  "udio",
+  "stableaudio",
+  "aiva",
+  "mubert",
+  "elevenmusic",
+  "riffusion",
+  "soundraw"
+ ],
+ "evenements": [
+  {
+   "t": 0.0,
+   "image": 0,
+   "type": "ligne_trace"
+  },
+  {
+   "t": 0.4,
+   "image": 12,
+   "type": "balle",
+   "index": 0,
+   "note": 69
+  },
+  {
+   "t": 0.8,
+   "image": 24,
+   "type": "balle",
+   "index": 1,
+   "note": 76
+  },
+  {
+   "t": 1.2,
+   "image": 36,
+   "type": "balle",
+   "index": 2,
+   "note": 73
+  },
+  {
+   "t": 1.6,
+   "image": 48,
+   "type": "balle_ecrase",
+   "note": 70
+  },
+  {
+   "t": 1.6,
+   "image": 48,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 0,
+   "lettre": "C",
+   "note": 50
+  },
+  {
+   "t": 1.7,
+   "image": 51,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 1,
+   "lettre": "H",
+   "note": 53
+  },
+  {
+   "t": 1.8,
+   "image": 54,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 2,
+   "lettre": "A",
+   "note": 57
+  },
+  {
+   "t": 1.9,
+   "image": 57,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 3,
+   "lettre": "Q",
+   "note": 60
+  },
+  {
+   "t": 2.0,
+   "image": 60,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 4,
+   "lettre": "U",
+   "note": 62
+  },
+  {
+   "t": 2.1,
+   "image": 63,
+   "type": "lettre",
+   "mot": "CHAQUE",
+   "index": 5,
+   "lettre": "E",
+   "note": 65
+  },
+  {
+   "t": 2.4,
+   "image": 72,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 0,
+   "lettre": "S",
+   "note": 72
+  },
+  {
+   "t": 2.5,
+   "image": 75,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 1,
+   "lettre": "E",
+   "note": 69
+  },
+  {
+   "t": 2.6,
+   "image": 78,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 2,
+   "lettre": "M",
+   "note": 65
+  },
+  {
+   "t": 2.7,
+   "image": 81,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 3,
+   "lettre": "A",
+   "note": 62
+  },
+  {
+   "t": 2.8,
+   "image": 84,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 4,
+   "lettre": "I",
+   "note": 60
+  },
+  {
+   "t": 2.9,
+   "image": 87,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 5,
+   "lettre": "N",
+   "note": 57
+  },
+  {
+   "t": 3.0,
+   "image": 90,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 6,
+   "lettre": "E",
+   "note": 53
+  },
+  {
+   "t": 3.1,
+   "image": 93,
+   "type": "lettre",
+   "mot": "SEMAINE,",
+   "index": 7,
+   "lettre": ",",
+   "note": 50
+  },
+  {
+   "t": 3.2,
+   "image": 96,
+   "type": "etire",
+   "texte": "DE NOUVELLES ACTUS"
+  },
+  {
+   "t": 4.0,
+   "image": 120,
+   "type": "crypte",
+   "texte": "SUR L'IA."
+  },
+  {
+   "t": 4.4,
+   "image": 132,
+   "type": "rebond",
+   "texte": "SUR L'IA."
+  },
+  {
+   "t": 4.8,
+   "image": 144,
+   "type": "eclat"
+  },
+  {
+   "t": 4.8,
+   "image": 144,
+   "type": "etire",
+   "texte": "TOUT LE MONDE"
+  },
+  {
+   "t": 4.8,
+   "image": 144,
+   "type": "logo_ia",
+   "index": 0,
+   "logo": "chatgpt",
+   "note": 62
+  },
+  {
+   "t": 4.9,
+   "image": 147,
+   "type": "logo_ia",
+   "index": 1,
+   "logo": "claude",
+   "note": 65
+  },
+  {
+   "t": 5.0,
+   "image": 150,
+   "type": "logo_ia",
+   "index": 2,
+   "logo": "gemini",
+   "note": 69
+  },
+  {
+   "t": 5.1,
+   "image": 153,
+   "type": "logo_ia",
+   "index": 3,
+   "logo": "grok",
+   "note": 72
+  },
+  {
+   "t": 5.2,
+   "image": 156,
+   "type": "logo_ia",
+   "index": 4,
+   "logo": "deepseek",
+   "note": 74
+  },
+  {
+   "t": 5.3,
+   "image": 159,
+   "type": "logo_ia",
+   "index": 5,
+   "logo": "mistral",
+   "note": 77
+  },
+  {
+   "t": 5.4,
+   "image": 162,
+   "type": "logo_ia",
+   "index": 6,
+   "logo": "meta",
+   "note": 81
+  },
+  {
+   "t": 5.5,
+   "image": 165,
+   "type": "logo_ia",
+   "index": 7,
+   "logo": "suno",
+   "note": 84
+  },
+  {
+   "t": 5.6,
+   "image": 168,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 0,
+   "lettre": "R",
+   "note": 57
+  },
+  {
+   "t": 5.6,
+   "image": 168,
+   "type": "logo_ia",
+   "index": 8,
+   "logo": "elevenlabs",
+   "note": 62
+  },
+  {
+   "t": 5.7,
+   "image": 171,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 1,
+   "lettre": "E",
+   "note": 60
+  },
+  {
+   "t": 5.7,
+   "image": 171,
+   "type": "logo_ia",
+   "index": 9,
+   "logo": "midjourney",
+   "note": 65
+  },
+  {
+   "t": 5.8,
+   "image": 174,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 2,
+   "lettre": "G",
+   "note": 62
+  },
+  {
+   "t": 5.8,
+   "image": 174,
+   "type": "logo_ia",
+   "index": 10,
+   "logo": "perplexity",
+   "note": 69
+  },
+  {
+   "t": 5.9,
+   "image": 177,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 3,
+   "lettre": "A",
+   "note": 65
+  },
+  {
+   "t": 5.9,
+   "image": 177,
+   "type": "logo_ia",
+   "index": 11,
+   "logo": "huggingface",
+   "note": 72
+  },
+  {
+   "t": 6.0,
+   "image": 180,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 4,
+   "lettre": "R",
+   "note": 69
+  },
+  {
+   "t": 6.1,
+   "image": 183,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 5,
+   "lettre": "D",
+   "note": 72
+  },
+  {
+   "t": 6.2,
+   "image": 186,
+   "type": "lettre",
+   "mot": "REGARDE",
+   "index": 6,
+   "lettre": "E",
+   "note": 50
+  },
+  {
+   "t": 6.4,
+   "image": 192,
+   "type": "crypte",
+   "texte": "LA SURFACE."
+  },
+  {
+   "t": 6.4,
+   "image": 192,
+   "type": "surface_ligne"
+  },
+  {
+   "t": 6.8,
+   "image": 204,
+   "type": "bouee",
+   "index": 1,
+   "note": 57
+  },
+  {
+   "t": 7.2,
+   "image": 216,
+   "type": "bouee",
+   "index": 2,
+   "note": 64
+  },
+  {
+   "t": 7.6,
+   "image": 228,
+   "type": "bouee",
+   "index": 3,
+   "note": 61
+  },
+  {
+   "t": 8.0,
+   "image": 240,
+   "type": "coule",
+   "index": 0,
+   "logo": "chatgpt",
+   "note": 84
+  },
+  {
+   "t": 8.0,
+   "image": 240,
+   "type": "ligne"
+  },
+  {
+   "t": 8.0,
+   "image": 240,
+   "type": "mot",
+   "texte": "NOUS,"
+  },
+  {
+   "t": 8.1,
+   "image": 243,
+   "type": "coule",
+   "index": 1,
+   "logo": "claude",
+   "note": 81
+  },
+  {
+   "t": 8.2,
+   "image": 246,
+   "type": "coule",
+   "index": 2,
+   "logo": "gemini",
+   "note": 77
+  },
+  {
+   "t": 8.3,
+   "image": 249,
+   "type": "coule",
+   "index": 3,
+   "logo": "grok",
+   "note": 74
+  },
+  {
+   "t": 8.4,
+   "image": 252,
+   "type": "coule",
+   "index": 4,
+   "logo": "deepseek",
+   "note": 72
+  },
+  {
+   "t": 8.4,
+   "image": 252,
+   "type": "crypte",
+   "texte": "ON PLONGE."
+  },
+  {
+   "t": 8.5,
+   "image": 255,
+   "type": "coule",
+   "index": 5,
+   "logo": "mistral",
+   "note": 69
+  },
+  {
+   "t": 8.6,
+   "image": 258,
+   "type": "coule",
+   "index": 6,
+   "logo": "meta",
+   "note": 65
+  },
+  {
+   "t": 8.7,
+   "image": 261,
+   "type": "coule",
+   "index": 7,
+   "logo": "suno",
+   "note": 62
+  },
+  {
+   "t": 8.8,
+   "image": 264,
+   "type": "coule",
+   "index": 8,
+   "logo": "elevenlabs",
+   "note": 84
+  },
+  {
+   "t": 8.8,
+   "image": 264,
+   "type": "surface"
+  },
+  {
+   "t": 8.9,
+   "image": 267,
+   "type": "coule",
+   "index": 9,
+   "logo": "midjourney",
+   "note": 81
+  },
+  {
+   "t": 9.0,
+   "image": 270,
+   "type": "coule",
+   "index": 10,
+   "logo": "perplexity",
+   "note": 77
+  },
+  {
+   "t": 9.1,
+   "image": 273,
+   "type": "coule",
+   "index": 11,
+   "logo": "huggingface",
+   "note": 74
+  },
+  {
+   "t": 9.2,
+   "image": 276,
+   "type": "chute"
+  },
+  {
+   "t": 9.6,
+   "image": 288,
+   "type": "plongeon",
+   "t3d": 8.0
+  },
+  {
+   "t": 10.4,
+   "image": 312,
+   "type": "cloche",
+   "t3d": 8.8,
+   "objet": "bouee",
+   "note": 62
+  },
+  {
+   "t": 10.95,
+   "image": 328,
+   "type": "fouet",
+   "t3d": 9.35,
+   "objet": "baleine",
+   "duree": 0.25
+  },
+  {
+   "t": 11.2,
+   "image": 336,
+   "type": "chant",
+   "t3d": 9.6,
+   "objet": "baleine",
+   "note": 62
+  },
+  {
+   "t": 11.6,
+   "image": 348,
+   "type": "deepseek",
+   "notes": [
+    74,
+    81,
+    86
+   ],
+   "fin": 12.2
+  },
+  {
+   "t": 11.6,
+   "image": 348,
+   "type": "passage",
+   "t3d": 10.0,
+   "objet": "baleine"
+  },
+  {
+   "t": 12.55,
+   "image": 376,
+   "type": "fouet",
+   "t3d": 10.95,
+   "objet": "voilier",
+   "duree": 0.25
+  },
+  {
+   "t": 12.8,
+   "image": 384,
+   "type": "grincement",
+   "t3d": 11.2,
+   "objet": "voilier"
+  },
+  {
+   "t": 13.6,
+   "image": 408,
+   "type": "etincelle",
+   "t3d": 12.0,
+   "objet": "plancton",
+   "note": 86,
+   "index": 0
+  },
+  {
+   "t": 13.7,
+   "image": 411,
+   "type": "etincelle",
+   "t3d": 12.1,
+   "objet": "plancton",
+   "note": 89,
+   "index": 1
+  },
+  {
+   "t": 13.8,
+   "image": 414,
+   "type": "etincelle",
+   "t3d": 12.2,
+   "objet": "plancton",
+   "note": 93,
+   "index": 2
+  },
+  {
+   "t": 13.9,
+   "image": 417,
+   "type": "etincelle",
+   "t3d": 12.3,
+   "objet": "plancton",
+   "note": 96,
+   "index": 3
+  },
+  {
+   "t": 14.0,
+   "image": 420,
+   "type": "etincelle",
+   "t3d": 12.4,
+   "objet": "plancton",
+   "note": 93,
+   "index": 4
+  },
+  {
+   "t": 14.1,
+   "image": 423,
+   "type": "etincelle",
+   "t3d": 12.5,
+   "objet": "plancton",
+   "note": 89,
+   "index": 5
+  },
+  {
+   "t": 14.15,
+   "image": 424,
+   "type": "fouet",
+   "t3d": 12.55,
+   "objet": "piano",
+   "duree": 0.25
+  },
+  {
+   "t": 14.2,
+   "image": 426,
+   "type": "etincelle",
+   "t3d": 12.6,
+   "objet": "plancton",
+   "note": 86,
+   "index": 6
+  },
+  {
+   "t": 14.3,
+   "image": 429,
+   "type": "etincelle",
+   "t3d": 12.7,
+   "objet": "plancton",
+   "note": 81,
+   "index": 7
+  },
+  {
+   "t": 14.4,
+   "image": 432,
+   "type": "appli_musique",
+   "index": 0,
+   "logo": "suno",
+   "note": 73
+  },
+  {
+   "t": 14.4,
+   "image": 432,
+   "type": "touche",
+   "t3d": 12.8,
+   "objet": "piano",
+   "note": 73,
+   "index": 0
+  },
+  {
+   "t": 14.6,
+   "image": 438,
+   "type": "appli_musique",
+   "index": 1,
+   "logo": "udio",
+   "note": 69
+  },
+  {
+   "t": 14.6,
+   "image": 438,
+   "type": "touche",
+   "t3d": 13.0,
+   "objet": "piano",
+   "note": 69,
+   "index": 1
+  },
+  {
+   "t": 14.8,
+   "image": 444,
+   "type": "appli_musique",
+   "index": 2,
+   "logo": "stableaudio",
+   "note": 76
+  },
+  {
+   "t": 14.8,
+   "image": 444,
+   "type": "touche",
+   "t3d": 13.2,
+   "objet": "piano",
+   "note": 76,
+   "index": 2
+  },
+  {
+   "t": 15.0,
+   "image": 450,
+   "type": "appli_musique",
+   "index": 3,
+   "logo": "aiva",
+   "note": 73
+  },
+  {
+   "t": 15.0,
+   "image": 450,
+   "type": "touche",
+   "t3d": 13.4,
+   "objet": "piano",
+   "note": 73,
+   "index": 3
+  },
+  {
+   "t": 15.2,
+   "image": 456,
+   "type": "appli_musique",
+   "index": 4,
+   "logo": "mubert",
+   "note": 70
+  },
+  {
+   "t": 15.2,
+   "image": 456,
+   "type": "touche",
+   "t3d": 13.6,
+   "objet": "piano",
+   "note": 70,
+   "index": 4
+  },
+  {
+   "t": 15.4,
+   "image": 462,
+   "type": "appli_musique",
+   "index": 5,
+   "logo": "elevenmusic",
+   "note": 69
+  },
+  {
+   "t": 15.4,
+   "image": 462,
+   "type": "touche",
+   "t3d": 13.8,
+   "objet": "piano",
+   "note": 69,
+   "index": 5
+  },
+  {
+   "t": 15.6,
+   "image": 468,
+   "type": "appli_musique",
+   "index": 6,
+   "logo": "riffusion",
+   "note": 65
+  },
+  {
+   "t": 15.6,
+   "image": 468,
+   "type": "touche",
+   "t3d": 14.0,
+   "objet": "piano",
+   "note": 65,
+   "index": 6
+  },
+  {
+   "t": 15.75,
+   "image": 472,
+   "type": "fouet",
+   "t3d": 14.15,
+   "objet": "colonnes",
+   "duree": 0.25
+  },
+  {
+   "t": 15.8,
+   "image": 474,
+   "type": "appli_musique",
+   "index": 7,
+   "logo": "soundraw",
+   "note": 64
+  },
+  {
+   "t": 15.8,
+   "image": 474,
+   "type": "touche",
+   "t3d": 14.2,
+   "objet": "piano",
+   "note": 64,
+   "index": 7
+  },
+  {
+   "t": 16.0,
+   "image": 480,
+   "type": "choeur",
+   "t3d": 14.4,
+   "objet": "colonnes",
+   "notes": [
+    57,
+    62,
+    65,
+    69
+   ]
+  },
+  {
+   "t": 16.8,
+   "image": 504,
+   "type": "etincelle_claude",
+   "t3d": 15.2,
+   "objet": "claude",
+   "note": 74
+  },
+  {
+   "t": 17.6,
+   "image": 528,
+   "type": "sonar",
+   "t3d": 16.0,
+   "objet": "station",
+   "note": 74,
+   "index": 0
+  },
+  {
+   "t": 18.0,
+   "image": 540,
+   "type": "boucle",
+   "t3d": 16.4,
+   "objet": "cable"
+  },
+  {
+   "t": 18.0,
+   "image": 540,
+   "type": "sonar",
+   "t3d": 16.4,
+   "objet": "station",
+   "note": 74,
+   "index": 1
+  },
+  {
+   "t": 18.4,
+   "image": 552,
+   "type": "led",
+   "t3d": 16.8,
+   "objet": "mistral",
+   "note": 62,
+   "index": 0
+  },
+  {
+   "t": 18.4,
+   "image": 552,
+   "type": "sonar",
+   "t3d": 16.8,
+   "objet": "station",
+   "note": 74,
+   "index": 2
+  },
+  {
+   "t": 18.5,
+   "image": 555,
+   "type": "led",
+   "t3d": 16.9,
+   "objet": "mistral",
+   "note": 65,
+   "index": 1
+  },
+  {
+   "t": 18.6,
+   "image": 558,
+   "type": "led",
+   "t3d": 17.0,
+   "objet": "mistral",
+   "note": 69,
+   "index": 2
+  },
+  {
+   "t": 18.7,
+   "image": 561,
+   "type": "led",
+   "t3d": 17.1,
+   "objet": "mistral",
+   "note": 72,
+   "index": 3
+  },
+  {
+   "t": 18.8,
+   "image": 564,
+   "type": "led",
+   "t3d": 17.2,
+   "objet": "mistral",
+   "note": 74,
+   "index": 4
+  },
+  {
+   "t": 18.8,
+   "image": 564,
+   "type": "sonar",
+   "t3d": 17.2,
+   "objet": "station",
+   "note": 74,
+   "index": 3
+  },
+  {
+   "t": 18.9,
+   "image": 567,
+   "type": "led",
+   "t3d": 17.3,
+   "objet": "mistral",
+   "note": 72,
+   "index": 5
+  },
+  {
+   "t": 19.0,
+   "image": 570,
+   "type": "led",
+   "t3d": 17.4,
+   "objet": "mistral",
+   "note": 69,
+   "index": 6
+  },
+  {
+   "t": 19.1,
+   "image": 573,
+   "type": "led",
+   "t3d": 17.5,
+   "objet": "mistral",
+   "note": 65,
+   "index": 7
+  },
+  {
+   "t": 19.2,
+   "image": 576,
+   "type": "sonar",
+   "t3d": 17.6,
+   "objet": "station",
+   "note": 74,
+   "index": 4
+  },
+  {
+   "t": 19.2,
+   "image": 576,
+   "type": "trappe",
+   "t3d": 17.6,
+   "objet": "hublot"
+  },
+  {
+   "t": 19.4,
+   "image": 582,
+   "type": "sonar",
+   "t3d": 17.8,
+   "objet": "station",
+   "note": 81,
+   "index": 5
+  },
+  {
+   "t": 19.6,
+   "image": 588,
+   "type": "sonar",
+   "t3d": 18.0,
+   "objet": "station",
+   "note": 74,
+   "index": 6
+  },
+  {
+   "t": 19.8,
+   "image": 594,
+   "type": "sonar",
+   "t3d": 18.2,
+   "objet": "station",
+   "note": 81,
+   "index": 7
+  },
+  {
+   "t": 20.0,
+   "image": 600,
+   "type": "sonar",
+   "t3d": 18.4,
+   "objet": "station",
+   "note": 74,
+   "index": 8
+  },
+  {
+   "t": 20.2,
+   "image": 606,
+   "type": "sonar",
+   "t3d": 18.6,
+   "objet": "station",
+   "note": 81,
+   "index": 9
+  },
+  {
+   "t": 20.4,
+   "image": 612,
+   "type": "sonar",
+   "t3d": 18.8,
+   "objet": "station",
+   "note": 74,
+   "index": 10
+  },
+  {
+   "t": 20.5,
+   "image": 615,
+   "type": "sonar",
+   "t3d": 18.9,
+   "objet": "station",
+   "note": 81,
+   "index": 11
+  },
+  {
+   "t": 20.6,
+   "image": 618,
+   "type": "sonar",
+   "t3d": 19.0,
+   "objet": "station",
+   "note": 74,
+   "index": 12
+  },
+  {
+   "t": 20.7,
+   "image": 621,
+   "type": "sonar",
+   "t3d": 19.1,
+   "objet": "station",
+   "note": 81,
+   "index": 13
+  },
+  {
+   "t": 20.8,
+   "image": 624,
+   "type": "coupe_ecran",
+   "t3d": 19.2,
+   "index": 0
+  },
+  {
+   "t": 20.8,
+   "image": 624,
+   "type": "sas",
+   "t3d": 19.2,
+   "objet": "hublot"
+  },
+  {
+   "t": 21.2,
+   "image": 636,
+   "type": "coupe_ecran",
+   "t3d": 19.6,
+   "index": 1
+  },
+  {
+   "t": 21.6,
+   "image": 648,
+   "type": "coupe_ecran",
+   "t3d": 20.0,
+   "index": 2
+  },
+  {
+   "t": 22.0,
+   "image": 660,
+   "type": "coupe_ecran",
+   "t3d": 20.4,
+   "index": 3
+  },
+  {
+   "t": 22.4,
+   "image": 672,
+   "type": "coupe_ecran",
+   "t3d": 20.8,
+   "index": 4
+  },
+  {
+   "t": 22.8,
+   "image": 684,
+   "type": "coupe_ecran",
+   "t3d": 21.2,
+   "index": 5
+  },
+  {
+   "t": 23.2,
+   "image": 696,
+   "type": "coupe_ecran",
+   "t3d": 21.6,
+   "index": 6
+  },
+  {
+   "t": 23.6,
+   "image": 708,
+   "type": "coupe_ecran",
+   "t3d": 22.0,
+   "index": 7
+  },
+  {
+   "t": 24.0,
+   "image": 720,
+   "type": "coupe_ecran",
+   "t3d": 22.4,
+   "index": 8
+  },
+  {
+   "t": 24.4,
+   "image": 732,
+   "type": "coupe_ecran",
+   "t3d": 22.8,
+   "index": 9
+  },
+  {
+   "t": 24.8,
+   "image": 744,
+   "type": "coupe_ecran",
+   "t3d": 23.2,
+   "index": 10
+  },
+  {
+   "t": 25.2,
+   "image": 756,
+   "type": "coupe_ecran",
+   "t3d": 23.6,
+   "index": 11
+  },
+  {
+   "t": 25.6,
+   "image": 768,
+   "type": "logo_montee"
+  },
+  {
+   "t": 27.2,
+   "image": 816,
+   "type": "logo"
+  }
+ ]
+}

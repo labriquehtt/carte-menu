@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-> Mis à jour le : 2026-09-29
+> Mis à jour le : 2026-10-02
 
 Ce dépôt ne contient plus que **la planche du robot détective** (`planche/`, voir `README.md`),
 à la demande de l'utilisateur. Ne jamais redessiner le robot : réutiliser les pièces de
@@ -109,11 +109,113 @@ VOIX_DIR=media/voix_ia python mix_voix.py --music out/musique2.wav --music-gain 
   (12 Go de RAM : jamais plus de 2 navigateurs), puis concaténation et encodage 2 passes.
 - Crédits ElevenLabs : 526 (prise Sébas refusée) + 580 (Hugo) + 83 (5 bruitages) + 405 (alignement) = **1 594**.
 
+## ALIGNEMENT (Reel ~69,5 s, 2026-09-29, `alignement/`)
+
+- Textes : `SCRIPT.md` (v2 validée, sources vérifiées sur les originaux : Anthropic « Agentic Misalignment », « Teaching Claude
+  why », System Card Mythos ; OpenAI × Apollo arXiv 2509.15541), `BRIEF.md` (découpage, zone de recadrage Insta).
+- **Voix : Hugo**, prise `media/voix_ia/alignement_hugo_v2.mp3` (flow https://elevenlabs.io/app/flows/8vs8a7CCyHpndIKksjZm,
+  1 089 + 1 445 crédits) → `place_voix.py` (68,5 s). « Toutes les sources sont en description » gardé (choix de l'utilisateur).
+  `timing.py` → `timing.json` (11 plans), `synchro.py` → `bouche.json`, `subs.json`.
+- **Tout en 2D HTML, thème clair** (l'utilisateur a refusé la 3D Blender) : `monde.js` (ville en papier découpé, parallaxe,
+  train, voitures, passants, avion à banderole, éoliennes), `decors.js` (bureaux papier, place et salle d'examen en comics,
+  plateau en carton stop motion, carrefour et parc en feutrine, tableau du détective), `compo.js` (robot « on twos », sous-titres,
+  cartons de sources SANS le mot « SOURCE »), `plans.js` (caméras, sauts, objets, transitions). Techniques piochées dans
+  `../FICHE-TECHNIQUES.pdf`.
+- Son : `sons.py` (banques de LA SOURCE et d'EXPONENTIEL, GROOVE étouffée dans feutre/carton) → `out/bande-son.wav`.
+- Aperçu : `node render.js --video out/preview/apercu-video.mp4 --workers 2 --scale 0.5` (~18 min) puis mux avec
+  `out/bande-son.wav` → `out/ALIGNEMENT-apercu.mp4`. Final : `node render.js --video out/final/ALIGNEMENT-video.mp4 --workers 2`,
+  encodage 2 passes 7 Mb/s avec `out/bande-son.wav` → `out/ALIGNEMENT-reel.mp4`.
+- Profondeur : les premiers plans des décors (arbres, haie, buissons, plante) sont dans `#sceneFront`, au-dessus du robot ;
+  dans la rue, le robot se tient sur le trottoir de DEVANT (y 1548) pour que les voitures passent derrière lui.
+- Miniature : `node miniature.js` → `out/miniature-alignement.png/.jpg` (même système que LA SOURCE / EXPONENTIEL ;
+  le G du mot est désaligné).
+
+## ÉVASION (Reel ~1 min 52, 2026-10-01, `evasion/`) — en cours
+
+- Sujet : évasion d'un agent OpenAI par le DNS le 20 sept. 2026 (« capitale de la France ? » → « Paris »), arrêt automatique
+  en panne, 2e pause d'OpenAI ; flashback Hugging Face (juillet 2026, 1 200 agents sur un forum secret, 700 à l'attaque) ;
+  dizaines de milliers d'incidents (Axios), enquête FTC du 30 sept. Suite directe d'ALIGNEMENT.
+- Textes : `SCRIPT.md` (v1, sous-titres + vérification ligne par ligne sur les sources primaires : rapport OpenAI
+  alignment.openai.com/misalignment-reports, METR, CSA/The Register) et `voix_prompt.txt`. Garde-fous en bas de `SCRIPT.md`
+  (modèle de l'évasion jamais nommé, 700 ≠ 1 200, rachat Nvidia seulement annoncé).
+- **Voix : Hugo**, prise `media/voix_ia/evasion_hugo.mp3` (134,7 s brute, 2 323 crédits, flow
+  https://elevenlabs.io/app/flows/5lAd2ipNQC2p3wC96UYW) → `place_voix.py` → `EVASION-voix.mp3`. v1 : ×1,06, 111,7 s
+  (`EVASION-voix-v1.mp3`). **v2** (demande : « un tout petit peu plus dynamique » + « pauses intelligentes » entre les
+  thèmes) : même prise, sans regénérer, ×1,09, virgules à 0,20 s, et `PAUSES` = durée FINALE par pause (allongée par du
+  silence si la prise est plus courte) : thème ≈ 0,8 s, suspense ≈ 0,5 s, 1 s après « dehors », 0,7 s avant « Paris » →
+  119,9 s (`EVASION-voix-v2.mp3`). **v3** (123,5 s) : 1) la prise a un souffle de fond (≈ -50 dBFS, grave) et le
+  silence numérique ajouté « faisait bug » → pauses allongées avec le souffle de la prise (`RoomTone`), coupes en fondu
+  à puissance constante de 25 ms, aucune trame sous -70 dBFS (contrôlé) ; 2) 1re phrase « trop IA » (« encore »
+  chuchoté) → reprises `intro_1..4.mp3` (660 crédits, [excited] seul), début d'`intro_4` (117 Hz comme les phrases 2-3)
+  + « encore ! » d'`intro_1` (voisé), niveaux calés sur les phrases 2-3 (`build_raw`). **Piège** : ne jamais insérer de
+  silence numérique dans une voix ElevenLabs, toujours du souffle de la prise. v3 refusée (pause entre « s'échappe » et
+  « encore ») → **v4** (122,7 s) : 1re phrase d'un trait, reprise `direct_4.mp3` (texte sans « … », ≈ 500 crédits).
+  Leçon : pas de « … » dans le texte quand on veut un enchaînement rapide. v4 refusée (« voix de bande-annonce »,
+  respirations) → **v5** (105,4 s) : nouvelle prise complète `evasion_hugo_naturel.mp3` (2 150 crédits), texte SANS
+  balise d'émotion, points au lieu de « ! » ; `place_voix.py` remplace chaque trou (respirations comprises) par du
+  souffle, 3 durées (0,40 / 0,26 / 0,14 s), ×1,08. **Ton voulu sur le compte : présentateur d'actu IA, naturel, rapide,
+  informatif — pas de dramatisation.** v5 jugée pas assez vive → **v6** (102 s) : prise `evasion_hugo_vif.mp3`
+  (2 160 crédits, même texte + une seule balise [excited] au début), ×1,10. v6 refusée (« on l'entend couper ses
+  respirations », trop rapide) → **v7** (129,3 s) : même prise, ×1,0, respirations GARDÉES, seuls les silences > 0,45 s
+  raccourcis. **Leçon : ne pas accélérer ni retirer les respirations — ça sonne coupé.** v7 jugée « parfaite » ;
+  demande « plus dynamique et solaire, avec le sourire » → **v8** (125,8 s) : même prise, rubberband ×1,03,
+  +0,4 demi-ton formants déplacés, EQ plus brillante. Transcription : `python ../reel-la-source/transcrire_voix.py --model ../../models/sherpa-onnx-streaming-zipformer-fr-2023-04-14 --wav media/voix_ia/voix16k.wav --beam`.
+- Animation (après validation de la voix) : 2D HTML comme ALIGNEMENT, décors liés à l'histoire, logos dessinés
+  (OpenAI, Hugging Face, Anthropic, Nvidia), robot très mobile, techniques de `FICHE-TECHNIQUES.pdf`.
+
+## ABYSSE — bande-annonce du compte (v1 27,4 s → v2 29,0 s, 2026-10-01/02, `abysse/`)
+
+- Demande : BA dans la DA de la réf. Twitter « SHIPPER » (noir, typo en points, vagues de particules, plans 3D sombres),
+  « encore plus dynamique », **30 s max**, 3D Blender autorisée (« plans sombres… magnifique éclairage… la caméra descend
+  en tournant »), plans calés sur la musique, musique étouffée quand on plonge, interactions du décor qui jouent la
+  musique (comme la BA de Suno), **références cachées** (Suno, ElevenLabs, LLM, open source), extraits des vidéos du
+  compte dans des cases, robot seulement à la fin. Concept « Sous la surface » : `BRIEF.md`, `STORYBOARD.md`.
+- **Une seule source de minutage : `partition.py` → `partition.json`** (+ `assets/data/partition.js`). Musique
+  ElevenLabs Music v2.5 (flow https://elevenlabs.io/app/flows/s6Hoe9X2mpRIVKi0MrJR, 2 variantes 30 s ≈ 900 crédits ;
+  on garde **B**, 150 BPM, ré mineur harmonique : intro sans basse, montée à 11,2 s, drop à 12,8 s), montée mesure
+  par mesure (`MUSIQUE`) : surface = B 0–6,4 s ; le drop est d'abord entendu **étouffé sous l'eau** (8,0 s), puis
+  revient à travers la coque et **en clair** quand le sas s'ouvre (19,2 s). 17 bruitages ElevenLabs (≈ 200 crédits).
+- 3D : Blender 5.1 sans interface. `blender/abysse.py` (trou bleu, eau en volume, fenêtre de Snell, rayons, neige
+  marine, caméra-fouet sur les temps forts, sonar en ondes vertes sur la roche) + `objets_abysse.py` (bouée-câlin
+  Hugging Face et sa cloche, baleine DeepSeek, voilier Midjourney + étoiles Gemini, piano « SUNO » dont les touches
+  jouent la mélodie de B, colonnes « II » ElevenLabs, étincelle Claude, station : LED Mistral, câble ∞ Meta, sas à
+  fleur OpenAI) ; `blender/bureau.py` (pièce sombre de la réf., écran vertical, `ecran.json` = coins de l'écran).
+  `--quality anim|test|final`, `--spatial` exporte les angles des objets pour le son. **Piège EEVEE : la résolution
+  des ombres d'un soleil sur 120 m faisait 150 s/image → `shadow_maximum_resolution = 0.02` (fait dans
+  `outils.light`), 13 s/image en final.** Rendu par blocs (la mémoire saturait) : `bash rendu_final.sh` (reprend où il
+  s'est arrêté).
+- Son : `son/mixage.py` (montage de B avec états clair / sous_eau / coque, nappes et battement sous l'eau, chaque objet
+  joue sa note à son image, spatialisé d'après `out/plates/spatial.json`, 808 sous l'intro) → `son/normaliser.py`
+  (−14 LUFS, −1 dBTP) → `assets/son/bande-son.wav`. `son/analyse_musique.py`, `evenements.py`, `spectro.py`,
+  `hauteur.py` pour « voir » la musique.
+- Motion design et assemblage : projet HyperFrames (`index.html` + `motion.js`, une horloge GSAP qui redessine tout
+  à chaque image). Extraits des vidéos du compte : `assets/clips/` (cases + `ecran.mp4`, 12 × 0,4 s).
+- **v2 (29,0 s, 2026-10-02, `renders/ABYSSE-PARANO-IA-v2.mp4`)**, retours sur la v1 « vraiment parfaite » :
+  - Ouverture rythmique 0–9,6 s (une mesure de plus), **plus aucun extrait vidéo** : balle verte qui rebondit sur la
+    ligne et joue la mélodie (notes affichées), CHAQUE jaillit de la ligne / SEMAINE, tombe lettre par lettre,
+    « DE NOUVELLES / ACTUS » s'étire (élastique), **« SUR L'IA. »** en lettres de caractères (`motCaracteres` :
+    incurvées sur un cylindre, relief vert, aplat léger, franges, déchirure + son `crypte`, noms de modèles cachés
+    dans les caractères), éclat → 12 logos d'IA **dessinés trait par trait** (style `alignement/logos.js`) qui se
+    posent sur la ligne (« LA SURFACE. »), flottent, coulent sur « NOUS, ON PLONGE. », nappe de points, chute.
+    Texte : « CHAQUE SEMAINE, DE NOUVELLES ACTUS SUR L'IA. » (pluriel voulu ; plus de noms qui clignotent au milieu).
+  - La 3D n'a pas été re-rendue : `partition_3d.json` (v1 gelée, lue par `blender/outils.py`) + `DECALAGE_3D` = 1,6 s.
+  - Baleine = **DeepSeek** : au passage (11,6 s, évènement `deepseek`), le sonar la verrouille et révèle le logo en
+    matrice de points bleus qui la suit (`assets/data/spatial.js` = angles exportés de Blender), puis il s'égrène.
+    Piano = **Suno** : à chaque touche, l'icône Suno (fournie par l'utilisateur, `assets/logos/suno.png`) puis des
+    pastilles sombres udio, Stable Audio, AIVA, Mubert, Eleven Music, Riffusion, Soundraw montent du piano.
+  - Bureau : **viseur de caméra** (cadre, ● REC qui clignote après deux bips, timecode, 1080p · 30, batterie,
+    vumètres L/R lus dans `assets/data/niveaux.js`), plus d'étiquettes ARCHIVES. Nouvelle musique station + bureau :
+    `media/musique/bureau_B.mp3` (ElevenLabs Music, flottante et dérangeante, 150 BPM, ≈ 480 crédits).
+  - Son : `python partition.py && python son/mixage.py && python son/normaliser.py out/son/bande-son-brute.wav
+    assets/son/bande-son.wav`. Rendu : `npx hyperframes@0.8.105 render . -o renders/ABYSSE-PARANO-IA-v2.mp4 --quality
+    delivery --video-frame-format png --workers 2`, puis remettre la bande-son exacte (HyperFrames la baisse de 2 dB).
+
 ## Règles
 
 - `media/` et `out/` ne vont jamais dans Git (dépôt public : dessins de Philippe Delord, photo de
   Yann LeCun, voix de l'utilisateur). Dans une nouvelle session, redemander les fichiers.
-- Emblèmes des IA : évocations seulement, jamais les logos exacts.
+- Emblèmes des IA : par défaut, évocations seulement. Exception demandée par l'utilisateur (2026-09-29, ALIGNEMENT) :
+  logos redessinés « en mode dessin » (Claude, Gemini, GPT, Grok, DeepSeek) pour qu'on les reconnaisse (`alignement/logos.js`).
 - ElevenLabs : estimer avant de générer (`estimate_only`), ne pas gaspiller les crédits. Le
   connecteur est lié à un seul compte ; s'il manque de crédits, l'utilisateur le reconnecte sur
   https://claude.ai/customize/connectors.
