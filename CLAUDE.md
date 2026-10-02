@@ -2,10 +2,22 @@
 
 > Mis à jour le : 2026-10-02
 
-Ce dépôt ne contient plus que **la planche du robot détective** (`planche/`, voir `README.md`),
-à la demande de l'utilisateur. Ne jamais redessiner le robot : réutiliser les pièces de
-`planche/robot_defs.svg`. Source : projet Claude Design « Robot détective — fiche personnage »
+Ce dépôt (public) contient **la planche du robot détective** (`planche/`, voir `README.md`) et **le code des
+vidéos du compte PARANO-IA** (« L'IA sous enquête ») : `reel-la-source/`, `parano-ia/`, `exponentiel/`, `abysse/`
+(et, en local seulement pour l'instant, `alignement/` et `evasion/`). Jamais de médias ni de rendus ici (voir
+§ Règles) : **les vidéos finies vont dans le dépôt privé `labriquehtt/IA-sous-enquete-`** (dossier `videos/`,
+le dossier parent `sousenquete/` en local), avec son README. Ne jamais redessiner le robot : réutiliser les
+pièces de `planche/robot_defs.svg`. Source : projet Claude Design « Robot détective — fiche personnage »
 https://claude.ai/artifact/Q9zcvFR359NL11zV4FWsZe.
+
+## Fiche des 15 techniques d'animation (`exponentiel/FICHE-TECHNIQUES.pdf`)
+
+`FICHE-TECHNIQUES.pdf` / `.md` (générés par `exponentiel/build_fiche.py`, à relancer après toute modification du
+contenu ; une copie du PDF est aussi à la racine, hors Git) : 15 techniques d'animation par prompt (on twos, stop
+motion, line boil, papier, feutrine, pâte à modeler, comics, grain, 12 principes, impacts, robot-feuille, caméra,
+typo cinétique, Blender toon, Three.js), un prompt à copier par technique, sources numérotées. À piocher pour changer
+de décor ; max. deux techniques de style par plan ; effets de trait sur le robot seulement sur demande.
+Vidéos courtes : l'utilisateur veut des Reels et des bandes-annonces de **30 s maximum**.
 
 ## Anciens projets (retirés du dépôt, récupérables dans l'historique)
 
@@ -83,6 +95,9 @@ VOIX_DIR=media/voix_ia python mix_voix.py --music out/musique2.wav --music-gain 
 
 ## EXPONENTIEL (Reel 29 s, 2026-09-29, `exponentiel/`)
 
+- Préparé d'abord dans une session web (premiers SCRIPT/BRIEF/PROMPT, voix Sébas), puis fabriqué ici ; les brouillons
+  web restent dans l'historique (commits `278e76a`, `e251b2a`). **Pas de Yann LeCun** pour parler d'exponentialité
+  (l'utilisateur juge qu'il n'est pas le mieux placé).
 - Textes : `SCRIPT.md` (v2 validée : nénuphar → auto-amélioration → alignement ; sources ligne par ligne), `BRIEF.md`
   (ordre de fabrication, découpage v2, bruitages), `PROMPT.md` (direction plan par plan). Chiffre METR vérifié sur les
   données brutes : GPT-2 = 3 s (pas 2 s).
